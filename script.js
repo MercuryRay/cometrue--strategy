@@ -9,9 +9,7 @@ const day = new Date().getDay();
 const todayTask = tasks[day % tasks.length];
 
 const taskEl = document.getElementById("task");
-if (taskEl) {
-  taskEl.textContent = todayTask;
-}
+if (taskEl) taskEl.textContent = todayTask;
 
 const downloadEl = document.getElementById("download-plan");
 if (downloadEl) {
