@@ -56,6 +56,11 @@ h2 {
   min-height: 44px;
 }
 
+.button.secondary {
+  background: #1e3a8a;
+  color: #fff;
+}
+
 main {
   max-width: 860px;
   margin: -20px auto 90px;

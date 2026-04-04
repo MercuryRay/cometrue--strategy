@@ -6,7 +6,16 @@ const tasks = [
 ];
 
 const day = new Date().getDay();
+const todayTask = tasks[day % tasks.length];
+
 const taskEl = document.getElementById("task");
 if (taskEl) {
-  taskEl.textContent = tasks[day % tasks.length];
+  taskEl.textContent = todayTask;
+}
+
+const downloadEl = document.getElementById("download-plan");
+if (downloadEl) {
+  const planText = `Auto Income Hub 収益化プラン\n\n本日のタスク: ${todayTask}\n\n1. 記事を1本作成\n2. CTAを追加\n3. 数値を記録\n`;
+  const blob = new Blob([planText], { type: "text/plain;charset=utf-8" });
+  downloadEl.href = URL.createObjectURL(blob);
 }
