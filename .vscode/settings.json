@@ -1,0 +1,7 @@
+{
+  "claude.enabled": true,
+  "files.exclude": {
+    "**/.git": true
+  },
+  "editor.formatOnSave": true
+}
