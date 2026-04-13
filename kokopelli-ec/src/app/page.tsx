@@ -1,7 +1,10 @@
-import Image from "next/image";
-import Link from "next/link";
-import type { Metadata } from "next";
-import PetDiagnosis from "./components/PetDiagnosis";
+import Image from 'next/image';
+import Link from 'next/link';
+import type { Metadata } from 'next';
+import PetDiagnosis from './components/PetDiagnosis';
+// FirstTrialButton removed - no more ¥980 offer
+import MobileCTABar from './components/MobileCTABar';
+import MemberRegistration from './components/MemberRegistration';
 import {
   MoonIcon,
   RotateCwIcon,
@@ -25,7 +28,7 @@ import {
   FactoryIcon,
   FileCheckIcon,
   GraduationCapIcon,
-} from "./components/Icons";
+} from './components/Icons';
 import {
   FadeInOnScroll,
   TextReveal,
@@ -36,39 +39,35 @@ import {
   StaggerContainer,
   StaggerItem,
   GlowCard,
-} from "./components/Animations";
+} from './components/Animations';
 
 /* ───────────── SEO Metadata ───────────── */
 export const metadata: Metadata = {
-  title:
-    "ココペリ｜犬・猫のための動物用栄養補助食品【水溶性ケイ素濃縮液】公式",
+  title: 'ココペリ｜犬・猫のための動物用栄養補助食品【水溶性ケイ素濃縮液】公式',
   description:
-    "ココペリは犬・猫のための動物用栄養補助食品。高濃度の水溶性ケイ素10,000mg/Lを含むシンプル処方のケイ素濃縮液。シニア犬・シニア猫の毎日の健康維持に。学会報告症例あり。1本¥3,480〜。",
+    'ココペリは犬・猫のための動物用栄養補助食品。高濃度の水溶性ケイ素10,000mg/Lを含むシンプル処方のケイ素濃縮液。シニア犬・シニア猫の毎日の健康維持に。学会報告症例あり。1本¥3,480〜。',
   keywords:
-    "ココペリ,犬 サプリメント,猫 サプリメント,ペット 健康食品,水溶性ケイ素,シリカ,シニア犬,シニア猫,動物用栄養補助食品,ペット ケイ素,犬 関節,猫 元気,高齢犬 サプリ,高齢猫 サプリ",
+    'ココペリ,犬 サプリメント,猫 サプリメント,ペット 健康食品,水溶性ケイ素,シリカ,シニア犬,シニア猫,動物用栄養補助食品,ペット ケイ素,犬 関節,猫 元気,高齢犬 サプリ,高齢猫 サプリ',
   openGraph: {
-    title: "ココペリ｜犬・猫のための動物用栄養補助食品",
+    title: 'ココペリ｜犬・猫のための動物用栄養補助食品',
     description:
-      "高濃度の水溶性ケイ素を含むシンプル処方。シニアペットの毎日の健康維持をサポート。1本¥3,480〜。2本セット送料無料。",
-    locale: "ja_JP",
-    type: "website",
-    images: ["/images/image-4.webp"],
+      '高濃度の水溶性ケイ素を含むシンプル処方。シニアペットの毎日の健康維持をサポート。1本¥3,480〜。2本セット送料無料。',
+    locale: 'ja_JP',
+    type: 'website',
+    images: ['/images/image-4.webp'],
   },
 };
 
 /* ───────────── 共通CTAボタン ───────────── */
-function CTAButton({ size = "lg" }: { size?: "lg" | "md" }) {
-  const cls =
-    size === "lg"
-      ? "px-12 py-5 text-xl"
-      : "px-10 py-4 text-lg";
+function CTAButton({ size = 'lg' }: { size?: 'lg' | 'md' }) {
+  const cls = size === 'lg' ? 'px-12 py-5 text-xl' : 'px-10 py-4 text-lg';
   return (
     <MagneticButton>
       <Link
         href="/checkout"
-        className={`inline-flex items-center justify-center bg-gradient-to-r from-green-600 to-green-500 text-white ${cls} rounded-full font-bold shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5`}
+        className={`inline-flex items-center justify-center bg-gradient-to-r from-amber-600 to-amber-500 text-white ${cls} rounded-full font-bold shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5`}
       >
-        今すぐ購入する →
+        30日間返金保証付きで試す →
       </Link>
     </MagneticButton>
   );
@@ -83,9 +82,9 @@ function FAQAccordion({ items }: { items: [string, string][] }) {
           key={q}
           className="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden"
         >
-          <summary className="flex items-center justify-between px-6 py-5 cursor-pointer list-none font-bold text-blue-950 hover:bg-green-50/50 transition-colors">
+          <summary className="flex items-center justify-between px-6 py-5 cursor-pointer list-none font-bold text-blue-950 hover:bg-slate-50/50 transition-colors">
             <span>Q. {q}</span>
-            <span className="text-green-500 text-xl transition-transform group-open:rotate-45 shrink-0 ml-4">
+            <span className="text-amber-500 text-xl transition-transform group-open:rotate-45 shrink-0 ml-4">
               +
             </span>
           </summary>
@@ -107,31 +106,53 @@ export default function Home() {
       <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-700 to-green-500 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-800 to-slate-700 flex items-center justify-center text-white font-bold text-lg shadow-lg">
               K
             </div>
             <div>
-              <span className="font-black text-green-800 tracking-wide">
-                kokopelli
-              </span>
+              <span className="font-black text-slate-900 tracking-wide">kokopelli</span>
               <span className="block text-xs text-gray-500 font-bold leading-none">
                 犬・猫のための動物用栄養補助食品
               </span>
             </div>
           </div>
           <nav className="hidden md:flex items-center gap-6 text-sm font-bold text-gray-600">
-            <a href="#concerns" className="hover:text-green-700 transition-colors">お悩み</a>
-            <a href="#features" className="hover:text-green-700 transition-colors">特徴</a>
-            <a href="#howto" className="hover:text-green-700 transition-colors">使い方</a>
-            <a href="#pricing" className="hover:text-green-700 transition-colors">価格</a>
-            <a href="#faq" className="hover:text-green-700 transition-colors">FAQ</a>
+            <a href="#concerns" className="hover:text-amber-700 transition-colors">
+              お悩み
+            </a>
+            <a href="#features" className="hover:text-amber-700 transition-colors">
+              特徴
+            </a>
+            <a href="#howto" className="hover:text-amber-700 transition-colors">
+              使い方
+            </a>
+            <a href="#pricing" className="hover:text-amber-700 transition-colors">
+              価格
+            </a>
+            <a href="#faq" className="hover:text-amber-700 transition-colors">
+              FAQ
+            </a>
+            <Link href="/blog" className="hover:text-amber-700 transition-colors">
+              ブログ
+            </Link>
+            <Link href="/login" className="hover:text-amber-700 transition-colors">
+              マイページ
+            </Link>
           </nav>
-          <Link
-            href="/checkout"
-            className="bg-gradient-to-r from-green-600 to-green-500 text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
-          >
-            購入する
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/login"
+              className="text-sm font-bold text-gray-600 hover:text-amber-700 transition-colors hidden sm:block"
+            >
+              マイページ
+            </Link>
+            <Link
+              href="/checkout"
+              className="bg-gradient-to-r from-slate-800 to-slate-700 text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
+            >
+              購入する
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -156,8 +177,8 @@ export default function Home() {
             {/* テキスト側 */}
             <div className="flex-1">
               <div className="flex flex-wrap gap-2 mb-6">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-200 text-green-700 font-bold text-sm">
-                  <span className="w-2 h-2 rounded-full bg-green-500" />
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-50 border border-amber-200 text-amber-700 font-bold text-sm">
+                  <span className="w-2 h-2 rounded-full bg-slate-500" />
                   動物用栄養補助食品
                 </span>
                 <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 text-blue-700 font-bold text-sm">
@@ -170,39 +191,43 @@ export default function Home() {
               </div>
 
               <h1 className="text-3xl md:text-5xl font-black text-gray-900 leading-tight mb-6">
-                <TextReveal text="「年齢のせい」で" className="block" />
-                <TextReveal text="あきらめていませんか？" className="block" delay={0.3} />
-                <span className="block mt-2">
-                  <TextReveal text="ココペリ" className="inline text-green-600" delay={0.8} />
-                  <TextReveal text="で" className="inline text-2xl md:text-4xl" delay={1.1} />
-                </span>
-                <TextReveal text="毎日の健康維持を。" className="block" delay={1.2} />
+                <TextReveal text="この子との時間を、" className="block" />
+                <TextReveal text="もっと長く。" className="block text-amber-600" delay={0.3} />
               </h1>
 
               <p className="text-lg text-gray-600 mb-4 leading-relaxed max-w-lg">
-                高濃度の<strong className="text-green-700">水溶性ケイ素 10,000mg/L</strong>を含む、
-                シンプル処方のケイ素濃縮液。
-                食事に数滴混ぜるだけ。犬にも猫にもお使いいただけます。
+                動物病院で<strong className="text-slate-800">10年間</strong>使われてきた、 高濃度
+                <strong className="text-amber-700">水溶性ケイ素 10,000mg/L</strong>。
+                食事に数滴混ぜるだけで、シニアペットの毎日をサポートします。
               </p>
 
               <ul className="text-sm text-gray-600 space-y-1.5 mb-8">
                 <li className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs font-bold shrink-0">&#10003;</span>
+                  <span className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 text-xs font-bold shrink-0">
+                    &#10003;
+                  </span>
                   原材料はたった2つ：水とケイ素
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs font-bold shrink-0">&#10003;</span>
+                  <span className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 text-xs font-bold shrink-0">
+                    &#10003;
+                  </span>
                   動物病院で10年間使用されてきた製品
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs font-bold shrink-0">&#10003;</span>
+                  <span className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 text-xs font-bold shrink-0">
+                    &#10003;
+                  </span>
                   学会で症例報告済み
                 </li>
               </ul>
 
               {/* CTA #1 */}
-              <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mb-4 inline-block">
-                <p className="text-amber-800 font-bold text-sm">🎁 2本セットなら送料無料＋1本あたり¥2,990</p>
+              <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4 mb-4">
+                <p className="text-slate-800 font-bold text-sm">30日間全額返金保証付き</p>
+                <p className="text-gray-600 text-xs mt-1">
+                  ご満足いただけなければ全額返金いたします
+                </p>
               </div>
               <CTAButton size="lg" />
               <p className="mt-3 text-sm text-gray-500">
@@ -253,20 +278,20 @@ export default function Home() {
       {/* ============================================================
           信頼バー — 大きな数字
           ============================================================ */}
-      <section className="py-10 bg-green-50 border-y border-green-100">
+      <section className="py-10 bg-slate-50 border-y border-slate-200">
         <div className="max-w-5xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { end: 2, unit: "つだけ", label: "原材料（水・ケイ素）", icon: <LeafIcon /> },
-              { end: 10000, unit: "mg/L", label: "水溶性ケイ素濃度", icon: <DropletsIcon /> },
-              { end: 10, unit: "年", label: "製造・臨床の実績", icon: <CalendarCheckIcon /> },
-              { end: 0, unit: "無添加", label: "保存料・香料・着色料", icon: <FlaskConicalIcon /> },
+              { end: 2, unit: 'つだけ', label: '原材料（水・ケイ素）', icon: <LeafIcon /> },
+              { end: 10000, unit: 'mg/L', label: '水溶性ケイ素濃度', icon: <DropletsIcon /> },
+              { end: 10, unit: '年', label: '製造・臨床の実績', icon: <CalendarCheckIcon /> },
+              { end: 0, unit: '無添加', label: '保存料・香料・着色料', icon: <FlaskConicalIcon /> },
             ].map((item) => (
               <FadeInOnScroll key={item.label} delay={0.1}>
-                <div className="text-center p-5 rounded-2xl bg-white border border-green-100 shadow-sm">
+                <div className="text-center p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
                   <div className="flex justify-center mb-2">{item.icon}</div>
-                  <p className="text-3xl md:text-4xl font-black text-green-700">
-                    {item.end > 0 ? <CountUp end={item.end} duration={1.5} /> : ""}
+                  <p className="text-3xl md:text-4xl font-black text-amber-700">
+                    {item.end > 0 ? <CountUp end={item.end} duration={1.5} /> : ''}
                     <span className="text-base font-bold ml-1">{item.unit}</span>
                   </p>
                   <p className="text-xs text-gray-500 mt-1">{item.label}</p>
@@ -319,16 +344,27 @@ export default function Home() {
 
             {/* 右: アイコン + 短文 */}
             <div className="flex-1">
-              <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 gap-3" staggerDelay={0.06}>
+              <StaggerContainer
+                className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+                staggerDelay={0.06}
+              >
                 {[
-                  { text: "夜中に鳴き続ける", sub: "飼い主も眠れない日々", icon: <MoonIcon /> },
-                  { text: "ウロウロ歩き回る", sub: "落ち着きがなくなった", icon: <RotateCwIcon /> },
-                  { text: "反応が鈍くなった", sub: "呼びかけに応じない", icon: <CircleOffIcon /> },
-                  { text: "食欲が減ってきた", sub: "体重も落ちてきた", icon: <UtensilsCrossedIcon /> },
-                  { text: "散歩で座り込む", sub: "途中で動かなくなる", icon: <PawPrintIcon /> },
-                  { text: "毛並みに元気がない", sub: "ツヤがなくパサつく", icon: <SparklesIcon /> },
-                  { text: "寝てる時間が増えた", sub: "遊ばなくなった", icon: <BedDoubleIcon /> },
-                  { text: "なんとなく老いを感じる", sub: "以前と比べて衰えが", icon: <ClockIcon /> },
+                  { text: '夜中に鳴き続ける', sub: '飼い主も眠れない日々', icon: <MoonIcon /> },
+                  { text: 'ウロウロ歩き回る', sub: '落ち着きがなくなった', icon: <RotateCwIcon /> },
+                  { text: '反応が鈍くなった', sub: '呼びかけに応じない', icon: <CircleOffIcon /> },
+                  {
+                    text: '食欲が減ってきた',
+                    sub: '体重も落ちてきた',
+                    icon: <UtensilsCrossedIcon />,
+                  },
+                  { text: '散歩で座り込む', sub: '途中で動かなくなる', icon: <PawPrintIcon /> },
+                  { text: '毛並みに元気がない', sub: 'ツヤがなくパサつく', icon: <SparklesIcon /> },
+                  { text: '寝てる時間が増えた', sub: '遊ばなくなった', icon: <BedDoubleIcon /> },
+                  {
+                    text: 'なんとなく老いを感じる',
+                    sub: '以前と比べて衰えが',
+                    icon: <ClockIcon />,
+                  },
                 ].map((item) => (
                   <StaggerItem key={item.text}>
                     <GlowCard className="flex items-center gap-3 bg-amber-50/50 rounded-xl p-4 border border-amber-100 h-full">
@@ -343,8 +379,8 @@ export default function Home() {
               </StaggerContainer>
 
               <FadeInOnScroll>
-                <div className="mt-6 bg-green-50 rounded-xl p-5 border border-green-100 text-center">
-                  <p className="text-green-800 font-bold mb-3">
+                <div className="mt-6 bg-slate-50 rounded-xl p-5 border border-slate-200 text-center">
+                  <p className="text-slate-900 font-bold mb-3">
                     ひとつでも当てはまるなら、「健康維持」を見直すタイミングかもしれません。
                   </p>
                   {/* CTA #2 */}
@@ -403,7 +439,7 @@ export default function Home() {
             {/* 右: テキスト + 成分図解 */}
             <FadeInOnScroll direction="right">
               <div className="flex-1">
-                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 text-green-700 font-bold text-xs mb-4">
+                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 text-amber-700 font-bold text-xs mb-4">
                   ココペリとは
                 </span>
                 <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-4">
@@ -417,8 +453,10 @@ export default function Home() {
                 </p>
 
                 {/* 成分図解 */}
-                <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-6 border border-green-100 mb-6">
-                  <p className="text-xs font-bold text-green-600 mb-4 tracking-widest text-center">INGREDIENTS --- たった2つの原材料</p>
+                <div className="bg-gradient-to-r from-slate-50 to-blue-50 rounded-2xl p-6 border border-slate-200 mb-6">
+                  <p className="text-xs font-bold text-amber-600 mb-4 tracking-widest text-center">
+                    INGREDIENTS --- たった2つの原材料
+                  </p>
                   <div className="flex items-center justify-center gap-4 md:gap-8">
                     <div className="text-center">
                       <div className="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-2 border-2 border-blue-200 shadow-sm">
@@ -432,20 +470,23 @@ export default function Home() {
                         <GemIcon />
                       </div>
                       <p className="font-bold text-gray-800 text-sm">ケイ素</p>
-                      <p className="text-xs text-green-600 font-bold">10,000mg/L</p>
+                      <p className="text-xs text-amber-600 font-bold">10,000mg/L</p>
                     </div>
                     <span className="text-3xl text-gray-300 font-light">=</span>
                     <div className="text-center">
-                      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-100 to-blue-100 flex items-center justify-center mx-auto mb-2 border-2 border-green-300 shadow-sm">
-                        <span className="font-black text-green-700 text-[10px]">kokopelli</span>
+                      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-50 to-blue-100 flex items-center justify-center mx-auto mb-2 border-2 border-amber-300 shadow-sm">
+                        <span className="font-black text-amber-700 text-[10px]">kokopelli</span>
                       </div>
                       <p className="font-bold text-gray-800 text-sm">ココペリ</p>
                       <p className="text-xs text-gray-500">それだけ。</p>
                     </div>
                   </div>
                   <div className="mt-4 flex flex-wrap justify-center gap-2">
-                    {["保存料なし", "香料なし", "着色料なし", "添加物なし"].map((tag) => (
-                      <span key={tag} className="px-3 py-1 rounded-full bg-white text-green-700 text-xs font-bold border border-green-200">
+                    {['保存料なし', '香料なし', '着色料なし', '添加物なし'].map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-3 py-1 rounded-full bg-white text-amber-700 text-xs font-bold border border-amber-200"
+                      >
                         {tag}
                       </span>
                     ))}
@@ -463,7 +504,7 @@ export default function Home() {
       <section id="features" className="py-16 md:py-24 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4">
           <FadeInOnScroll>
-            <p className="text-center text-xs font-black text-green-600 tracking-widest mb-3">
+            <p className="text-center text-xs font-black text-amber-600 tracking-widest mb-3">
               WHY KOKOPELLI
             </p>
             <h2 className="text-2xl md:text-4xl font-black text-gray-900 mb-4 text-center">
@@ -478,28 +519,28 @@ export default function Home() {
           <StaggerContainer className="grid md:grid-cols-3 gap-6" staggerDelay={0.15}>
             {[
               {
-                num: "01",
-                title: "高濃度ケイ素 10,000mg/L",
-                desc: "水溶性ケイ素を高濃度に含有。骨・関節・被毛・皮膚の構成要素として知られるミネラル。食事に数滴混ぜるだけ。",
+                num: '01',
+                title: '高濃度ケイ素 10,000mg/L',
+                desc: '水溶性ケイ素を高濃度に含有。骨・関節・被毛・皮膚の構成要素として知られるミネラル。食事に数滴混ぜるだけ。',
                 icon: <DropletsIcon />,
-                img: "/images/supplement-bottle.jpg",
-                imgAlt: "ココペリのボトル",
+                img: '/images/supplement-bottle.jpg',
+                imgAlt: 'ココペリのボトル',
               },
               {
-                num: "02",
-                title: "原材料たった2つ",
-                desc: "「水」と「ケイ素」のみ。添加物・保存料・香料は一切不使用。デリケートなシニアペットにも安心。",
+                num: '02',
+                title: '原材料たった2つ',
+                desc: '「水」と「ケイ素」のみ。添加物・保存料・香料は一切不使用。デリケートなシニアペットにも安心。',
                 icon: <LeafIcon />,
-                img: "/images/image-11.webp",
-                imgAlt: "原材料表示",
+                img: '/images/image-11.webp',
+                imgAlt: '原材料表示',
               },
               {
-                num: "03",
-                title: "全成分・全表示を公開",
-                desc: "外箱の表示をすべて公開。成分値・給与方法・注意事項まで購入前に確認できます。",
+                num: '03',
+                title: '全成分・全表示を公開',
+                desc: '外箱の表示をすべて公開。成分値・給与方法・注意事項まで購入前に確認できます。',
                 icon: <ClipboardListIcon />,
-                img: "/images/image-12.webp",
-                imgAlt: "成分表示の公開",
+                img: '/images/image-12.webp',
+                imgAlt: '成分表示の公開',
               },
             ].map((f) => (
               <StaggerItem key={f.title}>
@@ -516,7 +557,7 @@ export default function Home() {
                   <div className="p-6">
                     <div className="flex items-center gap-3 mb-3">
                       <span className="shrink-0">{f.icon}</span>
-                      <span className="text-xs font-black text-green-400">{f.num}</span>
+                      <span className="text-xs font-black text-amber-400">{f.num}</span>
                     </div>
                     <h3 className="text-lg font-bold text-gray-900 mb-2">{f.title}</h3>
                     <p className="text-gray-600 text-sm leading-relaxed">{f.desc}</p>
@@ -534,7 +575,9 @@ export default function Home() {
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-4xl mx-auto px-4">
           <FadeInOnScroll>
-            <p className="text-center text-xs font-black text-green-600 tracking-widest mb-3">ABOUT SILICON</p>
+            <p className="text-center text-xs font-black text-amber-600 tracking-widest mb-3">
+              ABOUT SILICON
+            </p>
             <h2 className="text-2xl md:text-4xl font-black text-gray-900 mb-4 text-center">
               ケイ素（シリカ）とは？
             </h2>
@@ -544,13 +587,35 @@ export default function Home() {
           </p>
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              { title: "コラーゲン生成に関与", desc: "骨・関節・皮膚・被毛の構造を支えるコラーゲンの合成過程に関わるミネラル。", icon: <BoneIcon />, bg: "from-blue-50 to-white" },
-              { title: "ミトコンドリアに存在", desc: "細胞のエネルギー産生を担うミトコンドリアにも存在。研究で報告されています。", icon: <MicroscopeIcon />, bg: "from-green-50 to-white" },
-              { title: "被毛・皮膚・爪の構成要素", desc: "加齢とともに体内のケイ素量は減少。外部からの補給が注目されています。", icon: <SparklesAltIcon />, bg: "from-amber-50 to-white" },
-              { title: "体内で生成できない", desc: "必須微量元素でありながら体内合成不可。水溶性ケイ素は吸収効率に優れた形態です。", icon: <GemIcon />, bg: "from-purple-50 to-white" },
+              {
+                title: 'コラーゲン生成に関与',
+                desc: '骨・関節・皮膚・被毛の構造を支えるコラーゲンの合成過程に関わるミネラル。',
+                icon: <BoneIcon />,
+                bg: 'from-blue-50 to-white',
+              },
+              {
+                title: 'ミトコンドリアに存在',
+                desc: '細胞のエネルギー産生を担うミトコンドリアにも存在。研究で報告されています。',
+                icon: <MicroscopeIcon />,
+                bg: 'from-slate-50 to-white',
+              },
+              {
+                title: '被毛・皮膚・爪の構成要素',
+                desc: '加齢とともに体内のケイ素量は減少。外部からの補給が注目されています。',
+                icon: <SparklesAltIcon />,
+                bg: 'from-amber-50 to-white',
+              },
+              {
+                title: '体内で生成できない',
+                desc: '必須微量元素でありながら体内合成不可。水溶性ケイ素は吸収効率に優れた形態です。',
+                icon: <GemIcon />,
+                bg: 'from-purple-50 to-white',
+              },
             ].map((item) => (
               <FadeInOnScroll key={item.title}>
-                <div className={`bg-gradient-to-br ${item.bg} rounded-2xl p-6 border border-gray-100 flex gap-4 items-start`}>
+                <div
+                  className={`bg-gradient-to-br ${item.bg} rounded-2xl p-6 border border-gray-100 flex gap-4 items-start`}
+                >
                   <div className="w-14 h-14 rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0 border border-gray-100">
                     {item.icon}
                   </div>
@@ -563,7 +628,8 @@ export default function Home() {
             ))}
           </div>
           <p className="text-center text-xs text-gray-400 mt-8">
-            ※ 上記はケイ素（シリカ）というミネラルの一般的な情報であり、本製品の効能効果を示すものではありません。
+            ※
+            上記はケイ素（シリカ）というミネラルの一般的な情報であり、本製品の効能効果を示すものではありません。
           </p>
         </div>
       </section>
@@ -574,7 +640,9 @@ export default function Home() {
       <section id="product" className="py-16 md:py-24 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4">
           <FadeInOnScroll>
-            <p className="text-center text-xs font-black text-green-600 tracking-widest mb-3">PRODUCT</p>
+            <p className="text-center text-xs font-black text-amber-600 tracking-widest mb-3">
+              PRODUCT
+            </p>
             <h2 className="text-2xl md:text-4xl font-black text-gray-900 mb-4 text-center">
               製品情報
             </h2>
@@ -585,14 +653,20 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
             {[
-              { src: "/images/image-4.webp", alt: "ココペリ パッケージ正面", w: 400, h: 700 },
-              { src: "/images/image-5.webp", alt: "ココペリ パッケージ側面", w: 300, h: 400 },
-              { src: "/images/image-11.webp", alt: "ココペリ 原材料・給与方法", w: 300, h: 400 },
-              { src: "/images/image-12.webp", alt: "ココペリ 注意事項・製造情報", w: 300, h: 400 },
+              { src: '/images/image-4.webp', alt: 'ココペリ パッケージ正面', w: 400, h: 700 },
+              { src: '/images/image-5.webp', alt: 'ココペリ パッケージ側面', w: 300, h: 400 },
+              { src: '/images/image-11.webp', alt: 'ココペリ 原材料・給与方法', w: 300, h: 400 },
+              { src: '/images/image-12.webp', alt: 'ココペリ 注意事項・製造情報', w: 300, h: 400 },
             ].map((img) => (
               <FadeInOnScroll key={img.src}>
                 <div className="rounded-xl overflow-hidden shadow-sm border border-gray-100 bg-white hover:shadow-lg transition-shadow">
-                  <Image src={img.src} alt={img.alt} width={img.w} height={img.h} className="w-full h-auto" />
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    width={img.w}
+                    height={img.h}
+                    className="w-full h-auto"
+                  />
                 </div>
               </FadeInOnScroll>
             ))}
@@ -601,16 +675,16 @@ export default function Home() {
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden max-w-2xl mx-auto">
             <div className="divide-y divide-gray-100">
               {[
-                ["製品分類", "動物用栄養補助食品"],
-                ["商品名", "ココペリ（Kokopelli）"],
-                ["主成分", "水溶性ケイ素 10,000mg/L"],
-                ["その他成分", "カリウムイオン 470mg/L"],
-                ["内容量", "30ml"],
-                ["原材料", "水、ケイ素"],
-                ["対象動物", "犬・猫（年齢不問）"],
-                ["給与方法", "1日1回、食事に数滴混ぜる。またはディスポ容器で直接与える"],
-                ["保管方法", "直射日光を避け、常温保存"],
-                ["容器", "ガラス瓶"],
+                ['製品分類', '動物用栄養補助食品'],
+                ['商品名', 'ココペリ（Kokopelli）'],
+                ['主成分', '水溶性ケイ素 10,000mg/L'],
+                ['その他成分', 'カリウムイオン 470mg/L'],
+                ['内容量', '30ml'],
+                ['原材料', '水、ケイ素'],
+                ['対象動物', '犬・猫（年齢不問）'],
+                ['給与方法', '1日1回、食事に数滴混ぜる。またはディスポ容器で直接与える'],
+                ['保管方法', '直射日光を避け、常温保存'],
+                ['容器', 'ガラス瓶'],
               ].map(([label, value]) => (
                 <div key={label} className="flex flex-col sm:flex-row px-6 py-4">
                   <span className="font-bold text-gray-900 sm:w-40 shrink-0">{label}</span>
@@ -628,7 +702,9 @@ export default function Home() {
       <section id="evidence" className="py-16 md:py-24 bg-white">
         <div className="max-w-5xl mx-auto px-4">
           <FadeInOnScroll>
-            <p className="text-center text-xs font-black text-green-600 tracking-widest mb-3">CLINICAL REPORT</p>
+            <p className="text-center text-xs font-black text-amber-600 tracking-widest mb-3">
+              CLINICAL REPORT
+            </p>
             <h2 className="text-2xl md:text-4xl font-black text-gray-900 mb-4 text-center">
               学会報告症例
             </h2>
@@ -639,41 +715,47 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                tag: "症例1 --- 夜間の落ち着き・歩行",
-                animal: "柴犬MIX（18歳10か月）",
-                year: "2019年 学会報告症例",
+                tag: '症例1 --- 夜間の落ち着き・歩行',
+                animal: '柴犬MIX（18歳10か月）',
+                year: '2019年 学会報告症例',
                 steps: [
-                  { color: "bg-red-400", time: "来院時", text: "夜鳴きが激しく、寝たきりの状態" },
-                  { color: "bg-amber-400", time: "10日後", text: "夜間の落ち着きに変化" },
-                  { color: "bg-green-400", time: "40日後", text: "介助下での起立・歩行が可能に" },
+                  { color: 'bg-red-400', time: '来院時', text: '夜鳴きが激しく、寝たきりの状態' },
+                  { color: 'bg-amber-400', time: '10日後', text: '夜間の落ち着きに変化' },
+                  { color: 'bg-amber-500', time: '40日後', text: '介助下での起立・歩行が可能に' },
                 ],
               },
               {
-                tag: "症例2 --- 長期経過",
-                animal: "日本猫（推定11歳）",
-                year: "2019年 学会報告症例",
+                tag: '症例2 --- 長期経過',
+                animal: '日本猫（推定11歳）',
+                year: '2019年 学会報告症例',
                 steps: [
-                  { color: "bg-red-400", time: "来院時", text: "目元の状態について来院" },
-                  { color: "bg-green-400", time: "270日後", text: "写真とともに変化が確認された例" },
+                  { color: 'bg-red-400', time: '来院時', text: '目元の状態について来院' },
+                  {
+                    color: 'bg-amber-500',
+                    time: '270日後',
+                    text: '写真とともに変化が確認された例',
+                  },
                 ],
               },
               {
-                tag: "症例3 --- 起立・歩行",
-                animal: "ラブラドール（10歳）",
-                year: "2023年 学会報告症例",
+                tag: '症例3 --- 起立・歩行',
+                animal: 'ラブラドール（10歳）',
+                year: '2023年 学会報告症例',
                 steps: [
-                  { color: "bg-red-400", time: "来院時", text: "起立が難しく、台車で来院" },
-                  { color: "bg-amber-400", time: "3日後", text: "立ち上がりや歩行に変化" },
-                  { color: "bg-green-400", time: "10日後", text: "より安定した足取りに" },
+                  { color: 'bg-red-400', time: '来院時', text: '起立が難しく、台車で来院' },
+                  { color: 'bg-amber-400', time: '3日後', text: '立ち上がりや歩行に変化' },
+                  { color: 'bg-amber-500', time: '10日後', text: 'より安定した足取りに' },
                 ],
               },
             ].map((c) => (
               <FadeInOnScroll key={c.tag}>
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden h-full">
-                  <div className="bg-gradient-to-r from-green-800 to-green-600 p-5">
-                    <span className="inline-flex px-3 py-1 rounded-full bg-white/20 text-white font-bold text-xs mb-3">{c.tag}</span>
+                  <div className="bg-gradient-to-r from-slate-900 to-slate-800 p-5">
+                    <span className="inline-flex px-3 py-1 rounded-full bg-white/20 text-white font-bold text-xs mb-3">
+                      {c.tag}
+                    </span>
                     <h3 className="text-lg font-bold text-white">{c.animal}</h3>
-                    <p className="text-green-200 text-xs mt-1">{c.year}</p>
+                    <p className="text-amber-200 text-xs mt-1">{c.year}</p>
                   </div>
                   <div className="p-5 space-y-4">
                     {c.steps.map((s) => (
@@ -691,9 +773,13 @@ export default function Home() {
             ))}
           </div>
           <p className="text-center text-sm text-gray-500 mt-8">
-            ※ 上記は学会で報告された個別症例の要点整理です。すべての犬猫に同様の変化が見られることを保証するものではありません。
+            ※
+            上記は学会で報告された個別症例の要点整理です。すべての犬猫に同様の変化が見られることを保証するものではありません。
             本品は動物用栄養補助食品であり、医薬品ではありません。
           </p>
+        </div>
+        <div className="text-center mt-10">
+          <CTAButton size="md" />
         </div>
       </section>
 
@@ -703,7 +789,9 @@ export default function Home() {
       <section id="howto" className="py-16 md:py-24 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">
           <FadeInOnScroll>
-            <p className="text-center text-xs font-black text-green-600 tracking-widest mb-3">HOW TO USE</p>
+            <p className="text-center text-xs font-black text-amber-600 tracking-widest mb-3">
+              HOW TO USE
+            </p>
             <h2 className="text-2xl md:text-4xl font-black text-gray-900 mb-4 text-center">
               かんたん3ステップ
             </h2>
@@ -715,25 +803,25 @@ export default function Home() {
           <StaggerContainer className="grid md:grid-cols-3 gap-6" staggerDelay={0.15}>
             {[
               {
-                step: "STEP 1",
-                title: "スポイトで数滴取る",
-                desc: "付属のディスポ容器（スポイト）でココペリを数滴取ります。",
+                step: 'STEP 1',
+                title: 'スポイトで数滴取る',
+                desc: '付属のディスポ容器（スポイト）でココペリを数滴取ります。',
                 icon: <PipetteIcon />,
-                img: "/images/supplement-bottle.jpg",
+                img: '/images/supplement-bottle.jpg',
               },
               {
-                step: "STEP 2",
-                title: "フードに混ぜる or 直接",
-                desc: "フードにしみこませるか、口元に直接数滴たらします。味・匂いがほぼないので嫌がりません。",
+                step: 'STEP 2',
+                title: 'フードに混ぜる or 直接',
+                desc: 'フードにしみこませるか、口元に直接数滴たらします。味・匂いがほぼないので嫌がりません。',
                 icon: <CookieIcon />,
-                img: "/images/pet-dog-water.jpg",
+                img: '/images/pet-dog-water.jpg',
               },
               {
-                step: "STEP 3",
-                title: "毎日続ける",
-                desc: "1日1回を目安に継続。まずは1〜2ヶ月お試しください。",
+                step: 'STEP 3',
+                title: '毎日続ける',
+                desc: '1日1回を目安に継続。まずは1〜2ヶ月お試しください。',
                 icon: <CalendarCheckIcon />,
-                img: "/images/pet-cat-owner.jpg",
+                img: '/images/pet-cat-owner.jpg',
               },
             ].map((s) => (
               <StaggerItem key={s.step}>
@@ -746,12 +834,12 @@ export default function Home() {
                       height={260}
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute top-3 left-3 bg-green-600 text-white px-3 py-1 rounded-full text-xs font-black shadow">
+                    <div className="absolute top-3 left-3 bg-slate-800 text-white px-3 py-1 rounded-full text-xs font-black shadow">
                       {s.step}
                     </div>
                   </div>
                   <div className="p-5 text-center">
-                    <div className="w-14 h-14 rounded-full bg-green-50 border-2 border-green-200 flex items-center justify-center mx-auto mb-3">
+                    <div className="w-14 h-14 rounded-full bg-slate-50 border-2 border-amber-200 flex items-center justify-center mx-auto mb-3">
                       {s.icon}
                     </div>
                     <h3 className="font-bold text-gray-900 mb-2">{s.title}</h3>
@@ -765,20 +853,22 @@ export default function Home() {
           {/* 給与量テーブル */}
           <FadeInOnScroll>
             <div className="mt-12 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden max-w-2xl mx-auto">
-              <div className="bg-gradient-to-r from-green-700 to-green-500 p-4 text-center">
-                <p className="text-white font-bold">基本目安: 体重1kgあたり <span className="text-2xl">0.1cc</span> / 日</p>
+              <div className="bg-gradient-to-r from-slate-800 to-slate-700 p-4 text-center">
+                <p className="text-white font-bold">
+                  基本目安: 体重1kgあたり <span className="text-2xl">0.1cc</span> / 日
+                </p>
               </div>
               <div className="divide-y divide-gray-100">
                 {[
-                  ["小型犬（〜5kg）", "0.3〜0.5cc", "1〜2滴"],
-                  ["中型犬（5〜15kg）", "0.5〜1.5cc", "3〜5滴"],
-                  ["大型犬（15kg〜）", "1.5〜3.0cc", "5〜10滴"],
-                  ["猫（3〜5kg）", "0.3〜0.5cc", "1〜2滴"],
+                  ['小型犬（〜5kg）', '0.3〜0.5cc', '1〜2滴'],
+                  ['中型犬（5〜15kg）', '0.5〜1.5cc', '3〜5滴'],
+                  ['大型犬（15kg〜）', '1.5〜3.0cc', '5〜10滴'],
+                  ['猫（3〜5kg）', '0.3〜0.5cc', '1〜2滴'],
                 ].map(([animal, amount, drops]) => (
                   <div key={animal} className="flex items-center px-6 py-4">
                     <span className="font-bold text-gray-900 w-44 shrink-0 text-sm">{animal}</span>
                     <span className="text-gray-600 w-32 text-sm">{amount}</span>
-                    <span className="text-green-600 font-bold text-sm">{drops}</span>
+                    <span className="text-amber-600 font-bold text-sm">{drops}</span>
                   </div>
                 ))}
               </div>
@@ -786,7 +876,8 @@ export default function Home() {
           </FadeInOnScroll>
           <div className="max-w-2xl mx-auto mt-4 bg-amber-50 rounded-xl p-4 border border-amber-100">
             <p className="text-sm text-amber-800">
-              <strong>はじめての方へ:</strong> 最初の1週間は半量からスタートし、様子を見ながら徐々に増やしてください。
+              <strong>はじめての方へ:</strong>{' '}
+              最初の1週間は半量からスタートし、様子を見ながら徐々に増やしてください。
             </p>
           </div>
 
@@ -802,13 +893,22 @@ export default function Home() {
         <FadeInOnScroll>
           <div className="flex gap-4 justify-center items-center max-w-5xl mx-auto px-4">
             {[
-              { src: "/images/image-1.webp", alt: "ココペリ パッケージ正面" },
-              { src: "/images/image-2.webp", alt: "ココペリ パッケージ側面" },
-              { src: "/images/image-8.webp", alt: "ココペリ 外箱" },
-              { src: "/images/image-3.webp", alt: "ココペリ ロゴ" },
+              { src: '/images/image-1.webp', alt: 'ココペリ パッケージ正面' },
+              { src: '/images/image-2.webp', alt: 'ココペリ パッケージ側面' },
+              { src: '/images/image-8.webp', alt: 'ココペリ 外箱' },
+              { src: '/images/image-3.webp', alt: 'ココペリ ロゴ' },
             ].map((img) => (
-              <div key={img.src} className="w-32 md:w-40 rounded-xl overflow-hidden shadow-md border border-gray-100 shrink-0">
-                <Image src={img.src} alt={img.alt} width={200} height={280} className="w-full h-auto" />
+              <div
+                key={img.src}
+                className="w-32 md:w-40 rounded-xl overflow-hidden shadow-md border border-gray-100 shrink-0"
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  width={200}
+                  height={280}
+                  className="w-full h-auto"
+                />
               </div>
             ))}
           </div>
@@ -821,7 +921,9 @@ export default function Home() {
       <section id="pricing" className="py-16 md:py-24 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4">
           <FadeInOnScroll>
-            <p className="text-center text-xs font-black text-green-600 tracking-widest mb-3">PRICING</p>
+            <p className="text-center text-xs font-black text-amber-600 tracking-widest mb-3">
+              PRICING
+            </p>
             <h2 className="text-2xl md:text-4xl font-black text-gray-900 mb-4 text-center">
               お求めやすい価格で
             </h2>
@@ -830,12 +932,21 @@ export default function Home() {
             まずは1本からお試しいただけます。セット・定期便はさらにおトクです。
           </p>
 
-          <StaggerContainer className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto" staggerDelay={0.1}>
+          <StaggerContainer
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+            staggerDelay={0.1}
+          >
             {/* 1本 */}
             <StaggerItem>
               <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 text-center h-full flex flex-col">
                 <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gray-50 flex items-center justify-center border border-gray-200">
-                  <Image src="/images/image-4.webp" alt="ココペリ1本" width={40} height={70} className="h-10 w-auto" />
+                  <Image
+                    src="/images/image-4.webp"
+                    alt="ококопеリ1本"
+                    width={40}
+                    height={70}
+                    className="h-10 w-auto"
+                  />
                 </div>
                 <p className="text-sm font-bold text-gray-500 mb-1">お試し</p>
                 <h3 className="text-xl font-black text-gray-900 mb-1">1本</h3>
@@ -844,17 +955,61 @@ export default function Home() {
                 <p className="text-xs text-gray-500 mb-6">+ 送料</p>
                 <ul className="text-sm text-gray-600 text-left space-y-2 mb-6 flex-1">
                   <li className="flex items-start gap-2">
-                    <span className="text-green-500 mt-0.5 shrink-0">&#10003;</span>
+                    <span className="text-amber-500 mt-0.5 shrink-0">&#10003;</span>
                     <span>まずは試してみたい方に</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-green-500 mt-0.5 shrink-0">&#10003;</span>
+                    <span className="text-amber-500 mt-0.5 shrink-0">&#10003;</span>
                     <span>小型犬・猫なら約2〜4週間分</span>
                   </li>
                 </ul>
                 <Link
                   href="/checkout"
-                  className="block w-full bg-white border-2 border-green-600 text-green-600 py-3 rounded-full font-bold text-sm hover:bg-green-50 transition-colors"
+                  className="block w-full bg-white border-2 border-slate-700 text-amber-600 py-3 rounded-full font-bold text-sm hover:bg-slate-50 transition-colors"
+                >
+                  購入する
+                </Link>
+              </div>
+            </StaggerItem>
+
+            {/* 2本セット — 人気No.1 */}
+            <StaggerItem>
+              <div className="relative bg-gradient-to-b from-amber-600 to-amber-500 rounded-2xl border-2 border-amber-400 shadow-xl p-6 text-center h-full flex flex-col">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-4 py-1 rounded-full text-xs font-black shadow">
+                  人気No.1
+                </div>
+                <div className="w-16 h-16 mx-auto mb-3 mt-2 rounded-full bg-white/20 flex items-center justify-center">
+                  <Image
+                    src="/images/image-4.webp"
+                    alt="ококопеリ2本セット"
+                    width={40}
+                    height={70}
+                    className="h-10 w-auto"
+                  />
+                </div>
+                <p className="text-sm font-bold text-amber-100 mb-1">2本セット</p>
+                <h3 className="text-xl font-black text-white mb-1">2本</h3>
+                <p className="text-xs text-amber-200 mb-4">30ml x 2本</p>
+                <p className="text-4xl font-black text-white mb-1">¥5,980</p>
+                <p className="text-xs text-amber-200 mb-1">送料無料</p>
+                <p className="text-white text-sm font-bold mb-6">1本あたり ¥2,990</p>
+                <ul className="text-sm text-amber-50 text-left space-y-2 mb-6 flex-1">
+                  <li className="flex items-start gap-2">
+                    <span className="text-white mt-0.5 shrink-0">&#10003;</span>
+                    <span>送料無料でおトク</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-white mt-0.5 shrink-0">&#10003;</span>
+                    <span>中〜大型犬に約1〜2ヶ月分</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-white mt-0.5 shrink-0">&#10003;</span>
+                    <span>継続しやすい量</span>
+                  </li>
+                </ul>
+                <Link
+                  href="/checkout"
+                  className="block w-full bg-white text-amber-700 py-3 rounded-full font-bold text-sm shadow-lg hover:shadow-xl transition-all"
                 >
                   購入する
                 </Link>
@@ -863,20 +1018,26 @@ export default function Home() {
 
             {/* 5+1セット — おすすめ */}
             <StaggerItem>
-              <div className="relative bg-gradient-to-b from-green-700 to-green-600 rounded-2xl border-2 border-green-500 shadow-xl p-6 text-center h-full flex flex-col">
+              <div className="relative bg-gradient-to-b from-slate-800 to-slate-700 rounded-2xl border-2 border-amber-500 shadow-xl p-6 text-center h-full flex flex-col">
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-white px-4 py-1 rounded-full text-xs font-black shadow">
                   一番おトク
                 </div>
                 <div className="w-16 h-16 mx-auto mb-3 mt-2 rounded-full bg-white/20 flex items-center justify-center">
-                  <Image src="/images/image-4.webp" alt="ココペリ6本" width={40} height={70} className="h-10 w-auto" />
+                  <Image
+                    src="/images/image-4.webp"
+                    alt="ココペリ6本"
+                    width={40}
+                    height={70}
+                    className="h-10 w-auto"
+                  />
                 </div>
-                <p className="text-sm font-bold text-green-100 mb-1">5+1セット</p>
+                <p className="text-sm font-bold text-amber-100 mb-1">5+1セット</p>
                 <h3 className="text-xl font-black text-white mb-1">6本</h3>
-                <p className="text-xs text-green-200 mb-4">30ml x 6本</p>
+                <p className="text-xs text-amber-200 mb-4">30ml x 6本</p>
                 <p className="text-4xl font-black text-white mb-1">¥15,000</p>
-                <p className="text-xs text-green-200 mb-1">送料無料</p>
+                <p className="text-xs text-amber-200 mb-1">送料無料</p>
                 <p className="text-amber-300 text-sm font-bold mb-6">1本あたり ¥2,500</p>
-                <ul className="text-sm text-green-50 text-left space-y-2 mb-6 flex-1">
+                <ul className="text-sm text-amber-50 text-left space-y-2 mb-6 flex-1">
                   <li className="flex items-start gap-2">
                     <span className="text-amber-300 mt-0.5 shrink-0">&#10003;</span>
                     <span>5本分の価格で6本届く</span>
@@ -892,7 +1053,7 @@ export default function Home() {
                 </ul>
                 <Link
                   href="/checkout"
-                  className="block w-full bg-white text-green-700 py-3 rounded-full font-bold text-sm shadow-lg hover:shadow-xl transition-all"
+                  className="block w-full bg-white text-amber-700 py-3 rounded-full font-bold text-sm shadow-lg hover:shadow-xl transition-all"
                 >
                   購入する
                 </Link>
@@ -902,28 +1063,30 @@ export default function Home() {
             {/* 定期便 */}
             <StaggerItem>
               <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 text-center h-full flex flex-col">
-                <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-green-50 flex items-center justify-center border border-green-200">
+                <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-slate-50 flex items-center justify-center border border-amber-200">
                   <CalendarCheckIcon />
                 </div>
-                <p className="text-sm font-bold text-green-600 mb-1">定期便</p>
+                <p className="text-sm font-bold text-amber-600 mb-1">定期便</p>
                 <h3 className="text-xl font-black text-gray-900 mb-1">毎月2本</h3>
                 <p className="text-xs text-gray-500 mb-4">30ml x 2本 / 月</p>
-                <p className="text-4xl font-black text-gray-900 mb-1">¥5,480<span className="text-lg">/月</span></p>
+                <p className="text-4xl font-black text-gray-900 mb-1">
+                  ¥5,480<span className="text-lg">/月</span>
+                </p>
                 <p className="text-xs text-gray-500 mb-1">送料無料</p>
-                <p className="text-green-600 text-sm font-bold mb-6">毎月¥1,000おトク</p>
+                <p className="text-amber-600 text-sm font-bold mb-6">毎月¥1,000おトク</p>
                 <ul className="text-sm text-gray-600 text-left space-y-2 mb-6 flex-1">
                   <li className="flex items-start gap-2">
-                    <span className="text-green-500 mt-0.5 shrink-0">&#10003;</span>
+                    <span className="text-amber-500 mt-0.5 shrink-0">&#10003;</span>
                     <span>買い忘れなく毎月届く</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-green-500 mt-0.5 shrink-0">&#10003;</span>
+                    <span className="text-amber-500 mt-0.5 shrink-0">&#10003;</span>
                     <span>いつでも解約可能</span>
                   </li>
                 </ul>
                 <Link
                   href="/checkout"
-                  className="block w-full bg-white border-2 border-green-600 text-green-600 py-3 rounded-full font-bold text-sm hover:bg-green-50 transition-colors"
+                  className="block w-full bg-white border-2 border-slate-700 text-amber-600 py-3 rounded-full font-bold text-sm hover:bg-slate-50 transition-colors"
                 >
                   定期便を申し込む
                 </Link>
@@ -941,7 +1104,9 @@ export default function Home() {
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-5xl mx-auto px-4">
           <FadeInOnScroll>
-            <p className="text-center text-xs font-black text-green-600 tracking-widest mb-3">VOICE</p>
+            <p className="text-center text-xs font-black text-amber-600 tracking-widest mb-3">
+              VOICE
+            </p>
             <h2 className="text-2xl md:text-4xl font-black text-gray-900 mb-12 text-center">
               ご愛用者の声
             </h2>
@@ -949,32 +1114,42 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                text: "毎日の食事にサッと混ぜるだけで手軽に続けられています。猫たちの毎日の習慣として欠かせない存在になりました。",
-                name: "愛猫家の方",
-                pet: "猫2匹（12歳・10歳）",
-                img: "/images/pet-cat-happy.jpg",
+                text: '毎日の食事にサッと混ぜるだけで手軽に続けられています。猫たちの毎日の習慣として欠かせない存在になりました。',
+                name: '愛猫家の方',
+                pet: '猫2匹（12歳・10歳）',
+                img: '/images/pet-cat-happy.jpg',
               },
               {
-                text: "15歳の犬に毎日あげています。液体なのでフードに混ぜるだけで手間もなく、続けやすいのが気に入っています。",
-                name: "愛犬家の方",
-                pet: "トイプードル（15歳）",
-                img: "/images/pet-dog-happy.jpg",
+                text: '15歳の犬に毎日あげています。液体なのでフードに混ぜるだけで手間もなく、続けやすいのが気に入っています。',
+                name: '愛犬家の方',
+                pet: 'トイプードル（15歳）',
+                img: '/images/pet-dog-happy.jpg',
               },
               {
-                text: "シニア期に入ってから食欲にムラがありましたが、続けているうちに毎日しっかり食べるようになりました。毛並みも少しふわっとしてきた気がします。",
-                name: "シニア犬の飼い主さま",
-                pet: "柴犬（13歳）",
-                img: "/images/pet-dog-senior.jpg",
+                text: 'シニア期に入ってから食欲にムラがありましたが、続けているうちに毎日しっかり食べるようになりました。毛並みも少しふわっとしてきた気がします。',
+                name: 'シニア犬の飼い主さま',
+                pet: '柴犬（13歳）',
+                img: '/images/pet-dog-senior.jpg',
               },
             ].map((v) => (
               <FadeInOnScroll key={v.name}>
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden h-full">
                   <div className="h-40 overflow-hidden">
-                    <Image src={v.img} alt={v.pet} width={400} height={250} className="w-full h-full object-cover" />
+                    <Image
+                      src={v.img}
+                      alt={v.pet}
+                      width={400}
+                      height={250}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   <div className="p-6">
-                    <div className="text-yellow-400 text-sm mb-3">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                    <p className="text-gray-700 mb-4 leading-relaxed text-sm">&ldquo;{v.text}&rdquo;</p>
+                    <div className="text-yellow-400 text-sm mb-3">
+                      &#9733;&#9733;&#9733;&#9733;&#9733;
+                    </div>
+                    <p className="text-gray-700 mb-4 leading-relaxed text-sm">
+                      &ldquo;{v.text}&rdquo;
+                    </p>
                     <p className="text-sm font-bold text-gray-900">--- {v.name}</p>
                     <p className="text-xs text-gray-500">{v.pet}</p>
                   </div>
@@ -992,21 +1167,39 @@ export default function Home() {
       <section className="py-16 md:py-24 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">
           <FadeInOnScroll>
-            <p className="text-center text-xs font-black text-green-600 tracking-widest mb-3">SAFETY</p>
+            <p className="text-center text-xs font-black text-amber-600 tracking-widest mb-3">
+              SAFETY
+            </p>
             <h2 className="text-2xl md:text-4xl font-black text-gray-900 mb-12 text-center">
               安心・安全への取り組み
             </h2>
           </FadeInOnScroll>
           <StaggerContainer className="grid md:grid-cols-2 gap-6" staggerDelay={0.1}>
             {[
-              { title: "シンプル処方", desc: "原材料は水とケイ素の2種類のみ。添加物・保存料・香料は一切使用していません。", icon: <FlaskConicalIcon /> },
-              { title: "国内製造", desc: "シリカラボが国内で製造・品質管理を行っています。", icon: <FactoryIcon /> },
-              { title: "全表示公開", desc: "外箱に記載されている成分値・給与方法・注意事項のすべてを購入前に公開しています。", icon: <FileCheckIcon /> },
-              { title: "学会での紹介実績", desc: "学会にて個別症例が報告されています。", icon: <GraduationCapIcon /> },
+              {
+                title: 'シンプル処方',
+                desc: '原材料は水とケイ素の2種類のみ。添加物・保存料・香料は一切使用していません。',
+                icon: <FlaskConicalIcon />,
+              },
+              {
+                title: '国内製造',
+                desc: 'シリカラボが国内で製造・品質管理を行っています。',
+                icon: <FactoryIcon />,
+              },
+              {
+                title: '全表示公開',
+                desc: '外箱に記載されている成分値・給与方法・注意事項のすべてを購入前に公開しています。',
+                icon: <FileCheckIcon />,
+              },
+              {
+                title: '学会での紹介実績',
+                desc: '学会にて個別症例が報告されています。',
+                icon: <GraduationCapIcon />,
+              },
             ].map((item) => (
               <StaggerItem key={item.title}>
                 <div className="flex gap-4 bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-                  <div className="w-14 h-14 rounded-xl bg-green-50 flex items-center justify-center shrink-0 border border-green-100">
+                  <div className="w-14 h-14 rounded-xl bg-slate-50 flex items-center justify-center shrink-0 border border-slate-200">
                     {item.icon}
                   </div>
                   <div>
@@ -1026,23 +1219,55 @@ export default function Home() {
       <section id="faq" className="py-16 md:py-24 bg-white">
         <div className="max-w-3xl mx-auto px-4">
           <FadeInOnScroll>
-            <p className="text-center text-xs font-black text-green-600 tracking-widest mb-3">FAQ</p>
+            <p className="text-center text-xs font-black text-amber-600 tracking-widest mb-3">
+              FAQ
+            </p>
             <h2 className="text-2xl md:text-4xl font-black text-gray-900 mb-12 text-center">
               よくあるご質問
             </h2>
           </FadeInOnScroll>
           <FAQAccordion
             items={[
-              ["白い結晶のようなものが見えますが大丈夫ですか？", "自然のミネラル成分が結晶化したものです。品質に問題はございません。"],
-              ["若い犬や猫にも使えますか？", "はい、年齢を問わずご使用いただけます。日常の健康維持にもお役立ていただけます。"],
-              ["どのくらいで変化を感じられますか？", "個体差がございますが、まずは1〜2ヶ月ほど継続してお試しください。"],
-              ["他のサプリメントやフードと併用できますか？", "食品ですので基本的に併用いただけます。ご心配な場合はかかりつけの獣医師にご相談ください。"],
-              ["1本でどのくらい持ちますか？", "1本30mlです。小型犬・猫の場合は約2〜4週間が目安です。"],
-              ["犬と猫で与え方は違いますか？", "基本的な与え方は同じです。食事に数滴混ぜるか、ディスポ容器で直接与えてください。"],
-              ["開封後の保存方法は？", "キャップをしっかり閉めて常温保存。直射日光は避けてください。"],
-              ["定期購入はありますか？", "月額¥5,480の定期便（2本/月）がございます。5+1セット（¥15,000・6本届く）なら1本あたり¥2,500と最もおトクです。"],
-              ["原材料は何ですか？", "水と水溶性ケイ素の2つだけです。着色料・香料・保存料は一切不使用です。"],
-              ["送料はかかりますか？", "5+1セットと定期便は全国送料無料です。1本のみは別途送料がかかります。3〜5営業日以内に発送いたします。"],
+              [
+                '白い結晶のようなものが見えますが大丈夫ですか？',
+                '自然のミネラル成分が結晶化したものです。品質に問題はございません。',
+              ],
+              [
+                '若い犬や猫にも使えますか？',
+                'はい、年齢を問わずご使用いただけます。日常の健康維持にもお役立ていただけます。',
+              ],
+              [
+                'どのくらいで変化を感じられますか？',
+                '個体差がございますが、まずは1〜2ヶ月ほど継続してお試しください。',
+              ],
+              [
+                '他のサプリメントやフードと併用できますか？',
+                '食品ですので基本的に併用いただけます。ご心配な場合はかかりつけの獣医師にご相談ください。',
+              ],
+              [
+                '1本でどのくらい持ちますか？',
+                '1本30mlです。小型犬・猫の場合は約2〜4週間が目安です。',
+              ],
+              [
+                '犬と猫で与え方は違いますか？',
+                '基本的な与え方は同じです。食事に数滴混ぜるか、ディスポ容器で直接与えてください。',
+              ],
+              [
+                '開封後の保存方法は？',
+                'キャップをしっかり閉めて常温保存。直射日光は避けてください。',
+              ],
+              [
+                '定期購入はありますか？',
+                '月額¥5,480の定期便（2本/月）がございます。5+1セット（¥15,000・6本届く）なら1本あたり¥2,500と最もおトクです。',
+              ],
+              [
+                '原材料は何ですか？',
+                '水と水溶性ケイ素の2つだけです。着色料・香料・保存料は一切不使用です。',
+              ],
+              [
+                '送料はかかりますか？',
+                '5+1セットと定期便は全国送料無料です。1本のみは別途送料がかかります。3〜5営業日以内に発送いたします。',
+              ],
             ]}
           />
         </div>
@@ -1059,7 +1284,7 @@ export default function Home() {
             fill
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-green-950/85 to-green-900/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 to-slate-900/90" />
         </div>
 
         <div className="relative max-w-3xl mx-auto px-4 text-center">
@@ -1070,12 +1295,10 @@ export default function Home() {
               ココペリをお試しください。
             </h2>
           </FadeInOnScroll>
-          <p className="text-green-200 text-lg mb-2">
+          <p className="text-amber-200 text-lg mb-2">
             10年間、動物病院でしか手に入らなかった製品です。
           </p>
-          <p className="text-amber-300 text-sm font-bold mb-8">
-            オンライン販売は始まったばかり。
-          </p>
+          <p className="text-amber-300 text-sm font-bold mb-8">オンライン販売は始まったばかり。</p>
 
           {/* 価格まとめカード */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto">
@@ -1084,7 +1307,7 @@ export default function Home() {
               <p className="text-white text-2xl font-black">¥3,480</p>
             </div>
             <div className="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20">
-              <p className="text-green-200 font-bold text-sm">定期便 2本/月</p>
+              <p className="text-amber-200 font-bold text-sm">定期便 2本/月</p>
               <p className="text-white text-2xl font-black">¥5,480</p>
             </div>
             <div className="bg-amber-500/20 backdrop-blur rounded-xl p-4 border border-amber-400/40">
@@ -1097,10 +1320,10 @@ export default function Home() {
           {/* CTA #4 */}
           <CTAButton size="lg" />
 
-          <p className="text-green-300 text-xs mt-6">
+          <p className="text-amber-300 text-xs mt-6">
             クレジットカード決済 / セット・定期便送料無料 / 3〜5営業日以内に発送
           </p>
-          <p className="text-green-400 text-xs mt-6">
+          <p className="text-amber-400 text-xs mt-6">
             ※ 本品は動物用栄養補助食品であり、医薬品ではありません。
             疾病の治療・予防を目的としたものではありません。
           </p>
@@ -1125,16 +1348,18 @@ export default function Home() {
                 <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-6">
                   動物病院でも採用されています
                 </h2>
-                <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-2xl p-6 border border-green-100">
+                <div className="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-6 border border-slate-200">
                   <p className="text-gray-700 leading-relaxed mb-3">
                     <strong>さがら動物病院</strong>の獣医師が治験担当として臨床現場で使用・研究。
                     学会で<strong>2度の症例報告</strong>済み。
                   </p>
                   <p className="text-gray-700 leading-relaxed mb-3">
-                    製造元の<strong>株式会社シリカラボ</strong>（宮崎県都城市）が品質管理・製造・発送を一貫して担当。
+                    製造元の<strong>株式会社シリカラボ</strong>
+                    （宮崎県都城市）が品質管理・製造・発送を一貫して担当。
                   </p>
                   <p className="text-gray-700 leading-relaxed">
-                    これまで動物病院経由のみだった製品が、<strong className="text-green-700">ついにオンラインで直接購入可能に。</strong>
+                    これまで動物病院経由のみだった製品が、
+                    <strong className="text-amber-700">ついにオンラインで直接購入可能に。</strong>
                   </p>
                   <p className="text-sm text-gray-500 mt-3">
                     ※ すべての動物病院で取り扱いがあるわけではありません。
@@ -1158,21 +1383,30 @@ export default function Home() {
             <table className="w-full text-sm">
               <tbody>
                 {[
-                  ["製造元", "株式会社シリカラボ"],
-                  ["代表", "渡邊道治"],
-                  ["所在地", "〒885-0086 宮崎県都城市久保原町9-43"],
-                  ["研究機関", "さがら動物病院（治験担当）"],
-                  ["販売協賛", "カムトゥル（Come true）"],
-                  ["WEBサイト", "https://silica-lab.jp/"],
-                  ["お問い合わせ", "info@silica-lab.com"],
+                  ['製造元', '株式会社シリカラボ'],
+                  ['代表', '渡邊道治'],
+                  ['所在地', '〒885-0086 宮崎県都城市久保原町9-43'],
+                  ['研究機関', 'さがら動物病院（治験担当）'],
+                  ['販売協賛', 'カムトゥル（Come true）'],
+                  ['WEBサイト', 'https://silica-lab.jp/'],
+                  ['お問い合わせ', 'info@silica-lab.com'],
                 ].map(([label, value]) => (
                   <tr key={label} className="border-b border-gray-100 last:border-0">
                     <td className="px-6 py-4 font-bold text-gray-900 bg-gray-50 w-1/3">{label}</td>
                     <td className="px-6 py-4 text-gray-700">
-                      {value.startsWith("http") ? (
-                        <a href={value} className="text-green-600 underline" target="_blank" rel="noopener noreferrer">{value}</a>
-                      ) : value.includes("@") ? (
-                        <a href={`mailto:${value}`} className="text-green-600 underline">{value}</a>
+                      {value.startsWith('http') ? (
+                        <a
+                          href={value}
+                          className="text-amber-600 underline"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {value}
+                        </a>
+                      ) : value.includes('@') ? (
+                        <a href={`mailto:${value}`} className="text-amber-600 underline">
+                          {value}
+                        </a>
                       ) : (
                         value
                       )}
@@ -1181,6 +1415,79 @@ export default function Home() {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      </section>
+
+      {/* ============ 会員登録セクション ============ */}
+      <section id="member" className="py-16 bg-gradient-to-b from-orange-50 to-white">
+        <div className="max-w-5xl mx-auto px-4">
+          <FadeInOnScroll>
+            <div className="text-center mb-8">
+              <span className="inline-block bg-amber-100 text-amber-700 px-4 py-1 rounded-full text-sm font-bold mb-3">
+                会員限定特典
+              </span>
+              <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">
+                無料会員登録で<span className="text-amber-600">ずっと5%OFF</span>
+              </h2>
+              <p className="text-gray-600 max-w-lg mx-auto">
+                メールアドレスだけで登録完了。会員価格でお得にご購入いただけます。
+              </p>
+            </div>
+          </FadeInOnScroll>
+
+          <div className="grid md:grid-cols-2 gap-8 items-start">
+            {/* 会員特典 */}
+            <FadeInOnScroll>
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">会員特典</h3>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <span className="bg-amber-100 text-amber-700 rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm shrink-0">
+                      1
+                    </span>
+                    <div>
+                      <p className="font-bold text-gray-900">ずっと5%OFF</p>
+                      <p className="text-sm text-gray-500">1本 ¥3,480 → ¥3,306（会員価格）</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="bg-amber-100 text-amber-700 rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm shrink-0">
+                      2
+                    </span>
+                    <div>
+                      <p className="font-bold text-gray-900">30日間全額返金保証</p>
+                      <p className="text-sm text-gray-500">ご満足いただけなければ全額返金します</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="bg-amber-100 text-amber-600 rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm shrink-0">
+                      3
+                    </span>
+                    <div>
+                      <p className="font-bold text-gray-900">マイページで購入管理</p>
+                      <p className="text-sm text-gray-500">
+                        購入履歴・お届け状況の確認、支払い方法の変更が可能
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm shrink-0">
+                      4
+                    </span>
+                    <div>
+                      <p className="font-bold text-gray-900">お友達紹介で500円OFF</p>
+                      <p className="text-sm text-gray-500">紹介した方もされた方も500円割引</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </FadeInOnScroll>
+
+            {/* 登録フォーム */}
+            <FadeInOnScroll>
+              <MemberRegistration />
+            </FadeInOnScroll>
           </div>
         </div>
       </section>
@@ -1194,7 +1501,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-between items-start gap-8">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-700 to-green-500 flex items-center justify-center text-white font-bold text-sm">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-slate-800 to-slate-700 flex items-center justify-center text-white font-bold text-sm">
                   K
                 </div>
                 <span className="font-bold text-white">kokopelli</span>
@@ -1208,10 +1515,10 @@ export default function Home() {
               <p>販売協賛: カムトゥル (Come true)</p>
               <p>製造・発送: シリカラボ</p>
               <p>
-                お問い合わせ:{" "}
+                お問い合わせ:{' '}
                 <a
                   href="mailto:info@silica-lab.com?subject=ココペリのお問い合わせ"
-                  className="text-green-400 hover:text-green-300"
+                  className="text-amber-400 hover:text-amber-300"
                 >
                   info@silica-lab.com
                 </a>
@@ -1220,8 +1527,17 @@ export default function Home() {
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-xs text-center space-y-2">
             <div className="flex justify-center gap-4 mb-4">
+              <Link href="/blog" className="text-gray-400 hover:text-white underline">
+                ブログ
+              </Link>
               <Link href="/tokushoho" className="text-gray-400 hover:text-white underline">
                 特定商取引法に基づく表記
+              </Link>
+              <Link href="/privacy" className="text-gray-400 hover:text-white underline">
+                プライバシーポリシー
+              </Link>
+              <Link href="/cancel" className="text-gray-400 hover:text-white underline">
+                定期購入の解約
               </Link>
             </div>
             <p>
@@ -1235,83 +1551,199 @@ export default function Home() {
       </footer>
 
       {/* ============ モバイル固定CTAバー ============ */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/95 backdrop-blur border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] px-4 py-3">
-        <div className="flex items-center gap-3">
-          <div className="flex-1">
-            <p className="text-xs text-gray-500 leading-none">お試し1本</p>
-            <p className="text-xl font-black text-green-700">¥3,480<span className="text-xs font-normal text-gray-400 ml-1">税込</span></p>
-          </div>
-          <Link
-            href="/checkout"
-            className="flex-1 bg-gradient-to-r from-green-600 to-green-500 text-white py-3.5 rounded-full font-bold text-center shadow-lg text-sm"
-          >
-            今すぐ購入する
-          </Link>
-        </div>
-        <div className="flex justify-center mt-2">
-          <a
-            href="https://lin.ee/H0MfN44"
-            className="text-xs text-green-600 font-bold underline"
-          >
-            💬 LINEで相談する（無料）
-          </a>
-        </div>
-      </div>
+      <MobileCTABar />
 
       {/* ============ Schema.org 構造化データ ============ */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Product",
-            name: "ココペリ（Kokopelli）",
+            '@context': 'https://schema.org',
+            '@type': 'Product',
+            name: 'ココペリ（Kokopelli）',
             description:
-              "犬・猫のための動物用栄養補助食品。高濃度の水溶性ケイ素10,000mg/Lを含むケイ素濃縮液。原材料は水とケイ素のみ。",
-            image: "https://kokopelli-ec.vercel.app/images/image-4.webp",
-            brand: { "@type": "Brand", name: "kokopelli" },
+              '犬・猫のための動物用栄養補助食品。高濃度の水溶性ケイ素10,000mg/Lを含むケイ素濃縮液。原材料は水とケイ素のみ。',
+            image: 'https://kokopelli-ec.vercel.app/images/image-4.webp',
+            brand: { '@type': 'Brand', name: 'kokopelli' },
             manufacturer: {
-              "@type": "Organization",
-              name: "株式会社シリカラボ",
+              '@type': 'Organization',
+              name: '株式会社シリカラボ',
               address: {
-                "@type": "PostalAddress",
-                addressLocality: "都城市",
-                addressRegion: "宮崎県",
-                addressCountry: "JP",
+                '@type': 'PostalAddress',
+                addressLocality: '都城市',
+                addressRegion: '宮崎県',
+                addressCountry: 'JP',
               },
             },
             offers: [
               {
-                "@type": "Offer",
-                name: "1本（通常購入）",
-                price: "3480",
-                priceCurrency: "JPY",
-                availability: "https://schema.org/InStock",
-                url: "https://kokopelli-ec.vercel.app/checkout",
-                seller: { "@type": "Organization", name: "カムトゥル" },
-                deliveryLeadTime: { "@type": "QuantitativeValue", minValue: 3, maxValue: 5, unitCode: "DAY" },
+                '@type': 'Offer',
+                name: '1本（通常購入）',
+                price: '3480',
+                priceCurrency: 'JPY',
+                availability: 'https://schema.org/InStock',
+                url: 'https://kokopelli-ec.vercel.app/checkout',
+                seller: { '@type': 'Organization', name: 'カムトゥル' },
+                shippingDetails: {
+                  '@type': 'OfferShippingDetails',
+                  shippingRate: { '@type': 'MonetaryAmount', value: '500', currency: 'JPY' },
+                  shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'JP' },
+                  deliveryTime: {
+                    '@type': 'ShippingDeliveryTime',
+                    handlingTime: {
+                      '@type': 'QuantitativeValue',
+                      minValue: 1,
+                      maxValue: 2,
+                      unitCode: 'DAY',
+                    },
+                    transitTime: {
+                      '@type': 'QuantitativeValue',
+                      minValue: 1,
+                      maxValue: 3,
+                      unitCode: 'DAY',
+                    },
+                  },
+                },
+                hasMerchantReturnPolicy: {
+                  '@type': 'MerchantReturnPolicy',
+                  applicableCountry: 'JP',
+                  returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+                  merchantReturnDays: 30,
+                  returnMethod: 'https://schema.org/ReturnByMail',
+                  returnFees: 'https://schema.org/FreeReturn',
+                },
               },
               {
-                "@type": "Offer",
-                name: "5+1セット（6本）",
-                price: "15000",
-                priceCurrency: "JPY",
-                availability: "https://schema.org/InStock",
-                url: "https://kokopelli-ec.vercel.app/checkout",
-                seller: { "@type": "Organization", name: "カムトゥル" },
+                '@type': 'Offer',
+                name: '5+1セット（6本）',
+                price: '15000',
+                priceCurrency: 'JPY',
+                availability: 'https://schema.org/InStock',
+                url: 'https://kokopelli-ec.vercel.app/checkout',
+                seller: { '@type': 'Organization', name: 'カムトゥル' },
                 shippingDetails: {
-                  "@type": "OfferShippingDetails",
-                  shippingRate: { "@type": "MonetaryAmount", value: "0", currency: "JPY" },
-                  shippingDestination: { "@type": "DefinedRegion", addressCountry: "JP" },
-                  deliveryTime: { "@type": "ShippingDeliveryTime", businessDays: { "@type": "QuantitativeValue", minValue: 3, maxValue: 5 } },
+                  '@type': 'OfferShippingDetails',
+                  shippingRate: { '@type': 'MonetaryAmount', value: '0', currency: 'JPY' },
+                  shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'JP' },
+                  deliveryTime: {
+                    '@type': 'ShippingDeliveryTime',
+                    handlingTime: {
+                      '@type': 'QuantitativeValue',
+                      minValue: 1,
+                      maxValue: 2,
+                      unitCode: 'DAY',
+                    },
+                    transitTime: {
+                      '@type': 'QuantitativeValue',
+                      minValue: 1,
+                      maxValue: 3,
+                      unitCode: 'DAY',
+                    },
+                  },
+                },
+                hasMerchantReturnPolicy: {
+                  '@type': 'MerchantReturnPolicy',
+                  applicableCountry: 'JP',
+                  returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+                  merchantReturnDays: 30,
+                  returnMethod: 'https://schema.org/ReturnByMail',
+                  returnFees: 'https://schema.org/FreeReturn',
                 },
               },
             ],
-            aggregateRating: {
-              "@type": "AggregateRating",
-              ratingValue: "5",
-              reviewCount: "3",
-            },
+          }),
+        }}
+      />
+
+      {/* ============ FAQPage 構造化データ ============ */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: [
+              {
+                '@type': 'Question',
+                name: '白い結晶のようなものが見えますが大丈夫ですか？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '自然のミネラル成分が結晶化したものです。品質に問題はございません。',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '若い犬や猫にも使えますか？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'はい、年齢を問わずご使用いただけます。日常の健康維持にもお役立ていただけます。',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'どのくらいで変化を感じられますか？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '個体差がございますが、まずは1〜2ヶ月ほど継続してお試しください。',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '他のサプリメントやフードと併用できますか？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '食品ですので基本的に併用いただけます。ご心配な場合はかかりつけの獣医師にご相談ください。',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '1本でどのくらい持ちますか？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '1本30mlです。小型犬・猫の場合は約2〜4週間が目安です。',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '犬と猫で与え方は違いますか？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '基本的な与え方は同じです。食事に数滴混ぜるか、ディスポ容器で直接与えてください。',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '開封後の保存方法は？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'キャップをしっかり閉めて常温保存。直射日光は避けてください。',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '定期購入はありますか？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '月額¥5,480の定期便（2本/月）がございます。5+1セット（¥15,000・6本届く）なら1本あたり¥2,500と最もおトクです。',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '原材料は何ですか？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '水と水溶性ケイ素の2つだけです。着色料・香料・保存料は一切不使用です。',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '送料はかかりますか？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '5+1セットと定期便は全国送料無料です。1本のみは別途送料がかかります。3〜5営業日以内に発送いたします。',
+                },
+              },
+            ],
           }),
         }}
       />
