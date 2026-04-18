@@ -241,16 +241,35 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center gap-12">
             {/* テキスト側 */}
             <div className="flex-1">
+              {/* トラストバッジ 3連 */}
+              <div className="grid grid-cols-3 gap-2 mb-6 max-w-md">
+                <div className="bg-white/90 border border-slate-200 rounded-xl px-2 py-2 text-center shadow-sm">
+                  <p className="text-[10px] text-gray-500 leading-none mb-1">MADE IN</p>
+                  <p className="text-sm font-black text-slate-800 leading-none">国産</p>
+                  <p className="text-[10px] text-gray-500 leading-none mt-1">宮崎県製造</p>
+                </div>
+                <div className="bg-white/90 border border-blue-200 rounded-xl px-2 py-2 text-center shadow-sm">
+                  <p className="text-[10px] text-blue-600 leading-none mb-1">VET</p>
+                  <p className="text-sm font-black text-slate-800 leading-none">獣医師監修</p>
+                  <p className="text-[10px] text-gray-500 leading-none mt-1">臨床使用10年</p>
+                </div>
+                <div className="bg-white/90 border border-amber-200 rounded-xl px-2 py-2 text-center shadow-sm">
+                  <p className="text-[10px] text-amber-600 leading-none mb-1">REPORT</p>
+                  <p className="text-sm font-black text-slate-800 leading-none">2度の症例</p>
+                  <p className="text-[10px] text-gray-500 leading-none mt-1">学会報告済</p>
+                </div>
+              </div>
+
               <div className="flex flex-wrap gap-2 mb-6">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-50 border border-amber-200 text-amber-700 font-bold text-sm">
+                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-50 border border-amber-200 text-amber-700 font-bold text-xs">
                   <span className="w-2 h-2 rounded-full bg-slate-500" />
                   動物用栄養補助食品
                 </span>
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 text-blue-700 font-bold text-sm">
+                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 font-bold text-xs">
                   <span className="w-2 h-2 rounded-full bg-blue-500" />
                   動物病院でも採用
                 </span>
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-bold text-sm">
+                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-bold text-xs">
                   製造10周年
                 </span>
               </div>
@@ -287,16 +306,27 @@ export default function Home() {
                 </li>
               </ul>
 
-              {/* CTA #1 */}
-              <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4 mb-4">
-                <p className="text-slate-800 font-bold text-sm">30日間全額返金保証付き</p>
-                <p className="text-gray-600 text-xs mt-1">
-                  ご満足いただけなければ全額返金いたします
-                </p>
+              {/* 価格前倒し + 返金保証強化バッジ */}
+              <div className="bg-gradient-to-br from-amber-50 to-white border-2 border-amber-400 rounded-2xl px-5 py-4 mb-4 shadow-md">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="shrink-0 w-14 h-14 rounded-full bg-amber-500 text-white flex flex-col items-center justify-center shadow">
+                    <span className="text-[9px] font-bold leading-none">30日間</span>
+                    <span className="text-[10px] font-black leading-none mt-0.5">全額</span>
+                    <span className="text-[10px] font-black leading-none">返金</span>
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-slate-900 font-black text-base leading-tight">
+                      初回お試し <span className="text-amber-600 text-2xl">¥3,480</span>〜
+                    </p>
+                    <p className="text-gray-600 text-xs mt-1">
+                      飲ませなくても返金OK・初回1本だけでOK・継続義務なし
+                    </p>
+                  </div>
+                </div>
               </div>
               <CTAButton size="lg" />
               <p className="mt-3 text-sm text-gray-500">
-                1本 ¥3,480 / 2本セット ¥5,980（送料無料）
+                1本 ¥3,480（送料¥520）/ 2本セット ¥5,980（送料無料）/ 定期なら月¥5,480
               </p>
               <div className="mt-3 flex items-center gap-4">
                 <a
@@ -364,6 +394,69 @@ export default function Home() {
               </FadeInOnScroll>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          初回お試し訴求 — ヒーロー直下のCVRブースター
+          ============================================================ */}
+      <section className="py-12 md:py-16 bg-gradient-to-br from-amber-50 via-white to-amber-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <FadeInOnScroll>
+            <div className="bg-white rounded-3xl shadow-xl border-2 border-amber-300 overflow-hidden">
+              <div className="bg-gradient-to-r from-amber-600 to-amber-500 text-white text-center py-2.5 px-4">
+                <p className="text-sm font-black tracking-wide">
+                  まずは1本から。初回お試し価格でリスクなくスタート
+                </p>
+              </div>
+              <div className="p-6 md:p-8">
+                <div className="flex flex-col md:flex-row items-center gap-6">
+                  <div className="shrink-0">
+                    <Image
+                      src="/images/image-4.webp"
+                      alt="ココペリ お試し1本"
+                      width={120}
+                      height={200}
+                      className="h-32 md:h-40 w-auto drop-shadow-lg"
+                    />
+                  </div>
+                  <div className="flex-1 text-center md:text-left">
+                    <p className="text-xs font-bold text-amber-600 mb-1">お試し1本（30ml）</p>
+                    <p className="text-4xl md:text-5xl font-black text-slate-900 mb-2">
+                      ¥3,480<span className="text-sm text-gray-500 font-normal ml-1">税込</span>
+                    </p>
+                    <div className="flex flex-wrap gap-2 justify-center md:justify-start mb-3">
+                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold">
+                        <span>&#10003;</span> 2本目から送料無料
+                      </span>
+                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-bold">
+                        <span>&#10003;</span> 定期便なら¥500OFF
+                      </span>
+                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-green-100 text-green-800 text-xs font-bold">
+                        <span>&#10003;</span> 継続義務なし
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      初回1本だけでOK。飲ませなくても
+                      <strong className="text-amber-700">30日間全額返金保証</strong>
+                      なので、まずは気軽にお試しいただけます。
+                    </p>
+                  </div>
+                  <div className="shrink-0 w-full md:w-auto">
+                    <Link
+                      href="/checkout"
+                      className="block w-full md:w-auto text-center bg-gradient-to-r from-amber-600 to-amber-500 text-white px-8 py-4 rounded-full font-black text-base shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
+                    >
+                      1本だけ試す →
+                    </Link>
+                    <p className="text-[10px] text-gray-400 text-center mt-2">
+                      送料¥520 / カード決済
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </FadeInOnScroll>
         </div>
       </section>
 
@@ -1333,8 +1426,120 @@ export default function Home() {
                 '送料はかかりますか？',
                 '2本セット以上送料無料です。3〜5営業日以内に発送いたします。',
               ],
+              [
+                '飲ませなくても返金してもらえますか？',
+                'はい、可能です。開封後・未開封を問わず、到着後30日以内であれば全額返金いたします。お試しいただいて合わないと感じた場合も安心してご返金をお申し出ください。',
+              ],
+              [
+                '定期便はいつでも解約できますか？',
+                'はい、いつでも解約可能です。マイページから即時で解約手続きが完了します。解約金や違約金は一切ありません。次回発送日の前日までに手続きしていただければ次回分の請求は発生しません。',
+              ],
+              [
+                '多頭飼いの場合、1日の量の目安は？',
+                '1頭あたり体重5kgごとに数滴（約0.5ml）が目安です。例：小型犬（3kg）＋猫（4kg）の2頭なら1日合計で約1ml程度。食事に混ぜて与えてください。詳しい量は同梱のパンフレット、またはLINE公式までお気軽にご相談ください。',
+              ],
+              [
+                '副作用はありませんか？',
+                '原材料は「水」と「水溶性ケイ素」のみで、添加物・保存料・香料・着色料は一切不使用です。動物病院での臨床使用10年、学会での症例報告も2度実施しており、安全性を確認した上で販売しています。ごく稀に体質により合わない場合もありますので、気になる症状があれば使用を中止し、獣医師にご相談ください。',
+              ],
             ]}
           />
+        </div>
+      </section>
+
+      {/* ============================================================
+          価格比較 — 動物病院の費用感 vs ココペリ
+          ============================================================ */}
+      <section className="py-16 md:py-20 bg-gradient-to-br from-slate-50 to-amber-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <FadeInOnScroll>
+            <p className="text-center text-xs font-black text-amber-600 tracking-widest mb-3">
+              COMPARE
+            </p>
+            <h2 className="text-2xl md:text-4xl font-black text-gray-900 mb-4 text-center">
+              シニアペットの「毎日の健康維持」を考えると
+            </h2>
+            <p className="text-gray-600 text-center mb-10 text-base">
+              1日あたりのコストで比べると、ココペリはとても続けやすい選択肢です。
+            </p>
+          </FadeInOnScroll>
+
+          <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+            {/* 左: 動物病院通院の目安 */}
+            <FadeInOnScroll direction="left">
+              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 h-full">
+                <p className="text-xs font-bold text-gray-400 tracking-wider mb-2">REFERENCE</p>
+                <h3 className="text-lg font-black text-gray-700 mb-4">
+                  動物病院での健康診断・サプリ処方の目安
+                </h3>
+                <ul className="space-y-2 text-sm text-gray-600 mb-4">
+                  <li className="flex items-start gap-2">
+                    <span className="text-gray-400 shrink-0">・</span>
+                    <span>初診料・診察料：¥1,500〜¥3,000／回</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-gray-400 shrink-0">・</span>
+                    <span>血液検査：¥5,000〜¥10,000／回</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-gray-400 shrink-0">・</span>
+                    <span>処方サプリ：¥3,000〜¥8,000／月</span>
+                  </li>
+                </ul>
+                <p className="text-xs text-gray-400">
+                  ※金額は一般的な参考値。動物病院・処方内容により異なります。
+                </p>
+              </div>
+            </FadeInOnScroll>
+
+            {/* 右: ココペリ */}
+            <FadeInOnScroll direction="right">
+              <div className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl border-2 border-amber-400 shadow-xl p-6 h-full text-white">
+                <p className="text-xs font-bold text-amber-100 tracking-wider mb-2">KOKOPELLI</p>
+                <h3 className="text-lg font-black mb-4">ココペリ（動物用栄養補助食品）</h3>
+                <ul className="space-y-2 text-sm mb-4">
+                  <li className="flex items-start gap-2">
+                    <span className="shrink-0">&#10003;</span>
+                    <span>定期便：¥5,480／月（2本・送料無料）</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="shrink-0">&#10003;</span>
+                    <span>
+                      <strong>1日あたり約¥91</strong>（定期便・1日あたり換算）
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="shrink-0">&#10003;</span>
+                    <span>食事に数滴混ぜるだけ・通院不要</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="shrink-0">&#10003;</span>
+                    <span>30日間全額返金保証付き</span>
+                  </li>
+                </ul>
+                <p className="text-xs text-amber-100">
+                  ※ 本品は栄養補助食品であり、治療・診断に代わるものではありません。
+                </p>
+              </div>
+            </FadeInOnScroll>
+          </div>
+
+          {/* 発送スピード訴求 */}
+          <FadeInOnScroll>
+            <div className="mt-10 bg-white rounded-2xl border-2 border-amber-300 p-5 md:p-6 text-center shadow-md">
+              <div className="flex items-center justify-center gap-3 mb-2">
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-amber-100 text-amber-600 text-xl font-black">
+                  ⏱
+                </span>
+                <p className="text-lg md:text-xl font-black text-slate-900">
+                  本日ご注文で<span className="text-amber-600">3営業日以内</span>に発送
+                </p>
+              </div>
+              <p className="text-xs text-gray-500">
+                株式会社シリカラボ（宮崎県都城市）より直送 / クレジットカード決済対応
+              </p>
+            </div>
+          </FadeInOnScroll>
         </div>
       </section>
 
@@ -1860,6 +2065,38 @@ export default function Home() {
                 acceptedAnswer: {
                   '@type': 'Answer',
                   text: '2本セット以上送料無料です。3〜5営業日以内に発送いたします。',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '飲ませなくても返金してもらえますか？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'はい、可能です。開封後・未開封を問わず、到着後30日以内であれば全額返金いたします。',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '定期便はいつでも解約できますか？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'はい、いつでも解約可能です。マイページから即時で解約手続きが完了します。解約金や違約金は一切ありません。',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '多頭飼いの場合、1日の量の目安は？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '1頭あたり体重5kgごとに数滴（約0.5ml）が目安です。食事に混ぜて与えてください。',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: '副作用はありませんか？',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: '原材料は「水」と「水溶性ケイ素」のみで、添加物・保存料・香料・着色料は一切不使用です。動物病院での臨床使用10年、学会での症例報告も2度実施しており、安全性を確認した上で販売しています。',
                 },
               },
             ],
