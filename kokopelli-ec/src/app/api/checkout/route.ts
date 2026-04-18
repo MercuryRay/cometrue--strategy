@@ -11,7 +11,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Stripe設定エラー: キーが未設定です' }, { status: 500 });
     }
 
-    const { quantity, plan, referralCode } = await req.json();
+    const { quantity, plan, referralCode, fbp, fbc } = await req.json();
+    const clientIp =
+      req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+      req.headers.get('x-real-ip') ||
+      '';
+    const userAgent = req.headers.get('user-agent') || '';
 
     const stripe = new Stripe(secretKey, {
       httpClient: Stripe.createFetchHttpClient(),
@@ -148,6 +153,10 @@ export async function POST(req: NextRequest) {
         ...(referrerCustomerId
           ? { referrer_customer_id: referrerCustomerId, referral_code: referralCode! }
           : {}),
+        ...(fbp ? { fbp: String(fbp) } : {}),
+        ...(fbc ? { fbc: String(fbc) } : {}),
+        ...(clientIp ? { client_ip: clientIp } : {}),
+        ...(userAgent ? { user_agent: userAgent.slice(0, 500) } : {}),
       },
       success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/checkout`,

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { sendEmail } from '@/lib/email';
-import { purchaseConfirmation } from '@/lib/email-templates';
+import { sendEmail, notifyOwner } from '@/lib/email';
+import { purchaseConfirmation, ownerPurchaseNotification } from '@/lib/email-templates';
+import { sendPurchaseEvent } from '@/lib/meta-capi';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -53,53 +54,20 @@ export async function POST(req: NextRequest) {
       ? `〒${address.postal_code || ''} ${address.state || ''}${address.city || ''}${address.line1 || ''} ${address.line2 || ''}`
       : '住所不明';
 
-    const notifyUrl = process.env.NOTIFICATION_WEBHOOK_URL;
-    const notifyEmail = process.env.NOTIFY_EMAIL;
-
-    // Gmail API経由で通知（Google Apps Script Webhook）
-    if (notifyUrl) {
-      try {
-        await fetch(notifyUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            subject: `【ココペリ】新規注文 ¥${amount.toLocaleString()} - ${customerName}様`,
-            body: [
-              `新しい注文が入りました！`,
-              ``,
-              `■ 注文情報`,
-              `お名前: ${customerName}`,
-              `メール: ${customerEmail}`,
-              `金額: ¥${amount.toLocaleString()}`,
-              ``,
-              `■ 配送先`,
-              `${addressStr}`,
-              `${shipping?.name || customerName}様`,
-              ``,
-              `■ Stripe`,
-              `Session ID: ${session.id}`,
-              `Payment: ${session.payment_intent}`,
-              ``,
-              `Stripeダッシュボード: https://dashboard.stripe.com/payments/${session.payment_intent}`,
-            ].join('\n'),
-            to: notifyEmail || 'default',
-          }),
-        });
-      } catch {
-        console.error('Notification failed');
-      }
+    // line_itemsから商品名を取得
+    let productName = 'ココペリ（水溶性ケイ素濃縮液）';
+    let totalQuantity = 1;
+    try {
+      const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 5 });
+      productName = lineItems.data.map((item) => item.description).join(', ') || productName;
+      totalQuantity = lineItems.data.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    } catch (lineErr) {
+      console.error('line_items取得エラー:', lineErr);
     }
 
-    // ── 購入確認メールを顧客に自動送信 ──
+    // ── 1. 購入者へサンクスメール ──
     if (customerEmail && customerEmail !== '不明') {
       try {
-        // line_itemsから商品名を取得
-        const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 5 });
-        const productName =
-          lineItems.data.map((item) => item.description).join(', ') ||
-          'ココペリ（水溶性ケイ素濃縮液）';
-        const totalQuantity = lineItems.data.reduce((sum, item) => sum + (item.quantity || 1), 0);
-
         const emailContent = purchaseConfirmation({
           customerName,
           email: customerEmail,
@@ -114,25 +82,80 @@ export async function POST(req: NextRequest) {
           text: emailContent.text,
         });
         console.log(`購入確認メール送信: ${customerEmail}`);
-
-        // ── フォローアップメール用: Stripeメタデータに購入日を記録 ──
-        const customerId = session.customer as string;
-        if (customerId) {
-          const customer = await stripe.customers.retrieve(customerId);
-          if (!('deleted' in customer && customer.deleted)) {
-            await stripe.customers.update(customerId, {
-              metadata: {
-                ...customer.metadata,
-                last_purchase_date: new Date().toISOString(),
-                last_purchase_session: session.id,
-              },
-            });
-          }
-        }
       } catch (emailErr) {
         console.error('購入確認メール送信エラー:', emailErr);
-        // メール送信失敗でもWebhookは成功とする
       }
+    }
+
+    // ── 2. オーナーへ新規購入通知メール ──
+    try {
+      const ownerNotify = ownerPurchaseNotification({
+        customerName,
+        customerEmail,
+        productName,
+        quantity: totalQuantity,
+        amount,
+        addressStr,
+        shippingName: shipping?.name || customerName,
+        sessionId: session.id,
+        paymentIntent: String(session.payment_intent || ''),
+      });
+
+      await notifyOwner({
+        subject: ownerNotify.subject,
+        text: ownerNotify.text,
+      });
+      console.log('オーナー通知メール送信完了');
+    } catch (ownerErr) {
+      console.error('オーナー通知メール送信エラー:', ownerErr);
+    }
+
+    // ── フォローアップメール用: Stripeメタデータに購入日を記録 ──
+    try {
+      const customerId = session.customer as string;
+      if (customerId) {
+        const customer = await stripe.customers.retrieve(customerId);
+        if (!('deleted' in customer && customer.deleted)) {
+          await stripe.customers.update(customerId, {
+            metadata: {
+              ...customer.metadata,
+              last_purchase_date: new Date().toISOString(),
+              last_purchase_session: session.id,
+            },
+          });
+        }
+      }
+    } catch (metaErr) {
+      console.error('メタデータ更新エラー:', metaErr);
+    }
+
+    // ── 3. Meta Conversions API (サーバーサイドPurchaseイベント) ──
+    try {
+      const fbp = (session.metadata?.fbp as string) || null;
+      const fbc = (session.metadata?.fbc as string) || null;
+      const clientIp = (session.metadata?.client_ip as string) || null;
+      const userAgent = (session.metadata?.user_agent as string) || null;
+
+      await sendPurchaseEvent({
+        eventId: session.id,
+        eventSourceUrl: 'https://kokopelli.kamuturu.jp/success',
+        email: customerEmail !== '不明' ? customerEmail : null,
+        phone: session.customer_details?.phone || null,
+        firstName: customerName !== '不明' ? customerName : null,
+        city: address?.city || null,
+        postalCode: address?.postal_code || null,
+        country: address?.country || 'JP',
+        clientIp,
+        userAgent,
+        fbp,
+        fbc,
+        value: amount,
+        currency: 'JPY',
+        contentName: productName,
+        numItems: totalQuantity,
+      });
+    } catch (capiErr) {
+      console.error('Meta CAPI送信エラー:', capiErr);
     }
 
     console.log(`新規注文: Session=${session.id}, Amount=¥${amount}`);
@@ -169,23 +192,15 @@ export async function POST(req: NextRequest) {
             await sendEmail({
               to: customerEmail,
               subject: '【ココペリ】定期便の決済が完了しました',
-              text: `${customerName}様\n\n定期便の月次決済（¥${amount.toLocaleString()}）が完了しました。\n商品は2〜3営業日以内に発送いたします。\n\nマイページ: https://kokopelli-ec.vercel.app/account\n\n${customerName}様のペットの健康を引き続きサポートいたします。\n\nココペリ｜カムトゥル`,
+              text: `${customerName}様\n\n定期便の月次決済（¥${amount.toLocaleString()}）が完了しました。\n商品は2〜3営業日以内に発送いたします。\n\nマイページ: https://kokopelli.kamuturu.jp/account\n\n${customerName}様のペットの健康を引き続きサポートいたします。\n\nココペリ｜カムトゥル`,
             });
           }
 
-          // 管理者通知
-          const notifyUrl = process.env.NOTIFICATION_WEBHOOK_URL;
-          if (notifyUrl) {
-            await fetch(notifyUrl, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                subject: `【ココペリ】定期更新 ¥${amount.toLocaleString()} - ${customerName}様`,
-                body: `定期便の継続課金が完了しました。\n\nお名前: ${customerName}\nメール: ${customerEmail}\n金額: ¥${amount.toLocaleString()}\nInvoice: ${invoice.id}`,
-                to: process.env.NOTIFY_EMAIL || 'default',
-              }),
-            });
-          }
+          // 管理者通知メール
+          await notifyOwner({
+            subject: `【ココペリ】定期更新 ¥${amount.toLocaleString()} - ${customerName}様`,
+            text: `定期便の継続課金が完了しました。\n\nお名前: ${customerName}\nメール: ${customerEmail}\n金額: ¥${amount.toLocaleString()}\nInvoice: ${invoice.id}`,
+          });
         }
       } catch (err) {
         console.error('定期更新処理エラー:', err);
@@ -205,23 +220,15 @@ export async function POST(req: NextRequest) {
         await sendEmail({
           to: customer.email,
           subject: '【ココペリ】定期便の決済に失敗しました',
-          text: `${customer.name || 'お客様'}様\n\n定期便の月次決済が正常に処理できませんでした。\nカード情報をご確認の上、下記マイページから決済方法を更新してください。\n\nマイページ: https://kokopelli-ec.vercel.app/account\n\n※7日以内に更新がない場合、定期便が一時停止となります。\nご不明な点はinfo@kamuturu.jpまでお問い合わせください。\n\nココペリ｜カムトゥル`,
+          text: `${customer.name || 'お客様'}様\n\n定期便の月次決済が正常に処理できませんでした。\nカード情報をご確認の上、下記マイページから決済方法を更新してください。\n\nマイページ: https://kokopelli.kamuturu.jp/account\n\n※7日以内に更新がない場合、定期便が一時停止となります。\nご不明な点はinfo@kamuturu.jpまでお問い合わせください。\n\nココペリ｜カムトゥル`,
         });
       }
 
-      // 管理者通知
-      const notifyUrl = process.env.NOTIFICATION_WEBHOOK_URL;
-      if (notifyUrl) {
-        await fetch(notifyUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            subject: `【ココペリ】⚠ 決済失敗 - ${(customer as Stripe.Customer).name || customerId}`,
-            body: `定期便の決済が失敗しました。\n\nCustomer: ${customerId}\nInvoice: ${invoice.id}\nAttempt: ${invoice.attempt_count}`,
-            to: process.env.NOTIFY_EMAIL || 'default',
-          }),
-        });
-      }
+      // 管理者通知メール
+      await notifyOwner({
+        subject: `【ココペリ】決済失敗 - ${(customer as Stripe.Customer).name || customerId}`,
+        text: `定期便の決済が失敗しました。\n\nCustomer: ${customerId}\nInvoice: ${invoice.id}\nAttempt: ${invoice.attempt_count}`,
+      });
     } catch (err) {
       console.error('決済失敗通知エラー:', err);
     }
@@ -239,7 +246,7 @@ export async function POST(req: NextRequest) {
         await sendEmail({
           to: customer.email,
           subject: '【ココペリ】定期便の解約が完了しました',
-          text: `${customer.name || 'お客様'}様\n\n定期便の解約手続きが完了しました。\nこれまでのご愛用、誠にありがとうございました。\n\nまたいつでも再開いただけます。\n再開はこちら: https://kokopelli-ec.vercel.app/checkout\n\nペットちゃんの健康をお祈りしております。\n\nココペリ｜カムトゥル`,
+          text: `${customer.name || 'お客様'}様\n\n定期便の解約手続きが完了しました。\nこれまでのご愛用、誠にありがとうございました。\n\nまたいつでも再開いただけます。\n再開はこちら: https://kokopelli.kamuturu.jp/checkout\n\nペットちゃんの健康をお祈りしております。\n\nココペリ｜カムトゥル`,
         });
       }
     } catch (err) {

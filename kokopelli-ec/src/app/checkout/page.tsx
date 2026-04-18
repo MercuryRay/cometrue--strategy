@@ -68,8 +68,16 @@ function CheckoutContent() {
   const plan = plans[selectedPlan];
   const total = plan.price;
 
+  const getCookie = (name: string): string | null => {
+    if (typeof document === 'undefined') return null;
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? decodeURIComponent(match[2]) : null;
+  };
+
   const handleCheckout = async () => {
     setLoading(true);
+    const fbp = getCookie('_fbp');
+    const fbc = getCookie('_fbc');
     // GA4 イベント送信
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', 'begin_checkout', {
@@ -94,6 +102,8 @@ function CheckoutContent() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             referralCode: referralCode.trim() || undefined,
+            fbp,
+            fbc,
           }),
         });
         const data = await res.json();
@@ -106,6 +116,8 @@ function CheckoutContent() {
             plan: selectedPlan,
             quantity: 1,
             referralCode: referralCode.trim() || undefined,
+            fbp,
+            fbc,
           }),
         });
         const data = await res.json();
