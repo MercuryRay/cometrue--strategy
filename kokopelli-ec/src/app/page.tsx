@@ -51,25 +51,84 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'ココペリ｜犬・猫のための動物用栄養補助食品',
     description:
-      '高濃度の水溶性ケイ素を含むシンプル処方。シニアペットの毎日の健康維持をサポート。1本¥3,480〜。2本セット送料無料。',
+      '高濃度の水溶性ケイ素を含むシンプル処方。シニアペットの毎日の健康維持をサポート。1本¥3,480〜。2本セット以上送料無料。',
     locale: 'ja_JP',
     type: 'website',
     images: ['/images/image-4.webp'],
   },
 };
 
+/* ───────────── ブランドロゴ SVG ───────────── */
+function KokopelliLogo({ size = 40 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 120 120"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="ココペリ ロゴ"
+      className="shrink-0"
+    >
+      {/* 丸背景 */}
+      <circle cx="60" cy="60" r="58" fill="#1e293b" />
+      {/* 水滴シルエット */}
+      <path
+        d="M60 18 C60 18 34 54 34 72 C34 86.4 45.6 98 60 98 C74.4 98 86 86.4 86 72 C86 54 60 18 60 18Z"
+        fill="url(#dropGrad)"
+      />
+      {/* 肉球（中央パッド） */}
+      <ellipse cx="60" cy="74" rx="10" ry="8" fill="#1e293b" opacity="0.85" />
+      {/* 肉球（左上指） */}
+      <ellipse cx="47" cy="62" rx="5.5" ry="5" fill="#1e293b" opacity="0.85" />
+      {/* 肉球（右上指） */}
+      <ellipse cx="73" cy="62" rx="5.5" ry="5" fill="#1e293b" opacity="0.85" />
+      {/* 肉球（左下指） */}
+      <ellipse cx="50" cy="72" rx="4.5" ry="4" fill="#1e293b" opacity="0.85" />
+      {/* 肉球（右下指） */}
+      <ellipse cx="70" cy="72" rx="4.5" ry="4" fill="#1e293b" opacity="0.85" />
+      <defs>
+        <linearGradient
+          id="dropGrad"
+          x1="60"
+          y1="18"
+          x2="60"
+          y2="98"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0%" stopColor="#f59e0b" />
+          <stop offset="100%" stopColor="#d97706" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
 /* ───────────── 共通CTAボタン ───────────── */
 function CTAButton({ size = 'lg' }: { size?: 'lg' | 'md' }) {
   const cls = size === 'lg' ? 'px-12 py-5 text-xl' : 'px-10 py-4 text-lg';
   return (
-    <MagneticButton>
-      <Link
-        href="/checkout"
-        className={`inline-flex items-center justify-center bg-gradient-to-r from-amber-600 to-amber-500 text-white ${cls} rounded-full font-bold shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5`}
-      >
-        30日間返金保証付きで試す →
-      </Link>
-    </MagneticButton>
+    <div className="flex flex-col items-center">
+      <MagneticButton>
+        <Link
+          href="/checkout"
+          className={`inline-flex items-center justify-center bg-gradient-to-r from-amber-600 to-amber-500 text-white ${cls} rounded-full font-bold shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5`}
+        >
+          今すぐ試してみる →
+        </Link>
+      </MagneticButton>
+      <div className="flex items-center gap-4 mt-3 text-xs text-gray-500">
+        <span className="flex items-center gap-1">
+          <span className="text-amber-500">&#10003;</span> 30日間全額返金保証
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="text-amber-500">&#10003;</span> いつでも解約OK
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="text-amber-500">&#10003;</span> カード情報は保存されません
+        </span>
+      </div>
+    </div>
   );
 }
 
@@ -106,9 +165,7 @@ export default function Home() {
       <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-800 to-slate-700 flex items-center justify-center text-white font-bold text-lg shadow-lg">
-              K
-            </div>
+            <KokopelliLogo />
             <div>
               <span className="font-black text-slate-900 tracking-wide">kokopelli</span>
               <span className="block text-xs text-gray-500 font-bold leading-none">
@@ -159,6 +216,14 @@ export default function Home() {
       {/* ============================================================
           1. ファーストビュー — ペット写真大きく + コピー + CTA
           ============================================================ */}
+      {/* 期間限定バナー */}
+      <div className="bg-gradient-to-r from-amber-600 to-amber-500 text-white text-center py-2.5 px-4">
+        <p className="text-sm font-bold tracking-wide">
+          今月限定 ── 2本セット以上で<span className="underline underline-offset-2">送料無料</span>{' '}
+          + 30日間全額返金保証付き
+        </p>
+      </div>
+
       <section className="relative min-h-[90vh] md:min-h-[85vh] flex items-center overflow-hidden">
         {/* 背景: ペットと飼い主の写真 */}
         <div className="absolute inset-0">
@@ -235,7 +300,7 @@ export default function Home() {
               </p>
               <div className="mt-3 flex items-center gap-4">
                 <a
-                  href="https://lin.ee/H0MfN44"
+                  href="https://line.me/R/ti/p/@636yyubo"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#06C755] text-white font-bold text-sm shadow hover:shadow-md transition-all"
                 >
                   💬 LINEで無料相談
@@ -804,8 +869,8 @@ export default function Home() {
             {[
               {
                 step: 'STEP 1',
-                title: 'スポイトで数滴取る',
-                desc: '付属のディスポ容器（スポイト）でココペリを数滴取ります。',
+                title: 'シリンジで数滴取る',
+                desc: '付属のシリンジ（注射針なし）でココペリを数滴取ります。',
                 icon: <PipetteIcon />,
                 img: '/images/supplement-bottle.jpg',
               },
@@ -952,7 +1017,7 @@ export default function Home() {
                 <h3 className="text-xl font-black text-gray-900 mb-1">1本</h3>
                 <p className="text-xs text-gray-500 mb-4">30ml</p>
                 <p className="text-4xl font-black text-gray-900 mb-1">¥3,480</p>
-                <p className="text-xs text-gray-500 mb-6">+ 送料</p>
+                <p className="text-xs text-gray-500 mb-6">+ 送料 ¥520</p>
                 <ul className="text-sm text-gray-600 text-left space-y-2 mb-6 flex-1">
                   <li className="flex items-start gap-2">
                     <span className="text-amber-500 mt-0.5 shrink-0">&#10003;</span>
@@ -1266,7 +1331,7 @@ export default function Home() {
               ],
               [
                 '送料はかかりますか？',
-                '5+1セットと定期便は全国送料無料です。1本のみは別途送料がかかります。3〜5営業日以内に発送いたします。',
+                '2本セット以上送料無料です。3〜5営業日以内に発送いたします。',
               ],
             ]}
           />
@@ -1321,7 +1386,7 @@ export default function Home() {
           <CTAButton size="lg" />
 
           <p className="text-amber-300 text-xs mt-6">
-            クレジットカード決済 / セット・定期便送料無料 / 3〜5営業日以内に発送
+            クレジットカード決済 / 2本セット以上送料無料 / 3〜5営業日以内に発送
           </p>
           <p className="text-amber-400 text-xs mt-6">
             ※ 本品は動物用栄養補助食品であり、医薬品ではありません。
@@ -1416,6 +1481,60 @@ export default function Home() {
               </tbody>
             </table>
           </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          開発者ストーリー — ココペリへの思い
+          ============================================================ */}
+      <section id="story" className="py-16 md:py-24 bg-gradient-to-b from-white to-amber-50">
+        <div className="max-w-3xl mx-auto px-4">
+          <FadeInOnScroll>
+            <p className="text-center text-xs font-black text-amber-600 tracking-widest mb-3">
+              OUR STORY
+            </p>
+            <h2 className="text-3xl md:text-4xl font-black text-center text-gray-900 mb-12">
+              ココペリに込めた<span className="text-amber-600">想い</span>
+            </h2>
+          </FadeInOnScroll>
+
+          <FadeInOnScroll>
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 md:p-12">
+              {/* 開発者写真（写真が届いたら差し替え） */}
+              <div className="flex flex-col md:flex-row gap-8 items-center md:items-start mb-8">
+                <div className="w-32 h-32 rounded-full bg-amber-100 flex items-center justify-center text-5xl flex-shrink-0">
+                  👤
+                </div>
+                <div>
+                  <p className="text-xl font-bold text-gray-900 mb-1">開発者</p>
+                  <p className="text-sm text-gray-500 mb-4">ココペリ シリカウォーター 企画・開発</p>
+                  <div className="w-12 h-1 bg-amber-400 rounded-full"></div>
+                </div>
+              </div>
+
+              <div className="space-y-6 text-gray-700 leading-relaxed">
+                <p>ココペリを作ったきっかけは、自分の愛犬の健康を本気で考えたことでした。</p>
+                <p>
+                  市販のペット用水を調べるうちに、シリカ（ケイ素）が持つ可能性に出会いました。
+                  人間用のシリカ水はたくさんあるのに、ペットが安心して飲めるものがない——
+                  なら自分で作ろう、と思ったのが始まりです。
+                </p>
+                <p>
+                  水質にこだわり、ペットの体に負担をかけない硬度設計を追求しました。
+                  大切な家族であるペットに、毎日安心して与えられる水を届けたい。
+                  ココペリには、そんな想いが込められています。
+                </p>
+                <p className="text-amber-700 font-bold">
+                  「うちの子に少しでも長く、元気でいてほしい」——
+                  飼い主として当たり前のその願いに、ココペリで応えたいと思っています。
+                </p>
+              </div>
+
+              <p className="text-xs text-gray-400 mt-8">
+                ※ 開発者の写真・詳細なストーリーは近日公開予定です。
+              </p>
+            </div>
+          </FadeInOnScroll>
         </div>
       </section>
 
@@ -1563,7 +1682,7 @@ export default function Home() {
             name: 'ココペリ（Kokopelli）',
             description:
               '犬・猫のための動物用栄養補助食品。高濃度の水溶性ケイ素10,000mg/Lを含むケイ素濃縮液。原材料は水とケイ素のみ。',
-            image: 'https://kokopelli-ec.vercel.app/images/image-4.webp',
+            image: 'https://kokopelli.kamuturu.jp/images/image-4.webp',
             brand: { '@type': 'Brand', name: 'kokopelli' },
             manufacturer: {
               '@type': 'Organization',
@@ -1582,7 +1701,7 @@ export default function Home() {
                 price: '3480',
                 priceCurrency: 'JPY',
                 availability: 'https://schema.org/InStock',
-                url: 'https://kokopelli-ec.vercel.app/checkout',
+                url: 'https://kokopelli.kamuturu.jp/checkout',
                 seller: { '@type': 'Organization', name: 'カムトゥル' },
                 shippingDetails: {
                   '@type': 'OfferShippingDetails',
@@ -1619,7 +1738,7 @@ export default function Home() {
                 price: '15000',
                 priceCurrency: 'JPY',
                 availability: 'https://schema.org/InStock',
-                url: 'https://kokopelli-ec.vercel.app/checkout',
+                url: 'https://kokopelli.kamuturu.jp/checkout',
                 seller: { '@type': 'Organization', name: 'カムトゥル' },
                 shippingDetails: {
                   '@type': 'OfferShippingDetails',
@@ -1740,7 +1859,7 @@ export default function Home() {
                 name: '送料はかかりますか？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: '5+1セットと定期便は全国送料無料です。1本のみは別途送料がかかります。3〜5営業日以内に発送いたします。',
+                  text: '2本セット以上送料無料です。3〜5営業日以内に発送いたします。',
                 },
               },
             ],
