@@ -1,4 +1,12 @@
 import Link from 'next/link';
+import {
+  SINGLE_PRICE,
+  BUNDLE_2_PRICE,
+  BUNDLE_6_PRICE,
+  SUBSCRIPTION_PRICE,
+  SHIPPING,
+  formatYen,
+} from '@/lib/prices';
 
 export const metadata = {
   title: '特定商取引法に基づく表記',
@@ -34,7 +42,7 @@ export default function Tokushoho() {
             </tr>
             <tr>
               <td className="py-4 pr-4 font-medium text-gray-700 align-top">URL</td>
-              <td className="py-4 text-gray-600">https://kokopelli-ec.vercel.app</td>
+              <td className="py-4 text-gray-600">https://kokopelli.kamuturu.jp</td>
             </tr>
             <tr>
               <td className="py-4 pr-4 font-medium text-gray-700 align-top">商品の名称</td>
@@ -45,19 +53,19 @@ export default function Tokushoho() {
             <tr>
               <td className="py-4 pr-4 font-medium text-gray-700 align-top">販売価格</td>
               <td className="py-4 text-gray-600">
-                お試し1本: ¥3,480（税込）
+                お試し1本: {formatYen(SINGLE_PRICE)}（税込）
                 <br />
-                2本セット: ¥5,980（税込・送料無料）
+                2本セット: {formatYen(BUNDLE_2_PRICE)}（税込・送料無料）
                 <br />
-                定期便: ¥5,480/月（税込・送料無料）
+                定期便: {formatYen(SUBSCRIPTION_PRICE)}/月（税込・送料無料）
                 <br />
-                5+1セット: ¥15,000（税込・送料無料）
+                5+1セット: {formatYen(BUNDLE_6_PRICE)}（税込・送料無料）
               </td>
             </tr>
             <tr>
               <td className="py-4 pr-4 font-medium text-gray-700 align-top">送料</td>
               <td className="py-4 text-gray-600">
-                お試し1本のみ送料別途（全国一律500円）。2本セット以上は送料無料。
+                お試し1本のみ送料別途（全国一律{formatYen(SHIPPING)}）。2本セット以上は送料無料。
               </td>
             </tr>
             <tr>
@@ -109,7 +117,9 @@ export default function Tokushoho() {
               </tr>
               <tr>
                 <td className="py-2 pr-4 font-medium text-amber-700">毎月の請求額</td>
-                <td className="py-2 text-amber-900">¥5,480（税込・送料無料）</td>
+                <td className="py-2 text-amber-900">
+                  {formatYen(SUBSCRIPTION_PRICE)}（税込・送料無料）
+                </td>
               </tr>
               <tr>
                 <td className="py-2 pr-4 font-medium text-amber-700">お届けサイクル</td>
@@ -139,8 +149,8 @@ export default function Tokushoho() {
           ※ 通信販売のため、クーリングオフ制度は適用されません。
         </p>
         <p className="text-xs text-gray-400">
-          ※ 商品代金以外に必要な費用:
-          お試し1本の場合のみ送料500円。振込手数料等はお客様負担となる場合があります。
+          ※ 商品代金以外に必要な費用: お試し1本の場合のみ送料{formatYen(SHIPPING)}
+          。振込手数料等はお客様負担となる場合があります。
         </p>
 
         <div className="mt-8 text-center">

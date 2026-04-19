@@ -40,6 +40,15 @@ import {
   StaggerItem,
   GlowCard,
 } from './components/Animations';
+import {
+  SINGLE_PRICE,
+  BUNDLE_2_PRICE,
+  BUNDLE_6_PRICE,
+  SUBSCRIPTION_PRICE,
+  PER_BOTTLE_BUNDLE_6,
+  SHIPPING,
+  formatYen,
+} from '@/lib/prices';
 
 /* ───────────── SEO Metadata ───────────── */
 export const metadata: Metadata = {
@@ -316,7 +325,8 @@ export default function Home() {
                   </div>
                   <div className="flex-1">
                     <p className="text-slate-900 font-black text-base leading-tight">
-                      初回お試し <span className="text-amber-600 text-2xl">¥3,480</span>〜
+                      初回お試し{' '}
+                      <span className="text-amber-600 text-2xl">{formatYen(SINGLE_PRICE)}</span>〜
                     </p>
                     <p className="text-gray-600 text-xs mt-1">
                       飲ませなくても返金OK・初回1本だけでOK・継続義務なし
@@ -326,7 +336,8 @@ export default function Home() {
               </div>
               <CTAButton size="lg" />
               <p className="mt-3 text-sm text-gray-500">
-                1本 ¥3,480（送料¥520）/ 2本セット ¥5,980（送料無料）/ 定期なら月¥5,480
+                1本 {formatYen(SINGLE_PRICE)}（送料{formatYen(SHIPPING)}）/ 2本セット{' '}
+                {formatYen(BUNDLE_2_PRICE)}（送料無料）/ 定期なら月{formatYen(SUBSCRIPTION_PRICE)}
               </p>
               <div className="mt-3 flex items-center gap-4">
                 <a
@@ -423,7 +434,8 @@ export default function Home() {
                   <div className="flex-1 text-center md:text-left">
                     <p className="text-xs font-bold text-amber-600 mb-1">お試し1本（30ml）</p>
                     <p className="text-4xl md:text-5xl font-black text-slate-900 mb-2">
-                      ¥3,480<span className="text-sm text-gray-500 font-normal ml-1">税込</span>
+                      {formatYen(SINGLE_PRICE)}
+                      <span className="text-sm text-gray-500 font-normal ml-1">税込</span>
                     </p>
                     <div className="flex flex-wrap gap-2 justify-center md:justify-start mb-3">
                       <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold">
@@ -450,7 +462,7 @@ export default function Home() {
                       1本だけ試す →
                     </Link>
                     <p className="text-[10px] text-gray-400 text-center mt-2">
-                      送料¥520 / カード決済
+                      送料{formatYen(SHIPPING)} / カード決済
                     </p>
                   </div>
                 </div>
@@ -1100,7 +1112,7 @@ export default function Home() {
                 <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gray-50 flex items-center justify-center border border-gray-200">
                   <Image
                     src="/images/image-4.webp"
-                    alt="ококопеリ1本"
+                    alt="ココペリ1本"
                     width={40}
                     height={70}
                     className="h-10 w-auto"
@@ -1109,8 +1121,8 @@ export default function Home() {
                 <p className="text-sm font-bold text-gray-500 mb-1">お試し</p>
                 <h3 className="text-xl font-black text-gray-900 mb-1">1本</h3>
                 <p className="text-xs text-gray-500 mb-4">30ml</p>
-                <p className="text-4xl font-black text-gray-900 mb-1">¥3,480</p>
-                <p className="text-xs text-gray-500 mb-6">+ 送料 ¥520</p>
+                <p className="text-4xl font-black text-gray-900 mb-1">{formatYen(SINGLE_PRICE)}</p>
+                <p className="text-xs text-gray-500 mb-6">+ 送料 {formatYen(SHIPPING)}</p>
                 <ul className="text-sm text-gray-600 text-left space-y-2 mb-6 flex-1">
                   <li className="flex items-start gap-2">
                     <span className="text-amber-500 mt-0.5 shrink-0">&#10003;</span>
@@ -1139,7 +1151,7 @@ export default function Home() {
                 <div className="w-16 h-16 mx-auto mb-3 mt-2 rounded-full bg-white/20 flex items-center justify-center">
                   <Image
                     src="/images/image-4.webp"
-                    alt="ококопеリ2本セット"
+                    alt="ココペリ2本セット"
                     width={40}
                     height={70}
                     className="h-10 w-auto"
@@ -1148,7 +1160,7 @@ export default function Home() {
                 <p className="text-sm font-bold text-amber-100 mb-1">2本セット</p>
                 <h3 className="text-xl font-black text-white mb-1">2本</h3>
                 <p className="text-xs text-amber-200 mb-4">30ml x 2本</p>
-                <p className="text-4xl font-black text-white mb-1">¥5,980</p>
+                <p className="text-4xl font-black text-white mb-1">{formatYen(BUNDLE_2_PRICE)}</p>
                 <p className="text-xs text-amber-200 mb-1">送料無料</p>
                 <p className="text-white text-sm font-bold mb-6">1本あたり ¥2,990</p>
                 <ul className="text-sm text-amber-50 text-left space-y-2 mb-6 flex-1">
@@ -1192,9 +1204,11 @@ export default function Home() {
                 <p className="text-sm font-bold text-amber-100 mb-1">5+1セット</p>
                 <h3 className="text-xl font-black text-white mb-1">6本</h3>
                 <p className="text-xs text-amber-200 mb-4">30ml x 6本</p>
-                <p className="text-4xl font-black text-white mb-1">¥15,000</p>
+                <p className="text-4xl font-black text-white mb-1">{formatYen(BUNDLE_6_PRICE)}</p>
                 <p className="text-xs text-amber-200 mb-1">送料無料</p>
-                <p className="text-amber-300 text-sm font-bold mb-6">1本あたり ¥2,500</p>
+                <p className="text-amber-300 text-sm font-bold mb-6">
+                  1本あたり {formatYen(PER_BOTTLE_BUNDLE_6)}
+                </p>
                 <ul className="text-sm text-amber-50 text-left space-y-2 mb-6 flex-1">
                   <li className="flex items-start gap-2">
                     <span className="text-amber-300 mt-0.5 shrink-0">&#10003;</span>
@@ -1228,7 +1242,8 @@ export default function Home() {
                 <h3 className="text-xl font-black text-gray-900 mb-1">毎月2本</h3>
                 <p className="text-xs text-gray-500 mb-4">30ml x 2本 / 月</p>
                 <p className="text-4xl font-black text-gray-900 mb-1">
-                  ¥5,480<span className="text-lg">/月</span>
+                  {formatYen(SUBSCRIPTION_PRICE)}
+                  <span className="text-lg">/月</span>
                 </p>
                 <p className="text-xs text-gray-500 mb-1">送料無料</p>
                 <p className="text-amber-600 text-sm font-bold mb-6">毎月¥1,000おトク</p>
@@ -1416,7 +1431,7 @@ export default function Home() {
               ],
               [
                 '定期購入はありますか？',
-                '月額¥5,480の定期便（2本/月）がございます。5+1セット（¥15,000・6本届く）なら1本あたり¥2,500と最もおトクです。',
+                `月額${formatYen(SUBSCRIPTION_PRICE)}の定期便（2本/月）がございます。5+1セット（${formatYen(BUNDLE_6_PRICE)}・6本届く）なら1本あたり${formatYen(PER_BOTTLE_BUNDLE_6)}と最もおトクです。`,
               ],
               [
                 '原材料は何ですか？',
@@ -1500,7 +1515,7 @@ export default function Home() {
                 <ul className="space-y-2 text-sm mb-4">
                   <li className="flex items-start gap-2">
                     <span className="shrink-0">&#10003;</span>
-                    <span>定期便：¥5,480／月（2本・送料無料）</span>
+                    <span>定期便：{formatYen(SUBSCRIPTION_PRICE)}／月（2本・送料無料）</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="shrink-0">&#10003;</span>
@@ -1574,16 +1589,16 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto">
             <div className="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20">
               <p className="text-white font-bold text-sm">1本</p>
-              <p className="text-white text-2xl font-black">¥3,480</p>
+              <p className="text-white text-2xl font-black">{formatYen(SINGLE_PRICE)}</p>
             </div>
             <div className="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/20">
               <p className="text-amber-200 font-bold text-sm">定期便 2本/月</p>
-              <p className="text-white text-2xl font-black">¥5,480</p>
+              <p className="text-white text-2xl font-black">{formatYen(SUBSCRIPTION_PRICE)}</p>
             </div>
             <div className="bg-amber-500/20 backdrop-blur rounded-xl p-4 border border-amber-400/40">
               <p className="text-amber-300 font-bold text-sm">5+1セット</p>
-              <p className="text-white text-2xl font-black">¥15,000</p>
-              <p className="text-amber-300 text-xs">1本¥2,500</p>
+              <p className="text-white text-2xl font-black">{formatYen(BUNDLE_6_PRICE)}</p>
+              <p className="text-amber-300 text-xs">1本{formatYen(PER_BOTTLE_BUNDLE_6)}</p>
             </div>
           </div>
 
@@ -1772,7 +1787,10 @@ export default function Home() {
                     </span>
                     <div>
                       <p className="font-bold text-gray-900">ずっと5%OFF</p>
-                      <p className="text-sm text-gray-500">1本 ¥3,480 → ¥3,306（会員価格）</p>
+                      <p className="text-sm text-gray-500">
+                        1本 {formatYen(SINGLE_PRICE)} → {formatYen(Math.round(SINGLE_PRICE * 0.95))}
+                        （会員価格）
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -1903,14 +1921,18 @@ export default function Home() {
               {
                 '@type': 'Offer',
                 name: '1本（通常購入）',
-                price: '3480',
+                price: String(SINGLE_PRICE),
                 priceCurrency: 'JPY',
                 availability: 'https://schema.org/InStock',
                 url: 'https://kokopelli.kamuturu.jp/checkout',
                 seller: { '@type': 'Organization', name: 'カムトゥル' },
                 shippingDetails: {
                   '@type': 'OfferShippingDetails',
-                  shippingRate: { '@type': 'MonetaryAmount', value: '500', currency: 'JPY' },
+                  shippingRate: {
+                    '@type': 'MonetaryAmount',
+                    value: String(SHIPPING),
+                    currency: 'JPY',
+                  },
                   shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'JP' },
                   deliveryTime: {
                     '@type': 'ShippingDeliveryTime',
@@ -1940,7 +1962,7 @@ export default function Home() {
               {
                 '@type': 'Offer',
                 name: '5+1セット（6本）',
-                price: '15000',
+                price: String(BUNDLE_6_PRICE),
                 priceCurrency: 'JPY',
                 availability: 'https://schema.org/InStock',
                 url: 'https://kokopelli.kamuturu.jp/checkout',
@@ -2048,7 +2070,7 @@ export default function Home() {
                 name: '定期購入はありますか？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: '月額¥5,480の定期便（2本/月）がございます。5+1セット（¥15,000・6本届く）なら1本あたり¥2,500と最もおトクです。',
+                  text: `月額${formatYen(SUBSCRIPTION_PRICE)}の定期便（2本/月）がございます。5+1セット（${formatYen(BUNDLE_6_PRICE)}・6本届く）なら1本あたり${formatYen(PER_BOTTLE_BUNDLE_6)}と最もおトクです。`,
                 },
               },
               {

@@ -4,6 +4,15 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import {
+  SINGLE_PRICE,
+  BUNDLE_2_PRICE,
+  BUNDLE_6_PRICE,
+  SUBSCRIPTION_PRICE,
+  PER_BOTTLE_BUNDLE_2,
+  PER_BOTTLE_BUNDLE_6,
+  PER_BOTTLE_SUBSCRIPTION,
+} from '@/lib/prices';
 
 type Plan = 'trial' | 'set' | 'bulk' | 'subscription';
 
@@ -25,42 +34,42 @@ function CheckoutContent() {
   const plans = {
     trial: {
       name: 'お試し1本',
-      price: 3480,
+      price: SINGLE_PRICE,
       desc: 'まずは1本から試したい方に',
       bottles: 1,
       badge: '初めての方に',
       badgeColor: 'bg-green-500',
-      perBottle: 3480,
+      perBottle: SINGLE_PRICE,
       shipping: '別途送料あり',
     },
     set: {
       name: '2本セット',
-      price: 5980,
+      price: BUNDLE_2_PRICE,
       desc: '一番人気！送料無料でおトク',
       bottles: 2,
       badge: '人気No.1',
       badgeColor: 'bg-amber-500',
-      perBottle: 2990,
+      perBottle: PER_BOTTLE_BUNDLE_2,
       shipping: '送料無料',
     },
     bulk: {
       name: '5+1セット（6本）',
-      price: 15000,
+      price: BUNDLE_6_PRICE,
       desc: '5本買うと1本無料！1本あたり最安',
       bottles: 6,
       badge: '一番おトク',
       badgeColor: 'bg-blue-500',
-      perBottle: 2500,
+      perBottle: PER_BOTTLE_BUNDLE_6,
       shipping: '送料無料',
     },
     subscription: {
       name: '定期便 2本/月',
-      price: 5480,
+      price: SUBSCRIPTION_PRICE,
       desc: '毎月届く・いつでも解約OK・送料無料',
       bottles: 2,
       badge: '続けやすい',
       badgeColor: 'bg-red-500',
-      perBottle: 2740,
+      perBottle: PER_BOTTLE_SUBSCRIPTION,
       shipping: '送料無料',
     },
   };

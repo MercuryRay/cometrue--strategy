@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import './globals.css';
+import { SINGLE_PRICE, BUNDLE_2_PRICE, SUBSCRIPTION_PRICE, formatYen } from '@/lib/prices';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -8,7 +9,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://kokopelli-ec.vercel.app'),
+  metadataBase: new URL('https://kokopelli.kamuturu.jp'),
   alternates: {
     canonical: '/',
   },
@@ -23,8 +24,7 @@ export const metadata: Metadata = {
     'ココペリは犬・猫のための動物用栄養補助食品。高濃度の水溶性ケイ素10,000mg/Lを含むシンプル処方のケイ素濃縮液。シニアペットの毎日の健康維持に。',
   openGraph: {
     title: 'ココペリ｜犬・猫のための動物用栄養補助食品',
-    description:
-      '高濃度の水溶性ケイ素を含むシンプル処方。シニアペットの毎日の健康維持をサポート。2本セット送料込み¥5,480。',
+    description: `高濃度の水溶性ケイ素を含むシンプル処方。シニアペットの毎日の健康維持をサポート。定期便2本/月 送料込み${formatYen(SUBSCRIPTION_PRICE)}。`,
     locale: 'ja_JP',
     type: 'website',
     images: ['/images/image-4.webp'],
@@ -84,6 +84,83 @@ export default function RootLayout({
             </noscript>
           </>
         )}
+        {/* 構造化データ — SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'ココペリ',
+              alternateName: 'Kokopelli',
+              url: 'https://kokopelli.kamuturu.jp',
+              description: '犬・猫のための動物用栄養補助食品。高濃度の水溶性ケイ素濃縮液。',
+              inLanguage: 'ja',
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: 'https://kokopelli.kamuturu.jp/blog?q={search_term_string}',
+                'query-input': 'required name=search_term_string',
+              },
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'ココペリ（カムトゥル）',
+              url: 'https://kokopelli.kamuturu.jp',
+              logo: 'https://kokopelli.kamuturu.jp/images/image-4.webp',
+              description: '犬・猫のための動物用栄養補助食品「ココペリ」。水溶性ケイ素濃縮液。',
+              sameAs: [
+                'https://kamuturu.jp',
+                'https://line.me/R/ti/p/@636yyubo',
+                'https://x.com/Mercury_CS',
+                'https://www.youtube.com/@Mercury_CS',
+              ],
+              contactPoint: {
+                '@type': 'ContactPoint',
+                contactType: 'customer service',
+                url: 'https://line.me/R/ti/p/@636yyubo',
+                availableLanguage: 'Japanese',
+              },
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Product',
+              name: 'ココペリ シリカウォーター',
+              description:
+                '犬・猫のための動物用栄養補助食品。高濃度の水溶性ケイ素10,000mg/Lを含むシンプル処方のケイ素濃縮液。シリンジで投与。',
+              brand: { '@type': 'Brand', name: 'ココペリ' },
+              image: 'https://kokopelli.kamuturu.jp/images/image-4.webp',
+              offers: [
+                {
+                  '@type': 'Offer',
+                  name: 'お試し1本',
+                  price: String(SINGLE_PRICE),
+                  priceCurrency: 'JPY',
+                  availability: 'https://schema.org/InStock',
+                  url: 'https://kokopelli.kamuturu.jp',
+                },
+                {
+                  '@type': 'Offer',
+                  name: '2本セット',
+                  price: String(BUNDLE_2_PRICE),
+                  priceCurrency: 'JPY',
+                  availability: 'https://schema.org/InStock',
+                  url: 'https://kokopelli.kamuturu.jp',
+                },
+              ],
+            }),
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-gray-50 text-gray-900">
         {children}
@@ -96,7 +173,7 @@ export default function RootLayout({
               '@type': 'Organization',
               name: 'カムトゥル（Come true）',
               url: 'https://kamuturu.jp/',
-              logo: 'https://kokopelli-ec.vercel.app/images/image-4.webp',
+              logo: 'https://kokopelli.kamuturu.jp/images/image-4.webp',
               description:
                 'WEB制作・マーケティング支援。ココペリ（犬・猫のための動物用栄養補助食品）の販売協賛。',
               contactPoint: {
