@@ -2,9 +2,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import PetDiagnosis from './components/PetDiagnosis';
+import SocialProof from './components/SocialProof';
+import ComparisonTable from './components/ComparisonTable';
+import ExitIntentPopup from './components/ExitIntentPopup';
 // FirstTrialButton removed - no more ¥980 offer
 import MobileCTABar from './components/MobileCTABar';
 import MemberRegistration from './components/MemberRegistration';
+import PixelEvents from './components/PixelEvents';
 import {
   MoonIcon,
   RotateCwIcon,
@@ -45,6 +49,7 @@ import {
   BUNDLE_2_PRICE,
   BUNDLE_6_PRICE,
   SUBSCRIPTION_PRICE,
+  PER_BOTTLE_BUNDLE_2,
   PER_BOTTLE_BUNDLE_6,
   SHIPPING,
   formatYen,
@@ -114,24 +119,25 @@ function KokopelliLogo({ size = 40 }: { size?: number }) {
 }
 
 /* ───────────── 共通CTAボタン ───────────── */
-function CTAButton({ size = 'lg' }: { size?: 'lg' | 'md' }) {
-  const cls = size === 'lg' ? 'px-12 py-5 text-xl' : 'px-10 py-4 text-lg';
+function CTAButton({ size = 'lg', label }: { size?: 'lg' | 'md'; label?: string }) {
+  const cls = size === 'lg' ? 'px-10 py-5 text-lg md:text-xl' : 'px-8 py-4 text-base md:text-lg';
+  const text = label ?? `2本セット ${formatYen(BUNDLE_2_PRICE)}（送料無料）で始める →`;
   return (
     <div className="flex flex-col items-center">
       <MagneticButton>
         <Link
           href="/checkout"
-          className={`inline-flex items-center justify-center bg-gradient-to-r from-amber-600 to-amber-500 text-white ${cls} rounded-full font-bold shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5`}
+          className={`inline-flex items-center justify-center bg-gradient-to-r from-amber-600 to-amber-500 text-white ${cls} rounded-full font-black shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 text-center leading-tight`}
         >
-          今すぐ試してみる →
+          {text}
         </Link>
       </MagneticButton>
-      <div className="flex items-center gap-4 mt-3 text-xs text-gray-500">
+      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 mt-3 text-xs text-gray-500">
         <span className="flex items-center gap-1">
           <span className="text-amber-500">&#10003;</span> 30日間全額返金保証
         </span>
         <span className="flex items-center gap-1">
-          <span className="text-amber-500">&#10003;</span> いつでも解約OK
+          <span className="text-amber-500">&#10003;</span> 2本セット以上 送料無料
         </span>
         <span className="flex items-center gap-1">
           <span className="text-amber-500">&#10003;</span> カード情報は保存されません
@@ -168,6 +174,7 @@ function FAQAccordion({ items }: { items: [string, string][] }) {
 export default function Home() {
   return (
     <>
+      <PixelEvents />
       <ScrollProgress />
 
       {/* ============ Header ============ */}
@@ -223,17 +230,18 @@ export default function Home() {
       </header>
 
       {/* ============================================================
-          1. ファーストビュー — ペット写真大きく + コピー + CTA
+          1. ファーストビュー — PASONA構成 / モバイル1画面最適化
           ============================================================ */}
-      {/* 期間限定バナー */}
-      <div className="bg-gradient-to-r from-amber-600 to-amber-500 text-white text-center py-2.5 px-4">
-        <p className="text-sm font-bold tracking-wide">
-          今月限定 ── 2本セット以上で<span className="underline underline-offset-2">送料無料</span>{' '}
-          + 30日間全額返金保証付き
+      {/* 期間限定バー（常時視認・CTR底上げ） */}
+      <div className="bg-gradient-to-r from-amber-600 to-amber-500 text-white text-center py-2 px-4">
+        <p className="text-xs md:text-sm font-bold tracking-wide">
+          今月限定 ── 2本セット以上で<span className="underline underline-offset-2">送料無料</span>
+          <span className="mx-2">+</span>30日間
+          <span className="underline underline-offset-2">全額返金保証</span>
         </p>
       </div>
 
-      <section className="relative min-h-[90vh] md:min-h-[85vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[92vh] md:min-h-[85vh] flex items-center overflow-hidden">
         {/* 背景: ペットと飼い主の写真 */}
         <div className="absolute inset-0">
           <Image
@@ -243,120 +251,112 @@ export default function Home() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent md:from-white/90 md:via-white/60" />
+          {/* モバイルは読みやすさ重視で白マスクを強めに */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/85 to-white/70 md:bg-gradient-to-r md:from-white/92 md:via-white/65 md:to-transparent" />
         </div>
 
-        <div className="relative max-w-5xl mx-auto px-4 py-20 md:py-28">
-          <div className="flex flex-col md:flex-row items-center gap-12">
+        <div className="relative max-w-5xl mx-auto px-4 py-10 md:py-24 w-full">
+          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
             {/* テキスト側 */}
-            <div className="flex-1">
-              {/* トラストバッジ 3連 */}
-              <div className="grid grid-cols-3 gap-2 mb-6 max-w-md">
-                <div className="bg-white/90 border border-slate-200 rounded-xl px-2 py-2 text-center shadow-sm">
-                  <p className="text-[10px] text-gray-500 leading-none mb-1">MADE IN</p>
-                  <p className="text-sm font-black text-slate-800 leading-none">国産</p>
-                  <p className="text-[10px] text-gray-500 leading-none mt-1">宮崎県製造</p>
-                </div>
-                <div className="bg-white/90 border border-blue-200 rounded-xl px-2 py-2 text-center shadow-sm">
-                  <p className="text-[10px] text-blue-600 leading-none mb-1">VET</p>
-                  <p className="text-sm font-black text-slate-800 leading-none">獣医師監修</p>
-                  <p className="text-[10px] text-gray-500 leading-none mt-1">臨床使用10年</p>
-                </div>
-                <div className="bg-white/90 border border-amber-200 rounded-xl px-2 py-2 text-center shadow-sm">
-                  <p className="text-[10px] text-amber-600 leading-none mb-1">REPORT</p>
-                  <p className="text-sm font-black text-slate-800 leading-none">2度の症例</p>
-                  <p className="text-[10px] text-gray-500 leading-none mt-1">学会報告済</p>
-                </div>
-              </div>
+            <div className="flex-1 w-full">
+              {/* ❶ Problem — 飼い主の心の声に刺す（PASOの P） */}
+              <p className="inline-block bg-slate-900 text-white text-xs md:text-sm font-bold px-3 py-1 rounded-full mb-4">
+                シニア犬・シニア猫の飼い主様へ
+              </p>
 
-              <div className="flex flex-wrap gap-2 mb-6">
-                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-50 border border-amber-200 text-amber-700 font-bold text-xs">
-                  <span className="w-2 h-2 rounded-full bg-slate-500" />
-                  動物用栄養補助食品
-                </span>
-                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 font-bold text-xs">
-                  <span className="w-2 h-2 rounded-full bg-blue-500" />
-                  動物病院でも採用
-                </span>
-                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-bold text-xs">
-                  製造10周年
-                </span>
-              </div>
-
-              <h1 className="text-3xl md:text-5xl font-black text-gray-900 leading-tight mb-6">
-                <TextReveal text="この子との時間を、" className="block" />
-                <TextReveal text="もっと長く。" className="block text-amber-600" delay={0.3} />
+              {/* メインコピー — PAS 3段で一気に引き込む */}
+              <h1 className="text-[28px] sm:text-4xl md:text-5xl font-black text-slate-900 leading-[1.2] mb-4 tracking-tight">
+                <TextReveal
+                  text="「最近、元気ないかも…」"
+                  className="block text-slate-700 text-xl sm:text-2xl md:text-3xl font-bold mb-2"
+                />
+                <TextReveal text="この子との毎日を、" className="block" delay={0.15} />
+                <TextReveal text="1日でも長く。" className="block text-amber-600" delay={0.3} />
               </h1>
 
-              <p className="text-lg text-gray-600 mb-4 leading-relaxed max-w-lg">
-                動物病院で<strong className="text-slate-800">10年間</strong>使われてきた、 高濃度
-                <strong className="text-amber-700">水溶性ケイ素 10,000mg/L</strong>。
-                食事に数滴混ぜるだけで、シニアペットの毎日をサポートします。
+              {/* ❷ Solution — 1文で何者かを理解させる */}
+              <p className="text-[15px] md:text-lg text-slate-700 mb-5 leading-relaxed max-w-lg">
+                動物病院で<strong className="text-slate-900">10年</strong>使われてきた、 高濃度
+                <strong className="text-amber-700">水溶性ケイ素 10,000mg/L</strong>。 いつもの食事に
+                <strong className="text-slate-900">数滴たらすだけ</strong>。
               </p>
 
-              <ul className="text-sm text-gray-600 space-y-1.5 mb-8">
-                <li className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 text-xs font-bold shrink-0">
-                    &#10003;
-                  </span>
-                  原材料はたった2つ：水とケイ素
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 text-xs font-bold shrink-0">
-                    &#10003;
-                  </span>
-                  動物病院で10年間使用されてきた製品
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 text-xs font-bold shrink-0">
-                    &#10003;
-                  </span>
-                  学会で症例報告済み
-                </li>
-              </ul>
+              {/* トラストバッジ 3連（コンパクト化） */}
+              <div className="grid grid-cols-3 gap-2 mb-5 max-w-md">
+                <div className="bg-white/95 border border-slate-200 rounded-xl px-1 py-2 text-center shadow-sm">
+                  <p className="text-[10px] text-gray-500 leading-none mb-1">MADE IN</p>
+                  <p className="text-[13px] font-black text-slate-800 leading-none">国産</p>
+                  <p className="text-[10px] text-gray-500 leading-none mt-1">宮崎県製造</p>
+                </div>
+                <div className="bg-white/95 border border-blue-200 rounded-xl px-1 py-2 text-center shadow-sm">
+                  <p className="text-[10px] text-blue-600 leading-none mb-1">VET</p>
+                  <p className="text-[13px] font-black text-slate-800 leading-none">獣医師監修</p>
+                  <p className="text-[10px] text-gray-500 leading-none mt-1">臨床使用10年</p>
+                </div>
+                <div className="bg-white/95 border border-amber-200 rounded-xl px-1 py-2 text-center shadow-sm">
+                  <p className="text-[10px] text-amber-600 leading-none mb-1">REPORT</p>
+                  <p className="text-[13px] font-black text-slate-800 leading-none">学会報告</p>
+                  <p className="text-[10px] text-gray-500 leading-none mt-1">症例あり</p>
+                </div>
+              </div>
 
-              {/* 価格前倒し + 返金保証強化バッジ */}
-              <div className="bg-gradient-to-br from-amber-50 to-white border-2 border-amber-400 rounded-2xl px-5 py-4 mb-4 shadow-md">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="shrink-0 w-14 h-14 rounded-full bg-amber-500 text-white flex flex-col items-center justify-center shadow">
-                    <span className="text-[9px] font-bold leading-none">30日間</span>
-                    <span className="text-[10px] font-black leading-none mt-0.5">全額</span>
-                    <span className="text-[10px] font-black leading-none">返金</span>
+              {/* ❸ Offer — 価格・保証を強く・大きく */}
+              <div className="bg-white border-2 border-amber-500 rounded-2xl px-4 py-4 mb-4 shadow-lg">
+                <div className="flex items-center gap-3">
+                  <div className="shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 text-white flex flex-col items-center justify-center shadow-md">
+                    <span className="text-[10px] font-bold leading-none">30日間</span>
+                    <span className="text-[11px] font-black leading-none mt-0.5">全額</span>
+                    <span className="text-[11px] font-black leading-none">返金</span>
                   </div>
                   <div className="flex-1">
-                    <p className="text-slate-900 font-black text-base leading-tight">
-                      初回お試し{' '}
-                      <span className="text-amber-600 text-2xl">{formatYen(SINGLE_PRICE)}</span>〜
+                    <p className="text-[11px] text-amber-700 font-bold leading-none mb-1">
+                      初回お試し価格
                     </p>
-                    <p className="text-gray-600 text-xs mt-1">
-                      飲ませなくても返金OK・初回1本だけでOK・継続義務なし
+                    <p className="text-slate-900 font-black leading-tight">
+                      <span className="text-amber-600 text-[32px] md:text-[36px] leading-none">
+                        {formatYen(SINGLE_PRICE)}
+                      </span>
+                      <span className="text-sm ml-1 text-slate-600">（税込・1本から）</span>
+                    </p>
+                    <p className="text-gray-600 text-[11px] mt-1 leading-snug">
+                      合わなければ返金OK・継続義務なし・定期縛りなし
                     </p>
                   </div>
                 </div>
               </div>
+
+              {/* ❹ Action — CTA（tap target 56px以上・ビビッドオレンジ） */}
               <CTAButton size="lg" />
-              <p className="mt-3 text-sm text-gray-500">
-                1本 {formatYen(SINGLE_PRICE)}（送料{formatYen(SHIPPING)}）/ 2本セット{' '}
-                {formatYen(BUNDLE_2_PRICE)}（送料無料）/ 定期なら月{formatYen(SUBSCRIPTION_PRICE)}
+
+              {/* 価格バリエーション — 選択肢を可視化（離脱防止） */}
+              <p className="mt-3 text-xs md:text-sm text-gray-600 text-center md:text-left">
+                1本 {formatYen(SINGLE_PRICE)}（送料{formatYen(SHIPPING)}） ／ 2本{' '}
+                {formatYen(BUNDLE_2_PRICE)}
+                <span className="text-amber-600 font-bold">（送料無料）</span> ／ 定期 月
+                {formatYen(SUBSCRIPTION_PRICE)}
               </p>
-              <div className="mt-3 flex items-center gap-4">
+
+              {/* セカンダリCTA — 迷っている人のためのLINE相談 */}
+              <div className="mt-4 flex flex-wrap items-center gap-3">
                 <a
                   href="https://line.me/R/ti/p/@636yyubo"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#06C755] text-white font-bold text-sm shadow hover:shadow-md transition-all"
+                  className="inline-flex items-center gap-2 min-h-[44px] px-5 py-2.5 rounded-full bg-[#06C755] text-white font-bold text-sm shadow hover:shadow-md transition-all"
                 >
                   💬 LINEで無料相談
                 </a>
-                <span className="text-xs text-gray-400">購入前のご質問もお気軽に</span>
+                <span className="text-xs text-gray-500">購入前のご質問もお気軽に</span>
               </div>
-              <p className="mt-2 text-xs text-gray-400">
-                ※ 本品は動物用栄養補助食品であり、医薬品ではありません。
+
+              <p className="mt-3 text-[10px] text-gray-400 leading-snug">
+                ※
+                本品は動物用栄養補助食品であり、医薬品ではありません。効果・効能を保証するものではありません。
               </p>
             </div>
 
-            {/* 商品写真 */}
+            {/* 商品写真（モバイルでは縮小して1画面に収める） */}
             <Parallax speed={0.15}>
-              <div className="flex gap-4 items-end">
-                <div className="relative w-48 md:w-56 rounded-2xl overflow-hidden shadow-2xl border border-gray-200">
+              <div className="flex gap-3 md:gap-4 items-end">
+                <div className="relative w-32 sm:w-40 md:w-56 rounded-2xl overflow-hidden shadow-2xl border border-gray-200">
                   <Image
                     src="/images/image-4.webp"
                     alt="ココペリ パッケージ正面 - 犬猫用動物用ケイ素濃縮液"
@@ -366,7 +366,7 @@ export default function Home() {
                     priority
                   />
                 </div>
-                <div className="relative w-32 md:w-40 rounded-2xl overflow-hidden shadow-xl border border-gray-200">
+                <div className="relative w-24 sm:w-28 md:w-40 rounded-2xl overflow-hidden shadow-xl border border-gray-200">
                   <Image
                     src="/images/image-6.webp"
                     alt="ココペリを愛用する猫"
@@ -380,6 +380,11 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ============================================================
+          Social Proof — Hero直下(LCP外)で安心感を前倒し
+          ============================================================ */}
+      <SocialProof />
 
       {/* ============================================================
           信頼バー — 大きな数字
@@ -954,6 +959,14 @@ export default function Home() {
       </section>
 
       {/* ============================================================
+          競合比較 — 水道水・市販ミネラル水・ペット用水との比較表
+          ============================================================ */}
+      <ComparisonTable
+        title="他の水と、何が違うの？"
+        lead="一般的なペット向け水との違いを、フラットにまとめました。"
+      />
+
+      {/* ============================================================
           4. 使い方 — 3ステップ図解
           ============================================================ */}
       <section id="howto" className="py-16 md:py-24 bg-gray-50">
@@ -1162,7 +1175,9 @@ export default function Home() {
                 <p className="text-xs text-amber-200 mb-4">30ml x 2本</p>
                 <p className="text-4xl font-black text-white mb-1">{formatYen(BUNDLE_2_PRICE)}</p>
                 <p className="text-xs text-amber-200 mb-1">送料無料</p>
-                <p className="text-white text-sm font-bold mb-6">1本あたり ¥2,990</p>
+                <p className="text-white text-sm font-bold mb-6">
+                  1本あたり {formatYen(PER_BOTTLE_BUNDLE_2)}
+                </p>
                 <ul className="text-sm text-amber-50 text-left space-y-2 mb-6 flex-1">
                   <li className="flex items-start gap-2">
                     <span className="text-white mt-0.5 shrink-0">&#10003;</span>
@@ -1894,6 +1909,9 @@ export default function Home() {
 
       {/* ============ モバイル固定CTAバー ============ */}
       <MobileCTABar />
+
+      {/* ============ 離脱意図ポップアップ（24h cooldown） ============ */}
+      <ExitIntentPopup />
 
       {/* ============ Schema.org 構造化データ ============ */}
       <script
