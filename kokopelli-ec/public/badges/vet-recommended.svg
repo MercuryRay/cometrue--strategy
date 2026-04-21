@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="獣医師も注目">
+  <defs>
+    <linearGradient id="vrG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0ea5e9"/>
+      <stop offset="1" stop-color="#0369a1"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="56" fill="url(#vrG)" stroke="#0c4a6e" stroke-width="2"/>
+  <!-- Stethoscope: tubing -->
+  <path d="M42 28 Q34 42 38 58 Q42 72 58 72 Q74 72 74 86" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+  <path d="M54 28 Q62 42 58 58" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+  <!-- Ear tips -->
+  <circle cx="42" cy="26" r="3.5" fill="#ffffff"/>
+  <circle cx="54" cy="26" r="3.5" fill="#ffffff"/>
+  <!-- Chest piece -->
+  <circle cx="74" cy="90" r="9" fill="#ffffff" stroke="#0c4a6e" stroke-width="2"/>
+  <circle cx="74" cy="90" r="4" fill="#0ea5e9"/>
+  <text x="60" y="108" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="10" fill="#ffffff" letter-spacing="1">獣医師も注目</text>
+</svg>

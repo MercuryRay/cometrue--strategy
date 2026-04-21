@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="SSL Secure">
+  <defs>
+    <linearGradient id="sslG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#16a34a"/>
+      <stop offset="1" stop-color="#15803d"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="56" fill="url(#sslG)" stroke="#14532d" stroke-width="2"/>
+  <circle cx="60" cy="60" r="50" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6"/>
+  <!-- Padlock body -->
+  <rect x="42" y="50" width="36" height="30" rx="4" fill="#ffffff" stroke="#065f46" stroke-width="2"/>
+  <!-- Shackle -->
+  <path d="M48 50 V42 a12 12 0 0 1 24 0 V50" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+  <!-- Keyhole -->
+  <circle cx="60" cy="62" r="3.5" fill="#065f46"/>
+  <rect x="58.5" y="62" width="3" height="8" fill="#065f46"/>
+  <!-- SSL text -->
+  <text x="60" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="16" fill="#ffffff" letter-spacing="2">SSL</text>
+</svg>

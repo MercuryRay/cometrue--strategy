@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="無添加">
+  <defs>
+    <linearGradient id="naG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fef3c7"/>
+      <stop offset="1" stop-color="#fde68a"/>
+    </linearGradient>
+  </defs>
+  <!-- Washi paper background circle -->
+  <circle cx="60" cy="60" r="56" fill="url(#naG)" stroke="#78350f" stroke-width="2"/>
+  <!-- Inner brush-square frame -->
+  <rect x="18" y="18" width="84" height="84" rx="6" fill="none" stroke="#7c2d12" stroke-width="2" stroke-dasharray="2 4"/>
+  <!-- Red hanko seal -->
+  <rect x="82" y="82" width="22" height="22" rx="2" fill="#b91c1c" stroke="#7f1d1d" stroke-width="1"/>
+  <text x="93" y="97" text-anchor="middle" font-family="system-ui, -apple-system, serif" font-weight="900" font-size="9" fill="#ffffff">純</text>
+  <!-- Kanji brush text 無添加 -->
+  <text x="60" y="72" text-anchor="middle" font-family="'Yu Mincho','Hiragino Mincho Pro',serif,system-ui" font-weight="900" font-size="34" fill="#1c1917" letter-spacing="2">無添加</text>
+  <!-- Brush stroke accents -->
+  <path d="M22 34 Q30 30 40 34" stroke="#1c1917" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.4"/>
+  <path d="M80 34 Q90 30 98 34" stroke="#1c1917" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.4"/>
+</svg>
