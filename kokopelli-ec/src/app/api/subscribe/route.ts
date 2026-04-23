@@ -66,7 +66,8 @@ export async function POST(req: NextRequest) {
           ? { referrer_customer_id: referrerCustomerId, referral_code: referralCode! }
           : {}),
       },
-      success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      // success_url に amount/plan を含め、Meta Pixel Purchase の value 計測を正常化
+      success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}&plan=subscription&amount=${SUBSCRIPTION_PRICE}`,
       cancel_url: `${siteUrl}/checkout`,
     });
 

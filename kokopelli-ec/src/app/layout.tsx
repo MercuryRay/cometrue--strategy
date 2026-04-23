@@ -237,51 +237,56 @@ export default function RootLayout({
   return (
     <html lang="ja" className={`${geistSans.variable} h-full antialiased`}>
       <head>
-        {/* Google Analytics 4 */}
-        {process.env.NEXT_PUBLIC_GA4_ID && (
-          <>
-            <script
-              async
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA4_ID}`}
-            />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
+        {/* Google Analytics 4 — env 末尾の \n を除去（混入時に SyntaxError が発生していた） */}
+        {(() => {
+          const ga4Id = process.env.NEXT_PUBLIC_GA4_ID?.trim();
+          if (!ga4Id) return null;
+          return (
+            <>
+              <script async src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`} />
+              <script
+                dangerouslySetInnerHTML={{
+                  __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', '${process.env.NEXT_PUBLIC_GA4_ID}');
+              gtag('config', '${ga4Id}');
             `,
-              }}
-            />
-          </>
-        )}
-        {/* Meta Pixel */}
-        {process.env.NEXT_PUBLIC_META_PIXEL_ID && (
-          <>
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
+                }}
+              />
+            </>
+          );
+        })()}
+        {/* Meta Pixel — env 末尾の \n を除去（混入時に SyntaxError が発生していた） */}
+        {(() => {
+          const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID?.trim();
+          if (!pixelId) return null;
+          return (
+            <>
+              <script
+                dangerouslySetInnerHTML={{
+                  __html: `
               !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
               n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
               n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
               t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
               document,'script','https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID}');
+              fbq('init', '${pixelId}');
               fbq('track', 'PageView');
             `,
-              }}
-            />
-            <noscript>
-              <img
-                height="1"
-                width="1"
-                style={{ display: 'none' }}
-                src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_META_PIXEL_ID}&ev=PageView&noscript=1`}
+                }}
               />
-            </noscript>
-          </>
-        )}
+              <noscript>
+                <img
+                  height="1"
+                  width="1"
+                  style={{ display: 'none' }}
+                  src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
+                />
+              </noscript>
+            </>
+          );
+        })()}
         {/* 構造化データ — SEO (WebSite) */}
         <script
           type="application/ld+json"
@@ -303,7 +308,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-gray-50 text-gray-900">{children}</body>
+      <body className="min-h-full flex flex-col bg-gray-50 text-gray-900">
+        <main className="flex-1 flex flex-col">{children}</main>
+      </body>
     </html>
   );
 }
