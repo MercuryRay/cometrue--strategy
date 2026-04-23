@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { SINGLE_PRICE, BUNDLE_2_PRICE, BUNDLE_6_PRICE, SHIPPING } from '@/lib/prices';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -34,19 +35,19 @@ export async function POST(req: NextRequest) {
       productName = 'ココペリ お試し1本';
       productDesc =
         '犬・猫のための動物用栄養補助食品 水溶性ケイ素濃縮液 30ml（税込・送料別途）※30日間返金保証付き';
-      unitAmount = 3480;
+      unitAmount = SINGLE_PRICE;
       qty = 1;
     } else if (plan === 'set') {
       productName = 'ココペリ 2本セット';
       productDesc =
         '犬・猫のための動物用栄養補助食品 水溶性ケイ素濃縮液 30ml×2本（税込・送料無料）';
-      unitAmount = 5980;
+      unitAmount = BUNDLE_2_PRICE;
       qty = 1;
     } else if (plan === 'bulk') {
       productName = 'ココペリ 5+1セット（6本）';
       productDesc =
         '犬・猫のための動物用栄養補助食品 水溶性ケイ素濃縮液 30ml×6本（税込・送料無料）';
-      unitAmount = 15000;
+      unitAmount = BUNDLE_6_PRICE;
       qty = 1;
     } else {
       return NextResponse.json({ error: '無効なプランです' }, { status: 400 });
@@ -110,7 +111,7 @@ export async function POST(req: NextRequest) {
               {
                 shipping_rate_data: {
                   type: 'fixed_amount',
-                  fixed_amount: { amount: 520, currency: 'jpy' },
+                  fixed_amount: { amount: SHIPPING, currency: 'jpy' },
                   display_name: '送料',
                   delivery_estimate: {
                     minimum: { unit: 'business_day', value: 3 },
@@ -158,7 +159,8 @@ export async function POST(req: NextRequest) {
         ...(clientIp ? { client_ip: clientIp } : {}),
         ...(userAgent ? { user_agent: userAgent.slice(0, 500) } : {}),
       },
-      success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      // success_url に amount/plan を含め、Meta Pixel Purchase の value 計測を正常化
+      success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}&plan=${encodeURIComponent(plan)}&amount=${finalAmount}`,
       cancel_url: `${siteUrl}/checkout`,
     };
 

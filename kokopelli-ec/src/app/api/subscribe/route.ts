@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { SUBSCRIPTION_PRICE } from '@/lib/prices';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -23,7 +24,7 @@ export async function POST(req: NextRequest) {
       httpClient: Stripe.createFetchHttpClient(),
     });
 
-    const siteUrl = 'https://kokopelli-ec.vercel.app';
+    const siteUrl = 'https://kokopelli.kamuturu.jp';
 
     // 紹介コード処理
     let referrerCustomerId: string | null = null;
@@ -49,7 +50,7 @@ export async function POST(req: NextRequest) {
               description:
                 '犬・猫のための動物用栄養補助食品 水溶性ケイ素濃縮液（毎月届く定期便・送料込み）',
             },
-            unit_amount: 5480,
+            unit_amount: SUBSCRIPTION_PRICE,
             recurring: {
               interval: 'month',
             },
@@ -65,7 +66,8 @@ export async function POST(req: NextRequest) {
           ? { referrer_customer_id: referrerCustomerId, referral_code: referralCode! }
           : {}),
       },
-      success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      // success_url に amount/plan を含め、Meta Pixel Purchase の value 計測を正常化
+      success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}&plan=subscription&amount=${SUBSCRIPTION_PRICE}`,
       cancel_url: `${siteUrl}/checkout`,
     });
 

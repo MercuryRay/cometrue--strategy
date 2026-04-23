@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Made in Japan">
+  <!-- Background -->
+  <circle cx="60" cy="60" r="56" fill="#ffffff" stroke="#111827" stroke-width="2"/>
+  <!-- Top Japan flag disc -->
+  <rect x="20" y="18" width="80" height="44" rx="2" fill="#ffffff" stroke="#111827" stroke-width="1.2"/>
+  <circle cx="60" cy="40" r="14" fill="#bc002d"/>
+  <!-- Bottom text panel -->
+  <rect x="14" y="66" width="92" height="36" rx="4" fill="#111827"/>
+  <text x="60" y="80" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="9" fill="#ffffff" letter-spacing="3">MADE IN</text>
+  <text x="60" y="96" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="14" fill="#ffffff" letter-spacing="4">JAPAN</text>
+</svg>

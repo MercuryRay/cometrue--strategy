@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="送料無料">
+  <defs>
+    <linearGradient id="shG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#1e3a8a"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="56" fill="url(#shG)" stroke="#1e3a8a" stroke-width="2"/>
+  <!-- Truck cab -->
+  <rect x="62" y="50" width="22" height="18" rx="2" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.5"/>
+  <rect x="66" y="54" width="10" height="8" fill="#93c5fd"/>
+  <!-- Truck cargo -->
+  <rect x="30" y="42" width="34" height="26" rx="2" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.5"/>
+  <!-- Wheels -->
+  <circle cx="42" cy="72" r="5" fill="#111827" stroke="#ffffff" stroke-width="1.5"/>
+  <circle cx="74" cy="72" r="5" fill="#111827" stroke="#ffffff" stroke-width="1.5"/>
+  <!-- Motion lines -->
+  <g stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.7">
+    <line x1="16" y1="50" x2="28" y2="50"/>
+    <line x1="12" y1="58" x2="26" y2="58"/>
+    <line x1="16" y1="66" x2="28" y2="66"/>
+  </g>
+  <text x="60" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="13" fill="#ffffff" letter-spacing="1">送料無料</text>
+</svg>

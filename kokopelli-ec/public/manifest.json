@@ -1,0 +1,41 @@
+{
+  "name": "ココペリ｜犬・猫のための水溶性ケイ素濃縮液",
+  "short_name": "ココペリ",
+  "description": "犬・猫のための動物用栄養補助食品。高濃度の水溶性ケイ素10,000mg/Lを含むシンプル処方のケイ素濃縮液。",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#d97706",
+  "lang": "ja",
+  "dir": "ltr",
+  "categories": ["shopping", "lifestyle", "health"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "商品を購入する",
+      "short_name": "購入",
+      "description": "定期便・セットから選ぶ",
+      "url": "/#products"
+    },
+    {
+      "name": "ブログを読む",
+      "short_name": "ブログ",
+      "description": "シリカとペットの健康情報",
+      "url": "/blog"
+    }
+  ]
+}
