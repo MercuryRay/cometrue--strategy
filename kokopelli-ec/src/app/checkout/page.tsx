@@ -295,6 +295,23 @@ function CheckoutContent() {
             </details>
           )}
 
+          {/* 30日間返金保証 — 購入ボタン直上の安心バッジ */}
+          <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-4 border-2 border-amber-300 mb-4 shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="shrink-0 w-12 h-12 rounded-full bg-amber-500 flex items-center justify-center text-white text-2xl">
+                ✓
+              </div>
+              <div className="flex-1">
+                <p className="font-bold text-amber-900 text-sm leading-tight">
+                  30日間・全額返金保証つき
+                </p>
+                <p className="text-xs text-amber-800 mt-1 leading-snug">
+                  開封後でもOK。ご満足いただけなければ商品代金を全額ご返金します。
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* 購入ボタン */}
           <button
             onClick={handleCheckout}
@@ -307,9 +324,15 @@ function CheckoutContent() {
                 ? `定期便を申し込む — ¥${total.toLocaleString()}/月`
                 : `¥${total.toLocaleString()} で購入する`}
           </button>
-          <p className="text-center text-xs text-gray-400 mb-4">
-            Visa / Mastercard / AMEX / JCB 対応
-          </p>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <span className="inline-flex items-center gap-1 text-xs text-gray-500">
+              <span className="text-green-600">🔒</span> SSL暗号化
+            </span>
+            <span className="text-gray-300">|</span>
+            <span className="text-xs text-gray-500">Stripe決済</span>
+            <span className="text-gray-300">|</span>
+            <span className="text-xs text-gray-500">Visa / Master / AMEX / JCB</span>
+          </div>
 
           {selectedPlan === 'subscription' && (
             <div className="mb-4">

@@ -5,6 +5,7 @@ import PetDiagnosis from './components/PetDiagnosis';
 // FirstTrialButton removed - no more ¥980 offer
 import MobileCTABar from './components/MobileCTABar';
 import MemberRegistration from './components/MemberRegistration';
+import ComparisonTable from './components/ComparisonTable';
 import {
   MoonIcon,
   RotateCwIcon,
@@ -253,11 +254,17 @@ export default function Home() {
                   <p className="text-sm font-black text-slate-800 leading-none">獣医師監修</p>
                   <p className="text-[10px] text-gray-500 leading-none mt-1">臨床使用10年</p>
                 </div>
-                <div className="bg-white/90 border border-amber-200 rounded-xl px-2 py-2 text-center shadow-sm">
+                <a
+                  href="#evidence"
+                  aria-label="学会報告症例セクションへ移動"
+                  className="bg-white/90 border border-amber-200 rounded-xl px-2 py-2 text-center shadow-sm transition hover:bg-amber-50 hover:shadow-md focus-visible:outline-2 focus-visible:outline-amber-500"
+                >
                   <p className="text-[10px] text-amber-600 leading-none mb-1">REPORT</p>
                   <p className="text-sm font-black text-slate-800 leading-none">2度の症例</p>
-                  <p className="text-[10px] text-gray-500 leading-none mt-1">学会報告済</p>
-                </div>
+                  <p className="text-[10px] text-amber-700 leading-none mt-1 underline underline-offset-2">
+                    学会報告を見る
+                  </p>
+                </a>
               </div>
 
               <div className="flex flex-wrap gap-2 mb-6">
@@ -1071,6 +1078,16 @@ export default function Home() {
             ))}
           </div>
         </FadeInOnScroll>
+      </section>
+
+      {/* ============================================================
+          4.5. 比較表 — 水道水 / 市販ミネラル水 / 一般ペット水 vs ココペリ
+          ============================================================ */}
+      <section id="comparison" className="bg-white">
+        <ComparisonTable
+          title="ココペリは、なぜ選ばれているのか"
+          lead="毎日のペットの一杯に、シニア期の健康を支える水溶性ケイ素10,000mg/L。一般的なペット用飲料との違いを一目でご確認ください。"
+        />
       </section>
 
       {/* ============================================================
