@@ -1658,6 +1658,150 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ============ 獣医師臨床コメント（さがら動物病院 相良先生） ============ */}
+      <section className="py-16 md:py-24 bg-gradient-to-b from-amber-50 via-white to-amber-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <FadeInOnScroll>
+            <p className="text-center text-xs font-black text-amber-700 tracking-widest mb-3">
+              VETERINARIAN&apos;S VOICE
+            </p>
+            <h2 className="text-2xl md:text-4xl font-black text-center text-gray-900 mb-3">
+              獣医師の<span className="text-amber-600">臨床体験</span>
+            </h2>
+            <p className="text-center text-sm md:text-base text-gray-600 mb-10 leading-relaxed">
+              さがら動物病院 獣医臨床医・相良先生から寄せられた、
+              <br className="hidden md:block" />
+              水溶性ケイ素との出会いと臨床現場での体験記をご紹介します。
+            </p>
+          </FadeInOnScroll>
+
+          <FadeInOnScroll>
+            <article className="bg-white rounded-3xl shadow-xl border border-amber-200 overflow-hidden">
+              {/* ヘッダー帯 */}
+              <header className="bg-gradient-to-r from-amber-600 to-amber-700 px-6 md:px-10 py-6 text-white">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-2xl md:text-3xl font-black border-2 border-white/40">
+                    相
+                  </div>
+                  <div>
+                    <p className="text-xs md:text-sm font-bold opacity-90">さがら動物病院</p>
+                    <p className="text-lg md:text-xl font-black leading-tight">
+                      獣医臨床医　相良 先生
+                    </p>
+                  </div>
+                </div>
+              </header>
+
+              {/* 本文 */}
+              <div className="px-6 md:px-12 py-8 md:py-12 space-y-8 text-gray-800 leading-loose">
+                {/* 章1 出会い */}
+                <section>
+                  <h3 className="text-lg md:text-xl font-black text-amber-700 mb-3 border-l-4 border-amber-500 pl-3">
+                    1. 水溶性ケイ素との出会い
+                  </h3>
+                  <p className="text-sm md:text-base">
+                    私と水溶性ケイ素との出会いは、今から十数年前にさかのぼります。きっかけは、ごく偶然でした。
+                  </p>
+                  <p className="text-sm md:text-base mt-3">
+                    ある時、私自身が水溶性ケイ素を口にする機会があり、しばらく続けてみたところ、
+                    <strong className="text-amber-700">「何かが違う」</strong>と感じたのです。
+                  </p>
+                  <p className="text-sm md:text-base mt-3">
+                    疲れが以前ほど残らない。爪がやけにしっかりして伸びる。はっきり説明できる変化ではないものの、確かな違和感——それが興味の始まりでした。
+                  </p>
+                  <p className="text-sm md:text-base mt-3">
+                    そこから私は、ケイ素に関する書籍を読み漁り、製造会社の研究者のもとへ足を運び、知識を深めていきました。気がつけば、この分野に深く引き込まれていました。
+                  </p>
+                </section>
+
+                {/* 章2 臨床体験 */}
+                <section>
+                  <h3 className="text-lg md:text-xl font-black text-amber-700 mb-3 border-l-4 border-amber-500 pl-3">
+                    2. 高齢の柴犬との出会い
+                  </h3>
+                  <p className="text-sm md:text-base">
+                    そんな中、ある一例が私の臨床の方向性に大きな影響を与えることになります。
+                  </p>
+                  <p className="text-sm md:text-base mt-3">
+                    高齢の柴犬で、いわゆる認知機能の低下と思われる様子——夜鳴き、徘徊、ぼんやりして活力がない状態が見られていました。飼い主様は睡眠不足となり、日常生活にも支障が出ているとのご相談でした。
+                  </p>
+                  <p className="text-sm md:text-base mt-3">
+                    さまざまな方法を試みましたが、明確な変化は見られませんでした。その時、ふと思い立ったのです。
+                    <strong className="text-amber-700">「水溶性ケイ素を試してみよう」</strong>と。
+                  </p>
+                  <p className="text-sm md:text-base mt-3">
+                    正直に「確実ではありませんが試してみませんか」とお伝えし、お与えいただくことになりました。
+                  </p>
+                </section>
+
+                {/* 章3 1週間後 */}
+                <section>
+                  <h3 className="text-lg md:text-xl font-black text-amber-700 mb-3 border-l-4 border-amber-500 pl-3">
+                    3. 1週間後の再来院
+                  </h3>
+                  <div className="bg-amber-50 border-l-4 border-amber-500 px-5 py-4 rounded-r-lg my-4">
+                    <p className="text-base md:text-lg font-black text-amber-800">
+                      「先生、夜、寝てくれるんです」
+                    </p>
+                    <p className="text-xs text-amber-700 mt-1">— 飼い主様の第一声</p>
+                  </div>
+                  <p className="text-sm md:text-base">
+                    再来院された飼い主様の第一声は、今でも忘れられません。
+                  </p>
+                  <p className="text-sm md:text-base mt-3">
+                    夜鳴きの様子に変化が見られ、ご家族の負担も大きく軽減されていました。
+                  </p>
+                  <p className="text-sm md:text-base mt-3">
+                    その後も経過を追う中で、夜鳴きが再び出始めたタイミングでは濃度を調整し、さらに回数を増やすなど、細かな工夫を重ねていきました。すると、その都度ご様子が落ち着き、最期まで穏やかに、ご家族に大切にされながら過ごすことができました。
+                  </p>
+                </section>
+
+                {/* 章4 結論 */}
+                <section>
+                  <h3 className="text-lg md:text-xl font-black text-amber-700 mb-3 border-l-4 border-amber-500 pl-3">
+                    4. 統合的なケアのひとつとして
+                  </h3>
+                  <p className="text-sm md:text-base">
+                    この一例の経験が、私を水溶性ケイ素を活用した取り組みへと大きく導いた原点です。
+                  </p>
+                  <p className="text-sm md:text-base mt-3">
+                    現在でも、水溶性ケイ素は私の行う統合的なケアのひとつとして位置づけています。
+                  </p>
+                  <div className="bg-gradient-to-br from-amber-100 to-amber-50 border-2 border-amber-300 rounded-2xl px-6 py-5 mt-5 text-center">
+                    <p className="text-lg md:text-xl font-black text-amber-800 leading-relaxed">
+                      「少しでも穏やかに、
+                      <br className="md:hidden" />
+                      少しでも長く」
+                    </p>
+                    <p className="text-xs md:text-sm text-amber-700 mt-2">
+                      その想いに応える選択肢のひとつとして、
+                      <br className="hidden md:block" />
+                      私はこの素材の可能性を大切にしています。
+                    </p>
+                  </div>
+                </section>
+
+                {/* 署名 */}
+                <div className="pt-6 border-t border-gray-200 text-right">
+                  <p className="text-sm text-gray-600">さがら動物病院</p>
+                  <p className="text-base font-black text-gray-900">獣医臨床医　相良</p>
+                </div>
+              </div>
+
+              {/* 注意書き */}
+              <div className="bg-gray-50 px-6 md:px-12 py-5 border-t border-gray-200">
+                <p className="text-xs text-gray-500 leading-relaxed">
+                  ※
+                  本コメントは獣医師個人の臨床体験に基づく感想であり、商品の効能・効果を保証するものではありません。
+                  本品は動物用栄養補助食品であり、医薬品ではありません。疾病の治療・予防を目的としたものではありません。
+                  体質によって変化の感じ方には個体差があります。持病のある場合や投薬中の場合は、必ずかかりつけの獣医師にご相談ください。
+                </p>
+              </div>
+            </article>
+          </FadeInOnScroll>
+        </div>
+      </section>
+
       {/* ============ 会社概要 ============ */}
       <section className="py-16 md:py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">
