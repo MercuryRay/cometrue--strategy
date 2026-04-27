@@ -1,0 +1,9 @@
+{
+  "regions": ["hnd1"],
+  "crons": [
+    {
+      "path": "/api/cron/follow-up-emails",
+      "schedule": "0 1 * * *"
+    }
+  ]
+}
