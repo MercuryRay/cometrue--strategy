@@ -1589,16 +1589,23 @@ export default function Home() {
       <section className="py-16 md:py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4">
           <FadeInOnScroll>
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="w-48 md:w-64 shrink-0 rounded-2xl overflow-hidden shadow-lg border border-gray-100">
-                <Image
-                  src="/images/image-9.webp"
-                  alt="動物病院での使用イメージ"
-                  width={400}
-                  height={400}
-                  className="w-full h-auto"
-                />
-              </div>
+            <div className="flex flex-col md:flex-row items-start gap-8">
+              <figure className="w-full md:w-80 shrink-0">
+                <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+                  <Image
+                    src="/images/dr-sagara-toi-misaki-4x3.webp"
+                    alt="さがら動物病院 相良獣医師 — 宮崎・都井岬の野生馬と"
+                    width={800}
+                    height={600}
+                    className="w-full h-auto"
+                  />
+                </div>
+                <figcaption className="mt-3 text-xs text-gray-600 leading-relaxed">
+                  さがら動物病院 <strong className="text-gray-900">相良獣医師</strong>
+                  <br />
+                  <span className="text-amber-700">自然豊かな宮崎から発信</span>(都井岬の野生馬と)
+                </figcaption>
+              </figure>
               <div>
                 <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-6">
                   動物病院でも採用されています
