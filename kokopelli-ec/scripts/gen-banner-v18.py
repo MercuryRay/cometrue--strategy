@@ -89,6 +89,14 @@ def build_feed(out_path: Path):
     pet = fit_image(pet, W, MID_H)
     canvas.paste(pet, (0, TOP_H))
 
+    # 商品バッジ(写真左上)
+    badge_path = ROOT / "ads-v14" / "product-cut-v2.png"
+    if badge_path.exists():
+        badge = Image.open(badge_path).convert("RGBA")
+        bsize = int(MID_H * 0.30)
+        badge = badge.resize((bsize, bsize), Image.LANCZOS)
+        canvas.paste(badge, (24, TOP_H + 20), badge)
+
     # キャプション帯(写真下端)
     cap_h = 44
     cap_y = TOP_H + MID_H - cap_h
@@ -144,6 +152,14 @@ def build_story(out_path: Path):
     pet = Image.open(SRC_PHOTO).convert("RGB")
     pet = fit_image(pet, W, MID_H)
     canvas.paste(pet, (0, TOP_H))
+
+    # 商品バッジ(写真左上)
+    badge_path = ROOT / "ads-v14" / "product-cut-v2.png"
+    if badge_path.exists():
+        badge = Image.open(badge_path).convert("RGBA")
+        bsize = int(MID_H * 0.20)
+        badge = badge.resize((bsize, bsize), Image.LANCZOS)
+        canvas.paste(badge, (32, TOP_H + 30), badge)
 
     cap_h = 64
     cap_y = TOP_H + MID_H - cap_h
