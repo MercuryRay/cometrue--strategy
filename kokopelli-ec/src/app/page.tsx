@@ -1590,7 +1590,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-4">
           <FadeInOnScroll>
             <p className="text-center text-xs font-black text-amber-600 tracking-widest mb-3">
-              VETERINARIAN&apos;S VOICE
+              獣医師の声
             </p>
             <h2 className="text-2xl md:text-4xl font-black text-gray-900 mb-3 text-center">
               獣医師が<span className="text-amber-600">10年</span>使ってきた
@@ -1658,21 +1658,21 @@ export default function Home() {
                 {/* 客観事実3点 */}
                 <div className="grid grid-cols-3 gap-3">
                   <div className="bg-white rounded-2xl px-3 py-4 border border-slate-200 text-center shadow-sm">
-                    <p className="text-amber-600 text-xs font-bold tracking-wider mb-1">CLINICAL</p>
+                    <p className="text-amber-600 text-xs font-bold tracking-wider mb-1">臨床実績</p>
                     <p className="text-2xl font-black text-slate-900 leading-none">
                       10<span className="text-base">年</span>
                     </p>
                     <p className="text-[11px] text-gray-500 mt-1 leading-tight">臨床使用の実績</p>
                   </div>
                   <div className="bg-white rounded-2xl px-3 py-4 border border-slate-200 text-center shadow-sm">
-                    <p className="text-amber-600 text-xs font-bold tracking-wider mb-1">REPORT</p>
+                    <p className="text-amber-600 text-xs font-bold tracking-wider mb-1">学会報告</p>
                     <p className="text-2xl font-black text-slate-900 leading-none">
                       2<span className="text-base">回</span>
                     </p>
                     <p className="text-[11px] text-gray-500 mt-1 leading-tight">学会での症例報告</p>
                   </div>
                   <div className="bg-white rounded-2xl px-3 py-4 border border-slate-200 text-center shadow-sm">
-                    <p className="text-amber-600 text-xs font-bold tracking-wider mb-1">MADE IN</p>
+                    <p className="text-amber-600 text-xs font-bold tracking-wider mb-1">産地</p>
                     <p className="text-2xl font-black text-slate-900 leading-none">宮崎</p>
                     <p className="text-[11px] text-gray-500 mt-1 leading-tight">シリカラボが製造</p>
                   </div>
