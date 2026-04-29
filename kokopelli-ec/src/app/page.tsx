@@ -1585,48 +1585,117 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ============ 動物病院での取り扱い ============ */}
-      <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4">
+      {/* ============ 動物病院での取り扱い + 獣医師証言 ============ */}
+      <section className="py-16 md:py-24 bg-gradient-to-b from-white to-slate-50">
+        <div className="max-w-5xl mx-auto px-4">
           <FadeInOnScroll>
-            <div className="flex flex-col md:flex-row items-start gap-8">
-              <figure className="w-full md:w-80 shrink-0">
-                <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+            <p className="text-center text-xs font-black text-amber-600 tracking-widest mb-3">
+              VETERINARIAN&apos;S VOICE
+            </p>
+            <h2 className="text-2xl md:text-4xl font-black text-gray-900 mb-3 text-center">
+              獣医師が<span className="text-amber-600">10年</span>使ってきた
+              <br className="md:hidden" />
+              シリカ天然水
+            </h2>
+            <p className="text-center text-gray-600 mb-12 text-sm md:text-base">
+              宮崎・都井岬の野生馬を診る獣医師が、臨床現場で取り入れてきたミネラルウォーター。
+            </p>
+          </FadeInOnScroll>
+
+          <FadeInOnScroll>
+            <div className="grid md:grid-cols-12 gap-8 items-stretch">
+              {/* 写真側 — md:5列 */}
+              <figure className="md:col-span-5">
+                <div className="rounded-3xl overflow-hidden shadow-2xl border border-white">
                   <Image
                     src="/images/dr-sagara-toi-misaki-4x3.webp"
                     alt="さがら動物病院 相良獣医師 — 宮崎・都井岬の野生馬と"
-                    width={800}
-                    height={600}
+                    width={1200}
+                    height={900}
                     className="w-full h-auto"
                   />
                 </div>
-                <figcaption className="mt-3 text-xs text-gray-600 leading-relaxed">
-                  さがら動物病院 <strong className="text-gray-900">相良獣医師</strong>
+                <figcaption className="mt-4 text-sm text-gray-700 leading-relaxed">
+                  <strong className="text-gray-900 text-base">相良獣医師</strong>
+                  <span className="text-gray-500"> / さがら動物病院</span>
                   <br />
-                  <span className="text-amber-700">自然豊かな宮崎から発信</span>(都井岬の野生馬と)
+                  <span className="text-amber-700 text-xs">
+                    宮崎県・都井岬の野生馬を診療。シリカ天然水の臨床使用を10年継続。
+                  </span>
                 </figcaption>
               </figure>
-              <div>
-                <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-6">
-                  動物病院でも採用されています
-                </h2>
-                <div className="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-6 border border-slate-200">
-                  <p className="text-gray-700 leading-relaxed mb-3">
-                    <strong>さがら動物病院</strong>の獣医師が治験担当として臨床現場で使用・研究。
-                    学会で<strong>2度の症例報告</strong>済み。
+
+              {/* 証言カード — md:7列 */}
+              <div className="md:col-span-7 flex flex-col gap-5">
+                <blockquote className="relative bg-white rounded-3xl p-7 md:p-8 border border-amber-200 shadow-lg">
+                  <span className="absolute -top-3 left-7 bg-amber-500 text-white text-xs font-black px-3 py-1 rounded-full tracking-widest">
+                    獣医師コメント
+                  </span>
+                  <svg
+                    className="absolute top-5 right-6 w-10 h-10 text-amber-100"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M9.5 7c-3 0-5.5 2.5-5.5 5.5v4.5h5v-5h-2c0-1.5 1.5-3 2.5-3v-2zm9 0c-3 0-5.5 2.5-5.5 5.5v4.5h5v-5h-2c0-1.5 1.5-3 2.5-3v-2z" />
+                  </svg>
+                  <p className="text-gray-800 leading-relaxed text-[15px] md:text-base mb-3">
+                    都井岬で野生馬を診ていると、動物たちが水質を選んで飲む姿に、いつも気づかされます。
                   </p>
-                  <p className="text-gray-700 leading-relaxed mb-3">
-                    製造元の<strong>株式会社シリカラボ</strong>
-                    （宮崎県都城市）が品質管理・製造・発送を一貫して担当。
+                  <p className="text-gray-800 leading-relaxed text-[15px] md:text-base mb-3">
+                    ココペリの<strong className="text-amber-700">シリカ天然水</strong>
+                    は、10年にわたって私の臨床現場で取り入れてきたミネラルウォーターです。
                   </p>
-                  <p className="text-gray-700 leading-relaxed">
-                    これまで動物病院経由のみだった製品が、
-                    <strong className="text-amber-700">ついにオンラインで直接購入可能に。</strong>
+                  <p className="text-gray-800 leading-relaxed text-[15px] md:text-base">
+                    シニア期のワンちゃん・猫ちゃんの<strong>毎日の食事サポート</strong>
+                    として、飼い主様におすすめしています。
                   </p>
-                  <p className="text-sm text-gray-500 mt-3">
-                    ※ すべての動物病院で取り扱いがあるわけではありません。
+                  <p className="mt-5 text-right text-sm text-gray-600">
+                    — さがら動物病院 <strong className="text-gray-900">相良獣医師</strong>
+                  </p>
+                </blockquote>
+
+                {/* 客観事実3点 */}
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-white rounded-2xl px-3 py-4 border border-slate-200 text-center shadow-sm">
+                    <p className="text-amber-600 text-xs font-bold tracking-wider mb-1">CLINICAL</p>
+                    <p className="text-2xl font-black text-slate-900 leading-none">
+                      10<span className="text-base">年</span>
+                    </p>
+                    <p className="text-[11px] text-gray-500 mt-1 leading-tight">臨床使用の実績</p>
+                  </div>
+                  <div className="bg-white rounded-2xl px-3 py-4 border border-slate-200 text-center shadow-sm">
+                    <p className="text-amber-600 text-xs font-bold tracking-wider mb-1">REPORT</p>
+                    <p className="text-2xl font-black text-slate-900 leading-none">
+                      2<span className="text-base">回</span>
+                    </p>
+                    <p className="text-[11px] text-gray-500 mt-1 leading-tight">学会での症例報告</p>
+                  </div>
+                  <div className="bg-white rounded-2xl px-3 py-4 border border-slate-200 text-center shadow-sm">
+                    <p className="text-amber-600 text-xs font-bold tracking-wider mb-1">MADE IN</p>
+                    <p className="text-2xl font-black text-slate-900 leading-none">宮崎</p>
+                    <p className="text-[11px] text-gray-500 mt-1 leading-tight">シリカラボが製造</p>
+                  </div>
+                </div>
+
+                {/* 補足ノート */}
+                <div className="bg-slate-900 text-white rounded-2xl p-5 text-sm leading-relaxed">
+                  <p className="mb-1">
+                    <strong className="text-amber-300">これまで動物病院経由のみ</strong>
+                    で流通していた製品です。
+                  </p>
+                  <p className="text-slate-300">
+                    オンラインでの一般販売は始まったばかり。製造元
+                    <strong className="text-white">株式会社シリカラボ</strong>
+                    （宮崎県都城市）から直送します。
                   </p>
                 </div>
+
+                <p className="text-xs text-gray-500">
+                  ※
+                  本コメントは獣医師の臨床経験に基づく所見であり、製品の効能効果を保証するものではありません。
+                  本品は動物用栄養補助食品であり、医薬品ではありません。
+                </p>
               </div>
             </div>
           </FadeInOnScroll>
