@@ -145,10 +145,7 @@ export async function POST(req: NextRequest) {
 
       // === 顧客情報の確実な収集 ===
       customer_creation: 'always',
-      // consent_collection.promotions: 'auto' はUS merchants限定のため日本アカウントでは省略
-      phone_number_collection: {
-        enabled: true,
-      },
+      // 配送先住所で電話番号も取得可。決済画面の入力項目を減らしてCVR改善。
 
       metadata: {
         ...(referrerCustomerId

@@ -392,9 +392,7 @@ function CheckoutContent() {
                 ? `定期便を申し込む — ${formatYen(total)}/月`
                 : `${formatYen(total)} で購入する`}
           </button>
-          <p className="text-center text-xs text-slate-600 mb-4">
-            Visa / Mastercard / AMEX / JCB 対応
-          </p>
+          <p className="text-center text-xs text-slate-600 mb-4">Visa / Mastercard / AMEX 対応</p>
 
           {selectedPlan === 'subscription' && (
             <div className="mb-4">
