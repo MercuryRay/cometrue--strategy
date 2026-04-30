@@ -253,7 +253,54 @@ ${FOOTER}`;
 }
 
 // ───────────────────────────────────────────
-// 7. オーナー向け新規購入通知
+// 7. カート放棄リカバリーメール（expired session直後）
+// ───────────────────────────────────────────
+export interface AbandonedCartVars {
+  customerName: string;
+  productName: string;
+  amount: number;
+  recoveryUrl: string;
+}
+
+export function abandonedCart(vars: AbandonedCartVars) {
+  const subject = '【ココペリ】お買い物の続きはこちらから（¥500クーポン同梱）';
+  const text = `${vars.customerName || 'お客様'}様
+
+先ほどはココペリの購入ページまでお進みいただき、ありがとうございました。
+決済画面でお手続きが中断されたままになっておりましたので、
+そのままお買い物を再開できる専用URLをお送りいたします。
+
+■ 中断された商品
+${vars.productName}（¥${(vars.amount || 0).toLocaleString()}）
+
+■ お買い物を再開する
+${vars.recoveryUrl}
+
+※このURLは24時間有効です。
+※決済方法はクレジットカード（Visa/Mastercard/AMEX）に対応しています。
+
+━━━ 限定クーポン ━━━
+
+このメールから24時間以内にご購入いただいた方限定で
+クーポンコード「COMEBACK500」で **¥500OFF** になります。
+決済画面の「クーポン」欄にご入力ください。
+
+━━━━━━━━━━━━━━━━
+
+「決済画面でつまずいてしまった」「迷ってしまった」というお声をよくいただきます。
+不明点はLINEでお気軽にどうぞ。獣医師監修のもと、ご相談を承っております。
+LINE: ${LINE_URL}
+
+ご家族（ペット）の健康のお役に立てる商品です。
+ご検討、よろしくお願いいたします。
+
+${FOOTER}`;
+
+  return { subject, text };
+}
+
+// ───────────────────────────────────────────
+// 8. オーナー向け新規購入通知
 // ───────────────────────────────────────────
 export interface OwnerNotifyVars {
   customerName: string;

@@ -163,6 +163,13 @@ export async function POST(req: NextRequest) {
         description: `${productName}${discountAmount > 0 ? ` (¥${discountAmount} OFF)` : ''}`,
       },
 
+      // 3DS は必要時のみ起動。「常時3DS」で離脱率が悪化するのを避ける。
+      payment_method_options: {
+        card: {
+          request_three_d_secure: 'automatic',
+        },
+      },
+
       metadata: {
         ...(referrerCustomerId
           ? { referrer_customer_id: referrerCustomerId, referral_code: referralCode! }

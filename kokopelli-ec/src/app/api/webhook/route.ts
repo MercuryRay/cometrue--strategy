@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { sendEmail, notifyOwner } from '@/lib/email';
-import { purchaseConfirmation, ownerPurchaseNotification } from '@/lib/email-templates';
+import {
+  purchaseConfirmation,
+  ownerPurchaseNotification,
+  abandonedCart,
+} from '@/lib/email-templates';
 import { sendPurchaseEvent } from '@/lib/meta-capi';
 
 export const runtime = 'nodejs';
@@ -264,6 +268,50 @@ export async function POST(req: NextRequest) {
       });
     } catch (err) {
       console.error('決済失敗通知エラー:', err);
+    }
+  }
+
+  // ── カート放棄リカバリー (expired session) ──
+  // Stripeのafter_expiration.recoveryでrecovery URLは生成されるが、
+  // 顧客emailが入力済みのexpired sessionだけStripeが自動メールを送る。
+  // ここで取りこぼしを拾い、recovery URL付きの独自メールを送る。
+  if (event.type === 'checkout.session.expired') {
+    const session = event.data.object as Stripe.Checkout.Session;
+    const customerEmail = session.customer_details?.email || session.customer_email;
+    const customerName = session.customer_details?.name || 'お客様';
+    const recoveryUrl = session.after_expiration?.recovery?.url;
+    const amount = session.amount_total || 0;
+
+    if (customerEmail && recoveryUrl) {
+      try {
+        let productName = 'ココペリ（水溶性ケイ素濃縮液）';
+        try {
+          const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 5 });
+          productName = lineItems.data.map((item) => item.description).join(', ') || productName;
+        } catch {
+          // line_items取得失敗時はデフォルト商品名で続行
+        }
+
+        const mail = abandonedCart({
+          customerName,
+          productName,
+          amount,
+          recoveryUrl,
+        });
+
+        await sendEmail({
+          to: customerEmail,
+          subject: mail.subject,
+          text: mail.text,
+        });
+        console.log(`カート放棄リカバリーメール送信: ${customerEmail} (session=${session.id})`);
+      } catch (err) {
+        console.error('カート放棄リカバリーメール送信エラー:', err);
+      }
+    } else {
+      console.log(
+        `カート放棄: email未取得のためスキップ (session=${session.id}, fbc=${session.metadata?.fbc || 'none'})`
+      );
     }
   }
 
