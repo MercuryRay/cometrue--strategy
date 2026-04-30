@@ -1,37 +1,28 @@
 'use client';
 
 /**
- * ExitIntentPopup — 離脱直前にメアド取得するモーダル
+ * ExitIntentPopup — 離脱直前にクーポンを提示するモーダル
  *
  * - Desktop: mouseout で上端離脱を検知
- * - Mobile: scroll 60% or popstate（戻る）で発火
- * - 24h に 1 度だけ表示（localStorage）
+ * - Mobile: 70% スクロール到達で発火 (popstate ハイジャックは UX 悪化のため廃止)
+ * - 24h に 1 度だけ表示 (localStorage)
  * - ESC / 背景クリック / 閉じるボタン で dismiss
- * - a11y: role="dialog" aria-modal, focus trap, initial focus
- *
- * 使い方（親 layout/page の client boundary 内）:
- *   import ExitIntentPopup from "../../components/ExitIntentPopup";
- *   <ExitIntentPopup />
+ * - クーポンコード `COMEBACK500` を即時表示+コピー (メール送信なし)
  */
 
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const STORAGE_KEY = 'kokopelli_exit_intent_shown_at';
-const COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24h
-const SCROLL_TRIGGER_RATIO = 0.6;
-const COUPON_CODE = 'KOKO500'; // 初回500円OFF（LP既存オファーの範囲内）
-
-type Status = 'idle' | 'submitting' | 'done' | 'error';
+const COOLDOWN_MS = 24 * 60 * 60 * 1000;
+const SCROLL_TRIGGER_RATIO = 0.7;
+const COUPON_CODE = 'COMEBACK500'; // Stripe Dashboard で作成された ¥500OFF プロモコードと統一
 
 export default function ExitIntentPopup() {
   const [open, setOpen] = useState(false);
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<Status>('idle');
+  const [copied, setCopied] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
   const firedRef = useRef(false);
 
-  // --- trigger logic --------------------------------------------------
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const last = Number(localStorage.getItem(STORAGE_KEY) || 0);
@@ -43,34 +34,24 @@ export default function ExitIntentPopup() {
       setOpen(true);
     };
 
+    const isTouch = 'ontouchstart' in window;
     const onMouseOut = (e: MouseEvent) => {
-      // デスクトップのみ: カーソルが画面上端から出る直前
-      if (e.clientY <= 0 && !('ontouchstart' in window)) fire();
+      if (e.clientY <= 0 && !isTouch) fire();
     };
     const onScroll = () => {
       const h = document.documentElement;
       const ratio = (h.scrollTop + window.innerHeight) / h.scrollHeight;
-      if (ratio >= SCROLL_TRIGGER_RATIO && 'ontouchstart' in window) fire();
-    };
-    const onPop = () => {
-      if ('ontouchstart' in window) fire();
+      if (ratio >= SCROLL_TRIGGER_RATIO && isTouch) fire();
     };
 
-    // popstate を発火させるため history に state を1つ積む
-    if ('ontouchstart' in window) {
-      history.pushState({ exitIntent: 1 }, '');
-    }
     document.addEventListener('mouseout', onMouseOut);
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('popstate', onPop);
     return () => {
       document.removeEventListener('mouseout', onMouseOut);
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('popstate', onPop);
     };
   }, []);
 
-  // --- close handlers -------------------------------------------------
   const close = () => {
     setOpen(false);
     if (typeof window !== 'undefined') {
@@ -82,29 +63,8 @@ export default function ExitIntentPopup() {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') close();
-      if (e.key === 'Tab') {
-        // focus trap
-        const root = dialogRef.current;
-        if (!root) return;
-        const focusables = root.querySelectorAll<HTMLElement>(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-        if (focusables.length === 0) return;
-        const first = focusables[0];
-        const last = focusables[focusables.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
     };
     document.addEventListener('keydown', onKey);
-    // initial focus
-    requestAnimationFrame(() => inputRef.current?.focus());
-    // body scroll lock
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => {
@@ -113,21 +73,26 @@ export default function ExitIntentPopup() {
     };
   }, [open]);
 
-  // --- submit ---------------------------------------------------------
-  const onSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setStatus('error');
-      return;
-    }
-    setStatus('submitting');
+  const copyCode = async () => {
     try {
-      // TODO: 実装予定 — /api/leads エンドポイントで Resend + Meta CAPI Lead
-      // await fetch("/api/leads", { method: "POST", body: JSON.stringify({ email, source: "exit-intent" }) });
-      await new Promise((r) => setTimeout(r, 400));
-      setStatus('done');
+      await navigator.clipboard.writeText(COUPON_CODE);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch {
-      setStatus('error');
+      const ta = document.createElement('textarea');
+      ta.value = COUPON_CODE;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch {
+        // noop
+      }
+      document.body.removeChild(ta);
     }
   };
 
@@ -150,63 +115,47 @@ export default function ExitIntentPopup() {
           type="button"
           onClick={close}
           aria-label="閉じる"
-          className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+          className="absolute right-3 top-3 flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-800"
         >
           <span aria-hidden className="text-2xl leading-none">
             ×
           </span>
         </button>
 
-        {status === 'done' ? (
-          <div className="py-6 text-center">
-            <p className="mb-2 text-2xl font-bold text-amber-600">ありがとうございます！</p>
-            <p className="text-slate-700">
-              クーポンコード <span className="font-mono font-bold">{COUPON_CODE}</span> を
-              メールでお送りしました。
-            </p>
-          </div>
-        ) : (
-          <>
-            <p className="mb-1 text-sm font-semibold text-amber-600">
-              ＼ ちょっとお待ちください ／
-            </p>
-            <h2 id="exit-intent-title" className="mb-2 text-2xl font-bold text-slate-800">
-              初回 500円OFFクーポン
-            </h2>
-            <p className="mb-5 text-sm text-slate-600">
-              メールアドレスをご登録いただいた方に、次回ご購入で使える
-              <span className="font-bold text-amber-600">¥500 OFF クーポン</span>をお届けします。
-            </p>
-            <form onSubmit={onSubmit} className="space-y-3">
-              <input
-                ref={inputRef}
-                type="email"
-                required
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (status === 'error') setStatus('idle');
-                }}
-                placeholder="your@email.com"
-                aria-invalid={status === 'error'}
-                className="w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-800 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-200"
-              />
-              {status === 'error' && (
-                <p className="text-sm text-red-600">メールアドレスの形式をご確認ください。</p>
-              )}
-              <button
-                type="submit"
-                disabled={status === 'submitting'}
-                className="w-full rounded-lg bg-amber-600 py-3 font-bold text-white shadow hover:bg-amber-500 disabled:opacity-60"
-              >
-                {status === 'submitting' ? '送信中...' : 'クーポンを受け取る'}
-              </button>
-              <p className="text-center text-xs text-slate-400">
-                ※ 登録情報はクーポン配信のみに利用します
-              </p>
-            </form>
-          </>
-        )}
+        <p className="mb-1 text-sm font-semibold text-amber-600">＼ ちょっとお待ちください ／</p>
+        <h2 id="exit-intent-title" className="mb-2 text-2xl font-bold text-slate-800">
+          ¥500 OFF クーポンプレゼント
+        </h2>
+        <p className="mb-5 text-sm text-slate-600 leading-relaxed">
+          下記のクーポンコードを決済画面の
+          <span className="font-bold text-amber-700">「クーポン」欄</span>
+          にご入力いただくと
+          <span className="font-bold text-amber-600">¥500 OFF</span>でご購入いただけます。
+        </p>
+
+        <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-4 mb-4">
+          <p className="text-xs text-amber-800 mb-1 text-center">クーポンコード</p>
+          <p className="font-mono font-black text-3xl text-amber-700 tracking-widest text-center">
+            {COUPON_CODE}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={copyCode}
+          className="w-full rounded-full bg-amber-600 hover:bg-amber-500 active:bg-amber-700 py-3.5 font-bold text-white shadow min-h-[48px] mb-2"
+        >
+          {copied ? '✓ コピーしました' : 'コードをコピー'}
+        </button>
+        <a
+          href="/checkout"
+          className="block w-full text-center rounded-full bg-slate-800 hover:bg-slate-700 py-3.5 font-bold text-white shadow min-h-[48px]"
+        >
+          このまま購入ページへ進む
+        </a>
+        <p className="mt-3 text-center text-[11px] text-slate-400">
+          ※ 24時間以内にご購入された方限定で適用されます
+        </p>
       </div>
     </div>
   );
