@@ -1,0 +1,35 @@
+@import 'tailwindcss';
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans:
+    var(--font-geist-sans), 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP',
+    'Yu Gothic', 'Meiryo', sans-serif;
+  --font-mono: var(--font-geist-mono);
+}
+
+/* EC LP は白ベース設計のためダークモード自動適用を無効化（可読性確保） */
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family:
+    var(--font-geist-sans), 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP',
+    'Yu Gothic', 'Meiryo', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* details/summary のデフォルトマーカーを消す (FAQ アコーディオン) */
+summary::-webkit-details-marker {
+  display: none;
+}
+summary {
+  list-style: none;
+}
