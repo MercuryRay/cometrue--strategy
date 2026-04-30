@@ -86,6 +86,16 @@ export async function POST(req: NextRequest) {
 
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       mode: 'payment',
+      locale: 'ja',
+      allow_promotion_codes: true,
+      custom_text: {
+        submit: {
+          message: '30日間返金保証付き — 万が一お子さま(ペット)に合わなくても全額返金します。',
+        },
+        shipping_address: {
+          message: '通常3〜5営業日でお届け。配送状況はメールでご案内します。',
+        },
+      },
       line_items: [
         {
           price_data: {

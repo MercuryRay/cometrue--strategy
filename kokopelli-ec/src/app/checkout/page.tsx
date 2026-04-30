@@ -392,7 +392,18 @@ function CheckoutContent() {
                 ? `定期便を申し込む — ${formatYen(total)}/月`
                 : `${formatYen(total)} で購入する`}
           </button>
-          <p className="text-center text-xs text-slate-600 mb-4">Visa / Mastercard / AMEX 対応</p>
+          <p className="text-center text-xs text-slate-600 mb-2">Visa / Mastercard / AMEX 対応</p>
+          <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 mb-4 text-[11px] text-slate-500">
+            <span className="inline-flex items-center gap-1">
+              <span aria-hidden="true">🔒</span>SSL暗号化通信
+            </span>
+            <span className="inline-flex items-center gap-1">
+              <span aria-hidden="true">↩️</span>30日間返金保証
+            </span>
+            <span className="inline-flex items-center gap-1">
+              <span aria-hidden="true">🇯🇵</span>日本国内発送
+            </span>
+          </div>
 
           {selectedPlan === 'subscription' && (
             <div className="mb-4">
