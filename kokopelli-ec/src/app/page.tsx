@@ -1714,13 +1714,13 @@ export default function Home() {
             <table className="w-full text-sm">
               <tbody>
                 {[
-                  ['製造元', '株式会社シリカラボ'],
+                  ['製造元', '株式会社シリカラボ（宮崎県都城市）'],
                   ['販売課代表', '渡邊道治'],
                   ['所在地', '〒885-0086 宮崎県都城市久保原町9-43'],
                   ['研究機関', 'さがら動物病院（治験担当）'],
-                  ['販売協賛', 'カムトゥル（Come true）'],
-                  ['WEBサイト', 'https://silica-lab.jp/'],
-                  ['お問い合わせ', 'info@silica-lab.com'],
+                  ['販売', 'カムトゥル（Come true）'],
+                  ['製造元WEB', 'https://silica-lab.jp/'],
+                  ['販売者お問い合わせ', 'info@kamuturu.jp'],
                 ].map(([label, value]) => (
                   <tr key={label} className="border-b border-gray-100 last:border-0">
                     <td className="px-6 py-4 font-bold text-gray-900 bg-gray-50 w-1/3">{label}</td>
@@ -1900,15 +1900,26 @@ export default function Home() {
               </p>
             </div>
             <div className="text-sm space-y-2">
-              <p>販売協賛: カムトゥル (Come true)</p>
+              <p>販売: カムトゥル (Come true)</p>
               <p>製造・発送: シリカラボ</p>
               <p>
                 お問い合わせ:{' '}
                 <a
-                  href="mailto:info@silica-lab.com?subject=ココペリのお問い合わせ"
+                  href="mailto:info@kamuturu.jp?subject=ココペリのお問い合わせ"
                   className="text-amber-400 hover:text-amber-300"
                 >
-                  info@silica-lab.com
+                  info@kamuturu.jp
+                </a>
+              </p>
+              <p>
+                LINE相談:{' '}
+                <a
+                  href="https://line.me/R/ti/p/@636yyubo"
+                  className="text-amber-400 hover:text-amber-300"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  @636yyubo
                 </a>
               </p>
             </div>

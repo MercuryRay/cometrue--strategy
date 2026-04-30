@@ -232,11 +232,17 @@ function SuccessContent() {
               <li>・まずは1〜2ヶ月ほど継続してお試しください。</li>
               <li>
                 ・ご不明点は{' '}
+                <a href="mailto:info@kamuturu.jp" className="text-amber-700 underline font-medium">
+                  info@kamuturu.jp
+                </a>{' '}
+                または{' '}
                 <a
-                  href="mailto:info@silica-lab.com"
+                  href="https://line.me/R/ti/p/@636yyubo"
                   className="text-amber-700 underline font-medium"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  info@silica-lab.com
+                  LINE公式
                 </a>{' '}
                 までお気軽にどうぞ。
               </li>
