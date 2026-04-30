@@ -1597,15 +1597,33 @@ export default function Home() {
               <br className="md:hidden" />
               シリカ天然水
             </h2>
-            <p className="text-center text-gray-600 mb-12 text-sm md:text-base">
+            <p className="text-center text-gray-600 mb-8 text-sm md:text-base">
               宮崎・都井岬の野生馬を診る獣医師が、臨床現場で取り入れてきたミネラルウォーター。
             </p>
           </FadeInOnScroll>
 
+          {/* シネマティック・バナー — 都井岬の野生馬と相良獣医師 */}
+          <FadeInOnScroll>
+            <figure className="mb-12 rounded-3xl overflow-hidden shadow-2xl border border-white">
+              <Image
+                src="/images/dr-sagara-toi-misaki-16x9.webp"
+                alt="さがら動物病院 相良獣医師 — 宮崎・都井岬の野生馬を診る現場"
+                width={1920}
+                height={1080}
+                className="w-full h-auto"
+                priority={false}
+              />
+              <figcaption className="bg-slate-900 text-white px-5 py-3 text-xs md:text-sm leading-relaxed">
+                <strong className="text-amber-300">宮崎・都井岬</strong> —
+                国の天然記念物に指定された野生馬「御崎馬」と、現地で診療にあたる相良獣医師。
+              </figcaption>
+            </figure>
+          </FadeInOnScroll>
+
           <FadeInOnScroll>
             <div className="grid md:grid-cols-12 gap-8 items-stretch">
-              {/* 写真側 — md:5列 */}
-              <figure className="md:col-span-5">
+              {/* 写真側 — md:5列 — 2枚スタック */}
+              <figure className="md:col-span-5 flex flex-col gap-4">
                 <div className="rounded-3xl overflow-hidden shadow-2xl border border-white">
                   <Image
                     src="/images/dr-sagara-toi-misaki-4x3.webp"
@@ -1615,7 +1633,16 @@ export default function Home() {
                     className="w-full h-auto"
                   />
                 </div>
-                <figcaption className="mt-4 text-sm text-gray-700 leading-relaxed">
+                <div className="rounded-2xl overflow-hidden shadow-xl border border-white">
+                  <Image
+                    src="/images/dr-sagara-toi-misaki.webp"
+                    alt="相良獣医師 — 都井岬での診療現場"
+                    width={1200}
+                    height={1200}
+                    className="w-full h-auto"
+                  />
+                </div>
+                <figcaption className="text-sm text-gray-700 leading-relaxed">
                   <strong className="text-gray-900 text-base">相良獣医師</strong>
                   <span className="text-gray-500"> / さがら動物病院</span>
                   <br />
