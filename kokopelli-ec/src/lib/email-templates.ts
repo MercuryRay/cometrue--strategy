@@ -42,6 +42,15 @@ LINE相談: ${LINE_URL}
 // ───────────────────────────────────────────
 export function purchaseConfirmation(vars: TemplateVars) {
   const subject = '【ココペリ】ご注文ありがとうございます';
+  const referralBlock = vars.referralCode
+    ? `
+
+■ お友達紹介で双方¥500OFF
+あなた専用の紹介コード: ${vars.referralCode}
+ご紹介URL: ${SHOP_URL}/checkout?ref=${vars.referralCode}
+お友達がこのURLからご購入されると、お友達は¥500割引でお買い物でき、
+${vars.customerName}様にも次回購入時に使える¥500クレジットが自動付与されます。`
+    : '';
   const text = `${vars.customerName}様
 
 この度はココペリをご注文いただき、誠にありがとうございます。
@@ -51,12 +60,13 @@ export function purchaseConfirmation(vars: TemplateVars) {
 数量: ${vars.quantity || 1}点
 金額: ¥${(vars.amount || 0).toLocaleString()}（税込・送料込）
 
-ご注文の商品は、通常2〜3営業日以内に発送いたします。
+ご注文の商品は、通常3〜5営業日以内に発送いたします。
 発送完了後、追跡番号をメールでお知らせいたします。
 
 ■ マイページ
 ご注文履歴・配送状況は下記マイページからご確認いただけます。
-${vars.mypageUrl || SHOP_URL + '/member'}
+${vars.mypageUrl || SHOP_URL + '/account'}
+${referralBlock}
 
 ■ ご不明な点はお気軽に
 LINE: ${LINE_URL}

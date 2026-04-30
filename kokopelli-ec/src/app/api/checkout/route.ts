@@ -157,6 +157,12 @@ export async function POST(req: NextRequest) {
       customer_creation: 'always',
       // 配送先住所で電話番号も取得可。決済画面の入力項目を減らしてCVR改善。
 
+      // クレカ明細に「KOKOPELLI」と表示 → 不審請求と誤認されるリスクを下げる
+      payment_intent_data: {
+        statement_descriptor_suffix: 'KOKOPELLI',
+        description: `${productName}${discountAmount > 0 ? ` (¥${discountAmount} OFF)` : ''}`,
+      },
+
       metadata: {
         ...(referrerCustomerId
           ? { referrer_customer_id: referrerCustomerId, referral_code: referralCode! }

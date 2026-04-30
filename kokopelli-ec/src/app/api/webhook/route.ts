@@ -7,6 +7,18 @@ import { sendPurchaseEvent } from '@/lib/meta-capi';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+function generateReferralCode(seed: string): string {
+  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const hash = seed.split('').reduce((acc, c) => (acc * 33 + c.charCodeAt(0)) >>> 0, 5381);
+  let n = hash;
+  let code = '';
+  for (let i = 0; i < 6; i++) {
+    code += alphabet[n % alphabet.length];
+    n = Math.floor(n / alphabet.length) || hash + i * 7;
+  }
+  return code;
+}
+
 export async function POST(req: NextRequest) {
   const secretKey = process.env.STRIPE_SECRET_KEY;
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -65,6 +77,21 @@ export async function POST(req: NextRequest) {
       console.error('line_items取得エラー:', lineErr);
     }
 
+    // 紹介コードを購入者向けメール用に先取り(metadata更新は後段で行う)
+    let buyerReferralCode: string | undefined;
+    try {
+      const customerId = session.customer as string;
+      if (customerId) {
+        const customerForCode = await stripe.customers.retrieve(customerId);
+        if (!('deleted' in customerForCode && customerForCode.deleted)) {
+          buyerReferralCode =
+            customerForCode.metadata?.referral_code || generateReferralCode(customerId);
+        }
+      }
+    } catch {
+      // 取得失敗時は紹介コードなしでメール送信
+    }
+
     // ── 1. 購入者へサンクスメール ──
     if (customerEmail && customerEmail !== '不明') {
       try {
@@ -74,6 +101,7 @@ export async function POST(req: NextRequest) {
           productName,
           quantity: totalQuantity,
           amount,
+          referralCode: buyerReferralCode,
         });
 
         await sendEmail({
@@ -110,17 +138,22 @@ export async function POST(req: NextRequest) {
       console.error('オーナー通知メール送信エラー:', ownerErr);
     }
 
-    // ── フォローアップメール用: Stripeメタデータに購入日を記録 ──
+    // ── フォローアップ + 紹介コード生成 ──
+    // 初回購入時に referral_code を発行(英数6桁)してmetadataに保存。
+    // success page と購入確認メールで「友達紹介で¥500 OFF」訴求に使用。
     try {
       const customerId = session.customer as string;
       if (customerId) {
         const customer = await stripe.customers.retrieve(customerId);
         if (!('deleted' in customer && customer.deleted)) {
+          const existingCode = customer.metadata?.referral_code;
+          const newCode = existingCode || generateReferralCode(customerId);
           await stripe.customers.update(customerId, {
             metadata: {
               ...customer.metadata,
               last_purchase_date: new Date().toISOString(),
               last_purchase_session: session.id,
+              referral_code: newCode,
             },
           });
         }
