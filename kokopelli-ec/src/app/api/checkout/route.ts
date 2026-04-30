@@ -86,6 +86,16 @@ export async function POST(req: NextRequest) {
 
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       mode: 'payment',
+      locale: 'ja',
+      allow_promotion_codes: true,
+      custom_text: {
+        submit: {
+          message: '30日間返金保証付き — 万が一お子さま(ペット)に合わなくても全額返金します。',
+        },
+        shipping_address: {
+          message: '通常3〜5営業日でお届け。配送状況はメールでご案内します。',
+        },
+      },
       line_items: [
         {
           price_data: {
@@ -145,10 +155,7 @@ export async function POST(req: NextRequest) {
 
       // === 顧客情報の確実な収集 ===
       customer_creation: 'always',
-      // consent_collection.promotions: 'auto' はUS merchants限定のため日本アカウントでは省略
-      phone_number_collection: {
-        enabled: true,
-      },
+      // 配送先住所で電話番号も取得可。決済画面の入力項目を減らしてCVR改善。
 
       metadata: {
         ...(referrerCustomerId
