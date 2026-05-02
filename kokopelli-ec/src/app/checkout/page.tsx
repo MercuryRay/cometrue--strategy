@@ -392,7 +392,20 @@ function CheckoutContent() {
                 ? `定期便を申し込む — ${formatYen(total)}/月`
                 : `${formatYen(total)} で購入する`}
           </button>
-          <p className="text-center text-xs text-slate-600 mb-2">Visa / Mastercard / AMEX 対応</p>
+          {/* 決済方法プレビュー — Apple Pay / Google Pay 対応で離脱防止 */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-2">
+            {['VISA', 'Master', 'AMEX', 'Apple Pay', 'Google Pay'].map((label) => (
+              <span
+                key={label}
+                className="inline-flex items-center justify-center min-w-[48px] h-7 px-2.5 rounded-md bg-white border border-slate-300 text-[11px] font-bold text-slate-700"
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+          <p className="text-center text-xs text-slate-600 mb-2">
+            主要カード／Apple Pay／Google Pay 対応・カード情報は当サイトに保存されません
+          </p>
           <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 mb-4 text-[11px] text-slate-500">
             <span className="inline-flex items-center gap-1">
               <span aria-hidden="true">🔒</span>SSL暗号化通信
@@ -542,7 +555,7 @@ function CheckoutContent() {
           </div>
 
           {/* ご注意事項 */}
-          <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
+          <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200 mb-24 md:mb-0">
             <h4 className="font-bold text-slate-800 mb-2 text-sm">ご注意事項</h4>
             <ul className="text-xs text-slate-700 space-y-1">
               <li>・本品は動物用栄養補助食品であり、医薬品ではありません。</li>
@@ -563,6 +576,32 @@ function CheckoutContent() {
               </li>
             </ul>
           </div>
+        </div>
+      </div>
+
+      {/* モバイル sticky CTA — スクロール中も常に決済導線が見える */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/95 backdrop-blur border-t border-slate-200 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] px-4 py-2.5">
+        <div className="flex items-center gap-3">
+          <div className="shrink-0">
+            <p className="text-[10px] text-amber-600 font-bold leading-none">{plan.badge}</p>
+            <p className="text-lg font-black text-slate-800 leading-tight">
+              {formatYen(total)}
+              <span className="text-[10px] font-normal text-gray-400 ml-1">
+                {selectedPlan === 'subscription' ? '/月' : `/${plan.bottles}本`}
+              </span>
+            </p>
+          </div>
+          <button
+            onClick={handleCheckout}
+            disabled={loading}
+            className="flex-1 bg-gradient-to-r from-amber-600 to-amber-500 active:from-amber-700 active:to-amber-600 text-white py-3.5 rounded-full font-black text-center shadow-lg text-sm leading-tight disabled:opacity-60"
+          >
+            {loading
+              ? '処理中...'
+              : selectedPlan === 'subscription'
+                ? '定期便を申し込む →'
+                : '今すぐ購入する →'}
+          </button>
         </div>
       </div>
     </>
