@@ -30,10 +30,15 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
       {
-        // AI クローラー明示許可
+        // AI クローラー明示許可（ブランド露出を最大化）
         userAgent: ['GPTBot', 'ClaudeBot', 'PerplexityBot', 'Google-Extended'],
         allow: '/',
         disallow: ['/checkout', '/success', '/account', '/login', '/api/'],
+      },
+      {
+        // 学習目的のスクレイパー / 価値の薄い AI クローラーを除外
+        userAgent: ['CCBot', 'Bytespider', 'Amazonbot', 'anthropic-ai', 'cohere-ai'],
+        disallow: '/',
       },
     ],
     sitemap: `${BASE_URL}/sitemap.xml`,
