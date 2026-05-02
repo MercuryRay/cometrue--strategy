@@ -1595,38 +1595,35 @@ export default function Home() {
             <h2 className="text-2xl md:text-4xl font-black text-gray-900 mb-3 text-center">
               獣医師が<span className="text-amber-600">10年</span>使ってきた
               <br className="md:hidden" />
-              シリカ天然水
+              水溶性ケイ素濃縮液
             </h2>
-            <p className="text-center text-gray-600 mb-12 text-sm md:text-base">
-              宮崎・都井岬の野生馬を診る獣医師が、臨床現場で取り入れてきたミネラルウォーター。
+            <p className="text-center text-gray-600 mb-8 text-sm md:text-base">
+              宮崎・都井岬の野生馬を診る獣医師が、臨床現場で取り入れてきたペット用シリカサプリ。
             </p>
           </FadeInOnScroll>
 
+          {/* シネマティック・バナー — 都井岬の野生馬と相良獣医師 */}
           <FadeInOnScroll>
-            <div className="grid md:grid-cols-12 gap-8 items-stretch">
-              {/* 写真側 — md:5列 */}
-              <figure className="md:col-span-5">
-                <div className="rounded-3xl overflow-hidden shadow-2xl border border-white">
-                  <Image
-                    src="/images/dr-sagara-toi-misaki-4x3.webp"
-                    alt="さがら動物病院 相良獣医師 — 宮崎・都井岬の野生馬と"
-                    width={1200}
-                    height={900}
-                    className="w-full h-auto"
-                  />
-                </div>
-                <figcaption className="mt-4 text-sm text-gray-700 leading-relaxed">
-                  <strong className="text-gray-900 text-base">相良獣医師</strong>
-                  <span className="text-gray-500"> / さがら動物病院</span>
-                  <br />
-                  <span className="text-amber-700 text-xs">
-                    宮崎県・都井岬の野生馬を診療。シリカ天然水の臨床使用を10年継続。
-                  </span>
-                </figcaption>
-              </figure>
+            <figure className="mb-10 rounded-3xl overflow-hidden shadow-2xl border border-white">
+              <Image
+                src="/images/dr-sagara-toi-misaki-16x9.webp"
+                alt="さがら動物病院 相良獣医師 — 宮崎・都井岬の野生馬を診る現場"
+                width={1920}
+                height={1080}
+                className="w-full h-auto"
+                priority={false}
+              />
+              <figcaption className="bg-slate-900 text-white px-5 py-3 text-xs md:text-sm leading-relaxed">
+                <strong className="text-amber-300">宮崎・都井岬</strong> —
+                国の天然記念物に指定された野生馬「御崎馬」と、現地で診療にあたる相良獣医師。
+              </figcaption>
+            </figure>
+          </FadeInOnScroll>
 
-              {/* 証言カード — md:7列 */}
-              <div className="md:col-span-7 flex flex-col gap-5">
+          <FadeInOnScroll>
+            <div className="max-w-3xl mx-auto">
+              {/* 証言カード */}
+              <div className="flex flex-col gap-5">
                 <blockquote className="relative bg-white rounded-3xl p-7 md:p-8 border border-amber-200 shadow-lg">
                   <span className="absolute -top-3 left-7 bg-amber-500 text-white text-xs font-black px-3 py-1 rounded-full tracking-widest">
                     獣医師コメント
@@ -1643,8 +1640,8 @@ export default function Home() {
                     都井岬で野生馬を診ていると、動物たちが水質を選んで飲む姿に、いつも気づかされます。
                   </p>
                   <p className="text-gray-800 leading-relaxed text-[15px] md:text-base mb-3">
-                    ココペリの<strong className="text-amber-700">シリカ天然水</strong>
-                    は、10年にわたって私の臨床現場で取り入れてきたミネラルウォーターです。
+                    ココペリは<strong className="text-amber-700">水と水溶性ケイ素だけの液体</strong>
+                    で、10年にわたって私の臨床現場で取り入れてきたシリカサプリです。
                   </p>
                   <p className="text-gray-800 leading-relaxed text-[15px] md:text-base">
                     シニア期のワンちゃん・猫ちゃんの<strong>毎日の食事サポート</strong>
@@ -1652,6 +1649,9 @@ export default function Home() {
                   </p>
                   <p className="mt-5 text-right text-sm text-gray-600">
                     — さがら動物病院 <strong className="text-gray-900">相良獣医師</strong>
+                    <span className="block text-xs text-gray-500 mt-1">
+                      宮崎県・都井岬の野生馬を診療 / 水溶性ケイ素の臨床使用10年
+                    </span>
                   </p>
                 </blockquote>
 
@@ -1714,13 +1714,13 @@ export default function Home() {
             <table className="w-full text-sm">
               <tbody>
                 {[
-                  ['製造元', '株式会社シリカラボ'],
+                  ['製造元', '株式会社シリカラボ（宮崎県都城市）'],
                   ['販売課代表', '渡邊道治'],
                   ['所在地', '〒885-0086 宮崎県都城市久保原町9-43'],
                   ['研究機関', 'さがら動物病院（治験担当）'],
-                  ['販売協賛', 'カムトゥル（Come true）'],
-                  ['WEBサイト', 'https://silica-lab.jp/'],
-                  ['お問い合わせ', 'info@silica-lab.com'],
+                  ['販売', 'カムトゥル（Come true）'],
+                  ['製造元WEB', 'https://silica-lab.jp/'],
+                  ['販売者お問い合わせ', 'info@kamuturu.jp'],
                 ].map(([label, value]) => (
                   <tr key={label} className="border-b border-gray-100 last:border-0">
                     <td className="px-6 py-4 font-bold text-gray-900 bg-gray-50 w-1/3">{label}</td>
@@ -1900,15 +1900,26 @@ export default function Home() {
               </p>
             </div>
             <div className="text-sm space-y-2">
-              <p>販売協賛: カムトゥル (Come true)</p>
+              <p>販売: カムトゥル (Come true)</p>
               <p>製造・発送: シリカラボ</p>
               <p>
                 お問い合わせ:{' '}
                 <a
-                  href="mailto:info@silica-lab.com?subject=ココペリのお問い合わせ"
+                  href="mailto:info@kamuturu.jp?subject=ココペリのお問い合わせ"
                   className="text-amber-400 hover:text-amber-300"
                 >
-                  info@silica-lab.com
+                  info@kamuturu.jp
+                </a>
+              </p>
+              <p>
+                LINE相談:{' '}
+                <a
+                  href="https://line.me/R/ti/p/@636yyubo"
+                  className="text-amber-400 hover:text-amber-300"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  @636yyubo
                 </a>
               </p>
             </div>

@@ -521,7 +521,13 @@ function CheckoutContent() {
                   ✓
                 </span>
                 <span>
-                  <strong>銀行振込にも対応</strong> — カード情報の入力が不安な方はLINEから
+                  <strong>LINEで購入前相談OK</strong> — カード情報の入力が不安な方は
+                  <a
+                    href="https://line.me/R/ti/p/@636yyubo"
+                    className="text-amber-700 underline font-medium ml-1"
+                  >
+                    LINEから
+                  </a>
                 </span>
               </li>
               <li className="flex items-start gap-2">
@@ -529,7 +535,7 @@ function CheckoutContent() {
                   ✓
                 </span>
                 <span>
-                  <strong>製造元: 株式会社シリカラボ</strong> — 宮崎県都城市の国内製造
+                  <strong>国内製造</strong> — 宮崎県都城市の製造元(株式会社シリカラボ)で生産
                 </span>
               </li>
             </ul>
@@ -543,11 +549,15 @@ function CheckoutContent() {
               <li>・ご注文確定後、3〜5営業日以内に発送いたします。</li>
               <li>
                 ・ご不明点は{' '}
+                <a href="mailto:info@kamuturu.jp" className="text-amber-700 underline font-medium">
+                  info@kamuturu.jp
+                </a>{' '}
+                または{' '}
                 <a
-                  href="mailto:info@silica-lab.com"
+                  href="https://line.me/R/ti/p/@636yyubo"
                   className="text-amber-700 underline font-medium"
                 >
-                  info@silica-lab.com
+                  LINE公式
                 </a>{' '}
                 までお問い合わせください。
               </li>

@@ -1,11 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { sendEmail, notifyOwner } from '@/lib/email';
-import { purchaseConfirmation, ownerPurchaseNotification } from '@/lib/email-templates';
+import {
+  purchaseConfirmation,
+  ownerPurchaseNotification,
+  abandonedCart,
+} from '@/lib/email-templates';
 import { sendPurchaseEvent } from '@/lib/meta-capi';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+
+function generateReferralCode(seed: string): string {
+  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const hash = seed.split('').reduce((acc, c) => (acc * 33 + c.charCodeAt(0)) >>> 0, 5381);
+  let n = hash;
+  let code = '';
+  for (let i = 0; i < 6; i++) {
+    code += alphabet[n % alphabet.length];
+    n = Math.floor(n / alphabet.length) || hash + i * 7;
+  }
+  return code;
+}
 
 export async function POST(req: NextRequest) {
   const secretKey = process.env.STRIPE_SECRET_KEY;
@@ -65,6 +81,21 @@ export async function POST(req: NextRequest) {
       console.error('line_items取得エラー:', lineErr);
     }
 
+    // 紹介コードを購入者向けメール用に先取り(metadata更新は後段で行う)
+    let buyerReferralCode: string | undefined;
+    try {
+      const customerId = session.customer as string;
+      if (customerId) {
+        const customerForCode = await stripe.customers.retrieve(customerId);
+        if (!('deleted' in customerForCode && customerForCode.deleted)) {
+          buyerReferralCode =
+            customerForCode.metadata?.referral_code || generateReferralCode(customerId);
+        }
+      }
+    } catch {
+      // 取得失敗時は紹介コードなしでメール送信
+    }
+
     // ── 1. 購入者へサンクスメール ──
     if (customerEmail && customerEmail !== '不明') {
       try {
@@ -74,6 +105,7 @@ export async function POST(req: NextRequest) {
           productName,
           quantity: totalQuantity,
           amount,
+          referralCode: buyerReferralCode,
         });
 
         await sendEmail({
@@ -110,17 +142,22 @@ export async function POST(req: NextRequest) {
       console.error('オーナー通知メール送信エラー:', ownerErr);
     }
 
-    // ── フォローアップメール用: Stripeメタデータに購入日を記録 ──
+    // ── フォローアップ + 紹介コード生成 ──
+    // 初回購入時に referral_code を発行(英数6桁)してmetadataに保存。
+    // success page と購入確認メールで「友達紹介で¥500 OFF」訴求に使用。
     try {
       const customerId = session.customer as string;
       if (customerId) {
         const customer = await stripe.customers.retrieve(customerId);
         if (!('deleted' in customer && customer.deleted)) {
+          const existingCode = customer.metadata?.referral_code;
+          const newCode = existingCode || generateReferralCode(customerId);
           await stripe.customers.update(customerId, {
             metadata: {
               ...customer.metadata,
               last_purchase_date: new Date().toISOString(),
               last_purchase_session: session.id,
+              referral_code: newCode,
             },
           });
         }
@@ -231,6 +268,50 @@ export async function POST(req: NextRequest) {
       });
     } catch (err) {
       console.error('決済失敗通知エラー:', err);
+    }
+  }
+
+  // ── カート放棄リカバリー (expired session) ──
+  // Stripeのafter_expiration.recoveryでrecovery URLは生成されるが、
+  // 顧客emailが入力済みのexpired sessionだけStripeが自動メールを送る。
+  // ここで取りこぼしを拾い、recovery URL付きの独自メールを送る。
+  if (event.type === 'checkout.session.expired') {
+    const session = event.data.object as Stripe.Checkout.Session;
+    const customerEmail = session.customer_details?.email || session.customer_email;
+    const customerName = session.customer_details?.name || 'お客様';
+    const recoveryUrl = session.after_expiration?.recovery?.url;
+    const amount = session.amount_total || 0;
+
+    if (customerEmail && recoveryUrl) {
+      try {
+        let productName = 'ココペリ（水溶性ケイ素濃縮液）';
+        try {
+          const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 5 });
+          productName = lineItems.data.map((item) => item.description).join(', ') || productName;
+        } catch {
+          // line_items取得失敗時はデフォルト商品名で続行
+        }
+
+        const mail = abandonedCart({
+          customerName,
+          productName,
+          amount,
+          recoveryUrl,
+        });
+
+        await sendEmail({
+          to: customerEmail,
+          subject: mail.subject,
+          text: mail.text,
+        });
+        console.log(`カート放棄リカバリーメール送信: ${customerEmail} (session=${session.id})`);
+      } catch (err) {
+        console.error('カート放棄リカバリーメール送信エラー:', err);
+      }
+    } else {
+      console.log(
+        `カート放棄: email未取得のためスキップ (session=${session.id}, fbc=${session.metadata?.fbc || 'none'})`
+      );
     }
   }
 
