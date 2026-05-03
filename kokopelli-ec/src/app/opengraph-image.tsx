@@ -112,6 +112,24 @@ export default async function OpengraphImage() {
         高濃度10,000mg/L・シンプル処方
       </div>
 
+      {/* CVRトリガー: 30日返金保証バッジ */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          marginTop: 24,
+          padding: '8px 24px',
+          background: 'rgba(217, 119, 6, 0.95)',
+          borderRadius: 999,
+          color: '#ffffff',
+          fontSize: 26,
+          fontWeight: 700,
+        }}
+      >
+        30日間全額返金保証 / 2本セット以上 送料無料
+      </div>
+
       {/* フッター URL */}
       <div
         style={{
