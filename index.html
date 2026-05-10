@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComeTure Video Editor</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <h1 class="logo">ComeTure Video Editor</h1>
+    </div>
+    <div class="header-right">
+      <button id="exportBtn" class="btn btn-primary" disabled>エクスポート</button>
+    </div>
+  </header>
+
+  <main class="editor">
+    <section class="preview-panel">
+      <div class="canvas-container" id="canvasContainer">
+        <canvas id="previewCanvas" width="1280" height="720"></canvas>
+        <div class="upload-overlay" id="uploadOverlay">
+          <div class="upload-content">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <p>動画ファイルをドロップ<br>またはクリックして選択</p>
+            <span class="upload-hint">MP4, WebM, MOV 対応</span>
+          </div>
+          <input type="file" id="fileInput" accept="video/*" hidden>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="playBtn" class="btn btn-icon" disabled title="再生/一時停止">
+          <svg id="playIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5,3 19,12 5,21"/>
+          </svg>
+          <svg id="pauseIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none">
+            <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+          </svg>
+        </button>
+        <span id="currentTime" class="time-display">00:00.00</span>
+        <span class="time-separator">/</span>
+        <span id="duration" class="time-display">00:00.00</span>
+        <div class="controls-spacer"></div>
+        <button id="volumeBtn" class="btn btn-icon" disabled title="音量">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="currentColor"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+        </button>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="1" class="volume-slider" disabled>
+      </div>
+    </section>
+
+    <aside class="tools-panel">
+      <h3 class="panel-title">ツール</h3>
+
+      <div class="tool-section">
+        <h4 class="tool-section-title">テキスト追加</h4>
+        <input type="text" id="textInput" class="input" placeholder="テキストを入力..." disabled>
+        <div class="tool-row">
+          <input type="number" id="textSize" class="input input-small" value="48" min="8" max="200" disabled>
+          <input type="color" id="textColor" value="#ffffff" disabled>
+          <button id="addTextBtn" class="btn btn-small" disabled>追加</button>
+        </div>
+      </div>
+
+      <div class="tool-section">
+        <h4 class="tool-section-title">フィルター</h4>
+        <div class="filter-grid" id="filterGrid">
+          <button class="filter-btn active" data-filter="none" disabled>なし</button>
+          <button class="filter-btn" data-filter="grayscale" disabled>白黒</button>
+          <button class="filter-btn" data-filter="sepia" disabled>セピア</button>
+          <button class="filter-btn" data-filter="invert" disabled>反転</button>
+          <button class="filter-btn" data-filter="brightness" disabled>明るく</button>
+          <button class="filter-btn" data-filter="contrast" disabled>コントラスト</button>
+        </div>
+      </div>
+
+      <div class="tool-section">
+        <h4 class="tool-section-title">トリム</h4>
+        <div class="trim-controls">
+          <label>
+            <span>開始</span>
+            <input type="range" id="trimStart" min="0" max="100" value="0" step="0.1" disabled>
+            <span id="trimStartTime" class="trim-time">00:00</span>
+          </label>
+          <label>
+            <span>終了</span>
+            <input type="range" id="trimEnd" min="0" max="100" value="100" step="0.1" disabled>
+            <span id="trimEndTime" class="trim-time">00:00</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="tool-section">
+        <h4 class="tool-section-title">テキスト一覧</h4>
+        <div id="textList" class="text-list">
+          <p class="text-list-empty">テキストなし</p>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <section class="timeline-panel">
+    <div class="timeline-header">
+      <span>タイムライン</span>
+    </div>
+    <div class="timeline" id="timeline">
+      <canvas id="timelineCanvas" height="80"></canvas>
+      <div class="timeline-playhead" id="playhead"></div>
+      <div class="trim-overlay trim-start" id="trimOverlayStart"></div>
+      <div class="trim-overlay trim-end" id="trimOverlayEnd"></div>
+    </div>
+  </section>
+
+  <div class="modal" id="exportModal" style="display:none">
+    <div class="modal-content">
+      <h3>エクスポート中...</h3>
+      <div class="progress-bar">
+        <div class="progress-fill" id="exportProgress"></div>
+      </div>
+      <p id="exportStatus">フレームを処理しています...</p>
+      <button id="cancelExport" class="btn btn-small">キャンセル</button>
+    </div>
+  </div>
+
+  <video id="sourceVideo" style="display:none" preload="auto"></video>
+
+  <script src="js/utils.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/textOverlay.js"></script>
+  <script src="js/exporter.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
