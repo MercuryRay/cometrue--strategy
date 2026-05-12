@@ -67,7 +67,16 @@ export const metadata: Metadata = {
     description: `獣医師監修・臨床使用10年。水溶性ケイ素10,000mg/Lの国産シンプル処方。定期便 月${formatYen(SUBSCRIPTION_PRICE)}・送料無料・縛りなし／30日間全額返金保証。`,
     locale: 'ja_JP',
     type: 'website',
-    images: ['/images/image-4.webp'],
+    url: 'https://kokopelli.kamuturu.jp/',
+    siteName: 'ココペリ',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ココペリ｜シニア犬・シニア猫のための動物用栄養補助食品',
+    description: `獣医師監修・臨床使用10年。定期便 月${formatYen(SUBSCRIPTION_PRICE)}・送料無料・縛りなし／30日間全額返金保証。`,
+  },
+  alternates: {
+    canonical: 'https://kokopelli.kamuturu.jp/',
   },
 };
 
@@ -2081,6 +2090,49 @@ export default function Home() {
           }}
         />
       )}
+
+      {/* ============ HowTo 構造化データ — 使い方3ステップ ============ */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            name: 'ココペリ シリカ高濃度ミネラルウォーターの与え方',
+            description:
+              '付属シリンジで数滴を取り、フードに混ぜるか口元に直接たらして、1日1回毎日続けるだけ。',
+            totalTime: 'PT1M',
+            supply: [
+              { '@type': 'HowToSupply', name: 'ココペリ 水溶性ケイ素濃縮液 30ml' },
+              { '@type': 'HowToSupply', name: '付属シリンジ（注射針なし）' },
+              { '@type': 'HowToSupply', name: '普段のペットフード' },
+            ],
+            step: [
+              {
+                '@type': 'HowToStep',
+                position: 1,
+                name: 'シリンジで数滴取る',
+                text: '付属のシリンジ（注射針なし）でココペリを体重1kgあたり0.1ccを目安に取ります。',
+                url: 'https://kokopelli.kamuturu.jp/#howto',
+              },
+              {
+                '@type': 'HowToStep',
+                position: 2,
+                name: 'フードに混ぜる or 直接与える',
+                text: 'フードにしみこませるか、口元に直接数滴たらします。味・匂いがほぼないので嫌がりません。',
+                url: 'https://kokopelli.kamuturu.jp/#howto',
+              },
+              {
+                '@type': 'HowToStep',
+                position: 3,
+                name: '毎日続ける',
+                text: '1日1回を目安に継続します。まずは1〜2ヶ月を目安にお試しください。',
+                url: 'https://kokopelli.kamuturu.jp/#howto',
+              },
+            ],
+          }),
+        }}
+      />
 
       {/* ============ FAQPage 構造化データ ============ */}
       <script
