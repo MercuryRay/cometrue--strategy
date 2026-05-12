@@ -6,6 +6,7 @@ import {
   BUNDLE_2_PRICE,
   BUNDLE_6_PRICE,
   SUBSCRIPTION_PRICE,
+  SHIPPING,
   formatYen,
 } from '@/lib/prices';
 
@@ -26,11 +27,10 @@ export const metadata: Metadata = {
     google: 'QMk1KfWTwYT51g4sabkkjrc1Pjui3Dgkn4noX0Ktgv4',
   },
   title: {
-    default: 'ココペリ｜犬・猫用シリカ水（ペット用ミネラルウォーター）動物用栄養補助食品 公式',
+    default: 'ココペリ｜シニア犬・シニア猫のシリカ水｜獣医監修・水溶性ケイ素10,000mg/L 公式',
     template: '%s | ココペリ',
   },
-  description:
-    'ココペリは犬・猫のための動物用栄養補助食品（ペット用シリカミネラルウォーター）。高濃度の水溶性ケイ素10,000mg/Lを含むシンプル処方。シニア犬・シニア猫の水分補給と毎日の健康維持に。30日間全額返金保証付き。',
+  description: `シニア犬・シニア猫のための動物用栄養補助食品「ココペリ」。水溶性ケイ素10,000mg/Lを高濃度配合した国産シンプル処方（水＋ケイ素のみ・無添加）。獣医師監修・臨床使用10年・学会報告症例あり。定期便 月${formatYen(SUBSCRIPTION_PRICE)}・送料無料・縛りなし／30日間全額返金保証付き。`,
   keywords: [
     'ココペリ',
     'kokopelli',
@@ -47,12 +47,25 @@ export const metadata: Metadata = {
     '猫 サプリ',
     'シニア犬',
     'シニア猫',
+    'シニア犬 サプリ',
+    'シニア猫 サプリ',
+    'シニアペット 水',
     '老犬 腎臓 ケア',
+    '老犬 水分補給',
+    '老猫 水分補給',
     '猫 水を飲まない',
     'ペット 水分補給',
     '動物用栄養補助食品',
     'ペット ミネラル',
     'ペット 健康維持',
+    '犬猫 シリカ 定期便',
+    'シリカ水 定期便',
+    'ペット シリカ 縛りなし',
+    'ペットサプリ 返金保証',
+    '30日返金保証 ペット',
+    '獣医師監修 サプリ',
+    '国産 ペットサプリ',
+    '無添加 ペットサプリ',
   ],
   authors: [{ name: 'カムトゥル', url: 'https://kamuturu.jp' }],
   creator: 'カムトゥル（Come true）',
@@ -71,8 +84,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'ココペリ｜犬・猫のための動物用栄養補助食品',
-    description: `高濃度の水溶性ケイ素を含むシンプル処方。シニアペットの毎日の健康維持をサポート。定期便2本/月 送料込み${formatYen(SUBSCRIPTION_PRICE)}。`,
+    title: 'ココペリ｜シニア犬・シニア猫のための動物用栄養補助食品',
+    description: `獣医師監修・臨床使用10年。水溶性ケイ素10,000mg/Lの国産シンプル処方（水＋ケイ素のみ）。定期便 月${formatYen(SUBSCRIPTION_PRICE)}・送料無料・縛りなし／30日間全額返金保証付き。`,
     url: SITE_URL,
     siteName: 'ココペリ',
     locale: 'ja_JP',
@@ -88,8 +101,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ココペリ｜犬・猫のための動物用栄養補助食品',
-    description: `高濃度の水溶性ケイ素10,000mg/L。シニアペットの毎日の健康維持に。定期便${formatYen(SUBSCRIPTION_PRICE)}（送料無料）。`,
+    title: 'ココペリ｜シニア犬・シニア猫のための動物用栄養補助食品',
+    description: `水溶性ケイ素10,000mg/L・獣医監修・国産無添加。定期便 月${formatYen(SUBSCRIPTION_PRICE)}・送料無料・縛りなし／30日返金保証。`,
     images: [OG_IMAGE],
     creator: '@Mercury_CS',
     site: '@Mercury_CS',
@@ -169,6 +182,46 @@ export default function RootLayout({
     ],
   };
 
+  const shippingDetailsPaid = {
+    '@type': 'OfferShippingDetails',
+    shippingRate: {
+      '@type': 'MonetaryAmount',
+      value: String(SHIPPING),
+      currency: 'JPY',
+    },
+    shippingDestination: {
+      '@type': 'DefinedRegion',
+      addressCountry: 'JP',
+    },
+    deliveryTime: {
+      '@type': 'ShippingDeliveryTime',
+      handlingTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 2, unitCode: 'DAY' },
+      transitTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 3, unitCode: 'DAY' },
+    },
+  };
+
+  const shippingDetailsFree = {
+    '@type': 'OfferShippingDetails',
+    shippingRate: { '@type': 'MonetaryAmount', value: '0', currency: 'JPY' },
+    shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'JP' },
+    deliveryTime: {
+      '@type': 'ShippingDeliveryTime',
+      handlingTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 2, unitCode: 'DAY' },
+      transitTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 3, unitCode: 'DAY' },
+    },
+  };
+
+  const merchantReturnPolicy = {
+    '@type': 'MerchantReturnPolicy',
+    applicableCountry: 'JP',
+    returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+    merchantReturnDays: 30,
+    returnMethod: 'https://schema.org/ReturnByMail',
+    returnFees: 'https://schema.org/FreeReturn',
+  };
+
+  const priceValidUntil = `${new Date().getUTCFullYear() + 1}-12-31`;
+
   const productJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -197,36 +250,52 @@ export default function RootLayout({
           name: 'お試し1本',
           price: String(SINGLE_PRICE),
           priceCurrency: 'JPY',
+          priceValidUntil,
           availability: 'https://schema.org/InStock',
           url: SITE_URL,
           itemCondition: 'https://schema.org/NewCondition',
+          seller: { '@type': 'Organization', name: 'カムトゥル（Come true）' },
+          shippingDetails: shippingDetailsPaid,
+          hasMerchantReturnPolicy: merchantReturnPolicy,
         },
         {
           '@type': 'Offer',
           name: '2本セット（送料無料）',
           price: String(BUNDLE_2_PRICE),
           priceCurrency: 'JPY',
+          priceValidUntil,
           availability: 'https://schema.org/InStock',
           url: SITE_URL,
           itemCondition: 'https://schema.org/NewCondition',
+          seller: { '@type': 'Organization', name: 'カムトゥル（Come true）' },
+          shippingDetails: shippingDetailsFree,
+          hasMerchantReturnPolicy: merchantReturnPolicy,
         },
         {
           '@type': 'Offer',
           name: '6本セット 5+1（送料無料）',
           price: String(BUNDLE_6_PRICE),
           priceCurrency: 'JPY',
+          priceValidUntil,
           availability: 'https://schema.org/InStock',
           url: SITE_URL,
           itemCondition: 'https://schema.org/NewCondition',
+          seller: { '@type': 'Organization', name: 'カムトゥル（Come true）' },
+          shippingDetails: shippingDetailsFree,
+          hasMerchantReturnPolicy: merchantReturnPolicy,
         },
         {
           '@type': 'Offer',
           name: '定期便 2本/月（送料無料）',
           price: String(SUBSCRIPTION_PRICE),
           priceCurrency: 'JPY',
+          priceValidUntil,
           availability: 'https://schema.org/InStock',
           url: SITE_URL,
           itemCondition: 'https://schema.org/NewCondition',
+          seller: { '@type': 'Organization', name: 'カムトゥル（Come true）' },
+          shippingDetails: shippingDetailsFree,
+          hasMerchantReturnPolicy: merchantReturnPolicy,
         },
       ],
     },

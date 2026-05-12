@@ -58,15 +58,13 @@ import {
 
 /* ───────────── SEO Metadata ───────────── */
 export const metadata: Metadata = {
-  title: 'ココペリ｜犬・猫のための動物用栄養補助食品【水溶性ケイ素濃縮液】公式',
-  description:
-    'ココペリは犬・猫のための動物用栄養補助食品。高濃度の水溶性ケイ素10,000mg/Lを含むシンプル処方のケイ素濃縮液。シニア犬・シニア猫の毎日の健康維持に。学会報告症例あり。1本¥3,480〜。',
+  title: `ココペリ｜シニア犬・シニア猫のシリカ水｜定期便${formatYen(SUBSCRIPTION_PRICE)}・縛りなし・30日返金 公式`,
+  description: `シニア犬・シニア猫のための動物用栄養補助食品「ココペリ」。獣医師監修・臨床使用10年・水溶性ケイ素10,000mg/Lの国産シンプル処方（水＋ケイ素のみ・無添加）。定期便 月${formatYen(SUBSCRIPTION_PRICE)}・送料無料・縛りなし／30日間全額返金保証。お試し1本${formatYen(SINGLE_PRICE)}〜。`,
   keywords:
-    'ココペリ,犬 サプリメント,猫 サプリメント,ペット 健康食品,水溶性ケイ素,シリカ,シニア犬,シニア猫,動物用栄養補助食品,ペット ケイ素,犬 関節,猫 元気,高齢犬 サプリ,高齢猫 サプリ',
+    'ココペリ,シニア犬 サプリ,シニア猫 サプリ,シニア犬 シリカ水,シニア猫 シリカ水,犬 シリカ水,猫 シリカ水,ペット 水分補給,水溶性ケイ素,シリカ,動物用栄養補助食品,ペット ケイ素,シリカ水 定期便,ペット シリカ 縛りなし,ペットサプリ 返金保証,獣医師監修 ペットサプリ,国産 ペットサプリ,無添加 ペットサプリ,高齢犬 サプリ,高齢猫 サプリ',
   openGraph: {
-    title: 'ココペリ｜犬・猫のための動物用栄養補助食品',
-    description:
-      '高濃度の水溶性ケイ素を含むシンプル処方。シニアペットの毎日の健康維持をサポート。1本¥3,480〜。2本セット以上送料無料。',
+    title: 'ココペリ｜シニア犬・シニア猫のための動物用栄養補助食品',
+    description: `獣医師監修・臨床使用10年。水溶性ケイ素10,000mg/Lの国産シンプル処方。定期便 月${formatYen(SUBSCRIPTION_PRICE)}・送料無料・縛りなし／30日間全額返金保証。`,
     locale: 'ja_JP',
     type: 'website',
     images: ['/images/image-4.webp'],
@@ -1976,110 +1974,113 @@ export default function Home() {
       <ExitIntentPopup />
 
       {/* ============ Schema.org 構造化データ ============ */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'Product',
-            name: 'ココペリ（Kokopelli）',
-            description:
-              '犬・猫のための動物用栄養補助食品。高濃度の水溶性ケイ素10,000mg/Lを含むケイ素濃縮液。原材料は水とケイ素のみ。',
-            image: 'https://kokopelli.kamuturu.jp/images/image-4.webp',
-            brand: { '@type': 'Brand', name: 'kokopelli' },
-            manufacturer: {
-              '@type': 'Organization',
-              name: '株式会社シリカラボ',
-              address: {
-                '@type': 'PostalAddress',
-                addressLocality: '都城市',
-                addressRegion: '宮崎県',
-                addressCountry: 'JP',
-              },
-            },
-            offers: [
-              {
-                '@type': 'Offer',
-                name: '1本（通常購入）',
-                price: String(SINGLE_PRICE),
-                priceCurrency: 'JPY',
-                availability: 'https://schema.org/InStock',
-                url: 'https://kokopelli.kamuturu.jp/checkout',
-                seller: { '@type': 'Organization', name: 'カムトゥル' },
-                shippingDetails: {
-                  '@type': 'OfferShippingDetails',
-                  shippingRate: {
-                    '@type': 'MonetaryAmount',
-                    value: String(SHIPPING),
-                    currency: 'JPY',
-                  },
-                  shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'JP' },
-                  deliveryTime: {
-                    '@type': 'ShippingDeliveryTime',
-                    handlingTime: {
-                      '@type': 'QuantitativeValue',
-                      minValue: 1,
-                      maxValue: 2,
-                      unitCode: 'DAY',
-                    },
-                    transitTime: {
-                      '@type': 'QuantitativeValue',
-                      minValue: 1,
-                      maxValue: 3,
-                      unitCode: 'DAY',
-                    },
-                  },
-                },
-                hasMerchantReturnPolicy: {
-                  '@type': 'MerchantReturnPolicy',
-                  applicableCountry: 'JP',
-                  returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
-                  merchantReturnDays: 30,
-                  returnMethod: 'https://schema.org/ReturnByMail',
-                  returnFees: 'https://schema.org/FreeReturn',
+      {/* Product JSON-LD は layout.tsx に統一（重複防止）— Search Console「商品掲載情報」エラー対策 */}
+      {false && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Product',
+              name: 'ココペリ（Kokopelli）',
+              description:
+                '犬・猫のための動物用栄養補助食品。高濃度の水溶性ケイ素10,000mg/Lを含むケイ素濃縮液。原材料は水とケイ素のみ。',
+              image: 'https://kokopelli.kamuturu.jp/images/image-4.webp',
+              brand: { '@type': 'Brand', name: 'kokopelli' },
+              manufacturer: {
+                '@type': 'Organization',
+                name: '株式会社シリカラボ',
+                address: {
+                  '@type': 'PostalAddress',
+                  addressLocality: '都城市',
+                  addressRegion: '宮崎県',
+                  addressCountry: 'JP',
                 },
               },
-              {
-                '@type': 'Offer',
-                name: '5+1セット（6本）',
-                price: String(BUNDLE_6_PRICE),
-                priceCurrency: 'JPY',
-                availability: 'https://schema.org/InStock',
-                url: 'https://kokopelli.kamuturu.jp/checkout',
-                seller: { '@type': 'Organization', name: 'カムトゥル' },
-                shippingDetails: {
-                  '@type': 'OfferShippingDetails',
-                  shippingRate: { '@type': 'MonetaryAmount', value: '0', currency: 'JPY' },
-                  shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'JP' },
-                  deliveryTime: {
-                    '@type': 'ShippingDeliveryTime',
-                    handlingTime: {
-                      '@type': 'QuantitativeValue',
-                      minValue: 1,
-                      maxValue: 2,
-                      unitCode: 'DAY',
+              offers: [
+                {
+                  '@type': 'Offer',
+                  name: '1本（通常購入）',
+                  price: String(SINGLE_PRICE),
+                  priceCurrency: 'JPY',
+                  availability: 'https://schema.org/InStock',
+                  url: 'https://kokopelli.kamuturu.jp/checkout',
+                  seller: { '@type': 'Organization', name: 'カムトゥル' },
+                  shippingDetails: {
+                    '@type': 'OfferShippingDetails',
+                    shippingRate: {
+                      '@type': 'MonetaryAmount',
+                      value: String(SHIPPING),
+                      currency: 'JPY',
                     },
-                    transitTime: {
-                      '@type': 'QuantitativeValue',
-                      minValue: 1,
-                      maxValue: 3,
-                      unitCode: 'DAY',
+                    shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'JP' },
+                    deliveryTime: {
+                      '@type': 'ShippingDeliveryTime',
+                      handlingTime: {
+                        '@type': 'QuantitativeValue',
+                        minValue: 1,
+                        maxValue: 2,
+                        unitCode: 'DAY',
+                      },
+                      transitTime: {
+                        '@type': 'QuantitativeValue',
+                        minValue: 1,
+                        maxValue: 3,
+                        unitCode: 'DAY',
+                      },
                     },
                   },
+                  hasMerchantReturnPolicy: {
+                    '@type': 'MerchantReturnPolicy',
+                    applicableCountry: 'JP',
+                    returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+                    merchantReturnDays: 30,
+                    returnMethod: 'https://schema.org/ReturnByMail',
+                    returnFees: 'https://schema.org/FreeReturn',
+                  },
                 },
-                hasMerchantReturnPolicy: {
-                  '@type': 'MerchantReturnPolicy',
-                  applicableCountry: 'JP',
-                  returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
-                  merchantReturnDays: 30,
-                  returnMethod: 'https://schema.org/ReturnByMail',
-                  returnFees: 'https://schema.org/FreeReturn',
+                {
+                  '@type': 'Offer',
+                  name: '5+1セット（6本）',
+                  price: String(BUNDLE_6_PRICE),
+                  priceCurrency: 'JPY',
+                  availability: 'https://schema.org/InStock',
+                  url: 'https://kokopelli.kamuturu.jp/checkout',
+                  seller: { '@type': 'Organization', name: 'カムトゥル' },
+                  shippingDetails: {
+                    '@type': 'OfferShippingDetails',
+                    shippingRate: { '@type': 'MonetaryAmount', value: '0', currency: 'JPY' },
+                    shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'JP' },
+                    deliveryTime: {
+                      '@type': 'ShippingDeliveryTime',
+                      handlingTime: {
+                        '@type': 'QuantitativeValue',
+                        minValue: 1,
+                        maxValue: 2,
+                        unitCode: 'DAY',
+                      },
+                      transitTime: {
+                        '@type': 'QuantitativeValue',
+                        minValue: 1,
+                        maxValue: 3,
+                        unitCode: 'DAY',
+                      },
+                    },
+                  },
+                  hasMerchantReturnPolicy: {
+                    '@type': 'MerchantReturnPolicy',
+                    applicableCountry: 'JP',
+                    returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+                    merchantReturnDays: 30,
+                    returnMethod: 'https://schema.org/ReturnByMail',
+                    returnFees: 'https://schema.org/FreeReturn',
+                  },
                 },
-              },
-            ],
-          }),
-        }}
-      />
+              ],
+            }),
+          }}
+        />
+      )}
 
       {/* ============ FAQPage 構造化データ ============ */}
       <script
