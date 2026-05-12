@@ -6,6 +6,7 @@ import {
   BUNDLE_2_PRICE,
   BUNDLE_6_PRICE,
   SUBSCRIPTION_PRICE,
+  SHIPPING,
   formatYen,
 } from '@/lib/prices';
 
@@ -169,6 +170,46 @@ export default function RootLayout({
     ],
   };
 
+  const shippingDetailsPaid = {
+    '@type': 'OfferShippingDetails',
+    shippingRate: {
+      '@type': 'MonetaryAmount',
+      value: String(SHIPPING),
+      currency: 'JPY',
+    },
+    shippingDestination: {
+      '@type': 'DefinedRegion',
+      addressCountry: 'JP',
+    },
+    deliveryTime: {
+      '@type': 'ShippingDeliveryTime',
+      handlingTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 2, unitCode: 'DAY' },
+      transitTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 3, unitCode: 'DAY' },
+    },
+  };
+
+  const shippingDetailsFree = {
+    '@type': 'OfferShippingDetails',
+    shippingRate: { '@type': 'MonetaryAmount', value: '0', currency: 'JPY' },
+    shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'JP' },
+    deliveryTime: {
+      '@type': 'ShippingDeliveryTime',
+      handlingTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 2, unitCode: 'DAY' },
+      transitTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 3, unitCode: 'DAY' },
+    },
+  };
+
+  const merchantReturnPolicy = {
+    '@type': 'MerchantReturnPolicy',
+    applicableCountry: 'JP',
+    returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+    merchantReturnDays: 30,
+    returnMethod: 'https://schema.org/ReturnByMail',
+    returnFees: 'https://schema.org/FreeReturn',
+  };
+
+  const priceValidUntil = `${new Date().getUTCFullYear() + 1}-12-31`;
+
   const productJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -197,36 +238,52 @@ export default function RootLayout({
           name: 'お試し1本',
           price: String(SINGLE_PRICE),
           priceCurrency: 'JPY',
+          priceValidUntil,
           availability: 'https://schema.org/InStock',
           url: SITE_URL,
           itemCondition: 'https://schema.org/NewCondition',
+          seller: { '@type': 'Organization', name: 'カムトゥル（Come true）' },
+          shippingDetails: shippingDetailsPaid,
+          hasMerchantReturnPolicy: merchantReturnPolicy,
         },
         {
           '@type': 'Offer',
           name: '2本セット（送料無料）',
           price: String(BUNDLE_2_PRICE),
           priceCurrency: 'JPY',
+          priceValidUntil,
           availability: 'https://schema.org/InStock',
           url: SITE_URL,
           itemCondition: 'https://schema.org/NewCondition',
+          seller: { '@type': 'Organization', name: 'カムトゥル（Come true）' },
+          shippingDetails: shippingDetailsFree,
+          hasMerchantReturnPolicy: merchantReturnPolicy,
         },
         {
           '@type': 'Offer',
           name: '6本セット 5+1（送料無料）',
           price: String(BUNDLE_6_PRICE),
           priceCurrency: 'JPY',
+          priceValidUntil,
           availability: 'https://schema.org/InStock',
           url: SITE_URL,
           itemCondition: 'https://schema.org/NewCondition',
+          seller: { '@type': 'Organization', name: 'カムトゥル（Come true）' },
+          shippingDetails: shippingDetailsFree,
+          hasMerchantReturnPolicy: merchantReturnPolicy,
         },
         {
           '@type': 'Offer',
           name: '定期便 2本/月（送料無料）',
           price: String(SUBSCRIPTION_PRICE),
           priceCurrency: 'JPY',
+          priceValidUntil,
           availability: 'https://schema.org/InStock',
           url: SITE_URL,
           itemCondition: 'https://schema.org/NewCondition',
+          seller: { '@type': 'Organization', name: 'カムトゥル（Come true）' },
+          shippingDetails: shippingDetailsFree,
+          hasMerchantReturnPolicy: merchantReturnPolicy,
         },
       ],
     },
