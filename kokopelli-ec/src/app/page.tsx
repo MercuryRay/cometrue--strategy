@@ -52,7 +52,9 @@ import {
   SUBSCRIPTION_PRICE,
   PER_BOTTLE_BUNDLE_2,
   PER_BOTTLE_BUNDLE_6,
+  PER_BOTTLE_SUBSCRIPTION,
   SHIPPING,
+  REGULAR_PRICES,
   formatYen,
 } from '@/lib/prices';
 
@@ -81,14 +83,22 @@ export const metadata: Metadata = {
 };
 
 /* ───────────── 共通CTAボタン ───────────── */
-function CTAButton({ size = 'lg', label }: { size?: 'lg' | 'md'; label?: string }) {
+function CTAButton({
+  size = 'lg',
+  label,
+  plan = 'set',
+}: {
+  size?: 'lg' | 'md';
+  label?: string;
+  plan?: 'trial' | 'set' | 'bulk' | 'subscription';
+}) {
   const cls = size === 'lg' ? 'px-10 py-5 text-lg md:text-xl' : 'px-8 py-4 text-base md:text-lg';
   const text = label ?? `2本セット ${formatYen(BUNDLE_2_PRICE)}（送料無料）で始める →`;
   return (
     <div className="flex flex-col items-center">
       <MagneticButton>
         <Link
-          href="/checkout"
+          href={`/checkout?plan=${plan}`}
           className={`inline-flex items-center justify-center bg-gradient-to-r from-amber-600 to-amber-500 text-white ${cls} rounded-full font-black shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 text-center leading-tight`}
         >
           {text}
@@ -423,7 +433,7 @@ export default function Home() {
                   </div>
                   <div className="shrink-0 w-full md:w-auto">
                     <Link
-                      href="/checkout"
+                      href="/checkout?plan=trial"
                       className="block w-full md:w-auto text-center bg-gradient-to-r from-amber-600 to-amber-500 text-white px-8 py-4 rounded-full font-black text-base shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
                     >
                       1本だけ試す →
@@ -1074,100 +1084,64 @@ export default function Home() {
             </h2>
           </FadeInOnScroll>
           <p className="text-gray-600 text-center mb-12 text-lg">
-            まずは1本からお試しいただけます。セット・定期便はさらにおトクです。
+            毎月の習慣にする定期便が一番おトク。回数縛りなし・30日返金保証付きで安心。
           </p>
 
           <StaggerContainer
             className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
             staggerDelay={0.1}
           >
-            {/* 1本 */}
-            <StaggerItem>
-              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 text-center h-full flex flex-col">
-                <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gray-50 flex items-center justify-center border border-gray-200">
-                  <Image
-                    src="/images/image-4.webp"
-                    alt="ココペリ1本"
-                    width={40}
-                    height={70}
-                    className="h-10 w-auto"
-                  />
-                </div>
-                <p className="text-sm font-bold text-gray-500 mb-1">お試し</p>
-                <h3 className="text-xl font-black text-gray-900 mb-1">1本</h3>
-                <p className="text-xs text-gray-500 mb-4">30ml</p>
-                <p className="text-4xl font-black text-gray-900 mb-1">{formatYen(SINGLE_PRICE)}</p>
-                <p className="text-xs text-gray-500 mb-6">+ 送料 {formatYen(SHIPPING)}</p>
-                <ul className="text-sm text-gray-600 text-left space-y-2 mb-6 flex-1">
-                  <li className="flex items-start gap-2">
-                    <span className="text-amber-500 mt-0.5 shrink-0">&#10003;</span>
-                    <span>まずは試してみたい方に</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-amber-500 mt-0.5 shrink-0">&#10003;</span>
-                    <span>小型犬・猫なら約2〜4週間分</span>
-                  </li>
-                </ul>
-                <Link
-                  href="/checkout"
-                  className="block w-full bg-white border-2 border-slate-700 text-amber-600 py-3 rounded-full font-bold text-sm hover:bg-slate-50 transition-colors"
-                >
-                  購入する
-                </Link>
-              </div>
-            </StaggerItem>
-
-            {/* 2本セット — 人気No.1 */}
+            {/* 定期便 — 最も選ばれているプラン (HERO) */}
             <StaggerItem>
               <div className="relative bg-gradient-to-b from-amber-600 to-amber-500 rounded-2xl border-2 border-amber-400 shadow-xl p-6 text-center h-full flex flex-col">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-4 py-1 rounded-full text-xs font-black shadow">
-                  人気No.1
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-4 py-1 rounded-full text-xs font-black shadow whitespace-nowrap">
+                  最も選ばれているプラン
                 </div>
                 <div className="w-16 h-16 mx-auto mb-3 mt-2 rounded-full bg-white/20 flex items-center justify-center">
-                  <Image
-                    src="/images/image-4.webp"
-                    alt="ココペリ2本セット"
-                    width={40}
-                    height={70}
-                    className="h-10 w-auto"
-                  />
+                  <CalendarCheckIcon />
                 </div>
-                <p className="text-sm font-bold text-amber-100 mb-1">2本セット</p>
-                <h3 className="text-xl font-black text-white mb-1">2本</h3>
-                <p className="text-xs text-amber-200 mb-4">30ml x 2本</p>
-                <p className="text-4xl font-black text-white mb-1">{formatYen(BUNDLE_2_PRICE)}</p>
+                <p className="text-sm font-bold text-amber-100 mb-1">定期便</p>
+                <h3 className="text-xl font-black text-white mb-1">毎月2本</h3>
+                <p className="text-xs text-amber-200 mb-4">30ml x 2本 / 月</p>
+                <p className="text-4xl font-black text-white mb-1">
+                  {formatYen(SUBSCRIPTION_PRICE)}
+                  <span className="text-lg">/月</span>
+                </p>
                 <p className="text-xs text-amber-200 mb-1">送料無料</p>
-                <p className="text-white text-sm font-bold mb-6">
-                  1本あたり {formatYen(PER_BOTTLE_BUNDLE_2)}
+                <p className="text-white text-sm font-bold mb-2">
+                  1本あたり {formatYen(PER_BOTTLE_SUBSCRIPTION)}
+                </p>
+                <p className="text-amber-100 text-xs font-bold mb-6">
+                  通常価格より{formatYen(REGULAR_PRICES.subscription - SUBSCRIPTION_PRICE)}おトク
                 </p>
                 <ul className="text-sm text-amber-50 text-left space-y-2 mb-6 flex-1">
                   <li className="flex items-start gap-2">
                     <span className="text-white mt-0.5 shrink-0">&#10003;</span>
-                    <span>送料無料でおトク</span>
+                    <span>送料無料・毎月自動でお届け</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-white mt-0.5 shrink-0">&#10003;</span>
-                    <span>中〜大型犬に約1〜2ヶ月分</span>
+                    <span>回数縛りなし・いつでも解約OK</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-white mt-0.5 shrink-0">&#10003;</span>
-                    <span>継続しやすい量</span>
+                    <span>30日間返金保証付きで安心</span>
                   </li>
                 </ul>
                 <Link
-                  href="/checkout"
+                  href="/checkout?plan=subscription"
                   className="block w-full bg-white text-amber-700 py-3 rounded-full font-bold text-sm shadow-lg hover:shadow-xl transition-all"
                 >
-                  購入する
+                  定期便を申し込む
                 </Link>
               </div>
             </StaggerItem>
 
-            {/* 5+1セット — おすすめ */}
+            {/* 5+1セット — 一番おトク */}
             <StaggerItem>
               <div className="relative bg-gradient-to-b from-slate-800 to-slate-700 rounded-2xl border-2 border-amber-500 shadow-xl p-6 text-center h-full flex flex-col">
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-white px-4 py-1 rounded-full text-xs font-black shadow">
-                  一番おトク
+                  まとめ買い最安
                 </div>
                 <div className="w-16 h-16 mx-auto mb-3 mt-2 rounded-full bg-white/20 flex items-center justify-center">
                   <Image
@@ -1201,7 +1175,7 @@ export default function Home() {
                   </li>
                 </ul>
                 <Link
-                  href="/checkout"
+                  href="/checkout?plan=bulk"
                   className="block w-full bg-white text-amber-700 py-3 rounded-full font-bold text-sm shadow-lg hover:shadow-xl transition-all"
                 >
                   購入する
@@ -1209,36 +1183,82 @@ export default function Home() {
               </div>
             </StaggerItem>
 
-            {/* 定期便 */}
+            {/* 2本セット */}
             <StaggerItem>
-              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 text-center h-full flex flex-col">
-                <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-slate-50 flex items-center justify-center border border-amber-200">
-                  <CalendarCheckIcon />
+              <div className="relative bg-white rounded-2xl border-2 border-amber-200 shadow-sm p-6 text-center h-full flex flex-col">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-100 text-amber-800 px-4 py-1 rounded-full text-xs font-black shadow-sm whitespace-nowrap border border-amber-300">
+                  単品より送料無料
                 </div>
-                <p className="text-sm font-bold text-amber-600 mb-1">定期便</p>
-                <h3 className="text-xl font-black text-gray-900 mb-1">毎月2本</h3>
-                <p className="text-xs text-gray-500 mb-4">30ml x 2本 / 月</p>
+                <div className="w-16 h-16 mx-auto mb-3 mt-2 rounded-full bg-amber-50 flex items-center justify-center border border-amber-200">
+                  <Image
+                    src="/images/image-4.webp"
+                    alt="ココペリ2本セット"
+                    width={40}
+                    height={70}
+                    className="h-10 w-auto"
+                  />
+                </div>
+                <p className="text-sm font-bold text-amber-600 mb-1">2本セット</p>
+                <h3 className="text-xl font-black text-gray-900 mb-1">2本</h3>
+                <p className="text-xs text-gray-500 mb-4">30ml x 2本</p>
                 <p className="text-4xl font-black text-gray-900 mb-1">
-                  {formatYen(SUBSCRIPTION_PRICE)}
-                  <span className="text-lg">/月</span>
+                  {formatYen(BUNDLE_2_PRICE)}
                 </p>
                 <p className="text-xs text-gray-500 mb-1">送料無料</p>
-                <p className="text-amber-600 text-sm font-bold mb-6">毎月¥1,000おトク</p>
+                <p className="text-amber-600 text-sm font-bold mb-6">
+                  1本あたり {formatYen(PER_BOTTLE_BUNDLE_2)}
+                </p>
                 <ul className="text-sm text-gray-600 text-left space-y-2 mb-6 flex-1">
                   <li className="flex items-start gap-2">
                     <span className="text-amber-500 mt-0.5 shrink-0">&#10003;</span>
-                    <span>買い忘れなく毎月届く</span>
+                    <span>送料無料でおトク</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-amber-500 mt-0.5 shrink-0">&#10003;</span>
-                    <span>いつでも解約可能</span>
+                    <span>中〜大型犬に約1〜2ヶ月分</span>
                   </li>
                 </ul>
                 <Link
-                  href="/checkout"
+                  href="/checkout?plan=set"
                   className="block w-full bg-white border-2 border-slate-700 text-amber-600 py-3 rounded-full font-bold text-sm hover:bg-slate-50 transition-colors"
                 >
-                  定期便を申し込む
+                  購入する
+                </Link>
+              </div>
+            </StaggerItem>
+
+            {/* 1本 — お試し */}
+            <StaggerItem>
+              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 text-center h-full flex flex-col">
+                <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gray-50 flex items-center justify-center border border-gray-200">
+                  <Image
+                    src="/images/image-4.webp"
+                    alt="ココペリ1本"
+                    width={40}
+                    height={70}
+                    className="h-10 w-auto"
+                  />
+                </div>
+                <p className="text-sm font-bold text-gray-500 mb-1">お試し</p>
+                <h3 className="text-xl font-black text-gray-900 mb-1">1本</h3>
+                <p className="text-xs text-gray-500 mb-4">30ml</p>
+                <p className="text-4xl font-black text-gray-900 mb-1">{formatYen(SINGLE_PRICE)}</p>
+                <p className="text-xs text-gray-500 mb-6">+ 送料 {formatYen(SHIPPING)}</p>
+                <ul className="text-sm text-gray-600 text-left space-y-2 mb-6 flex-1">
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-500 mt-0.5 shrink-0">&#10003;</span>
+                    <span>まずは試してみたい方に</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-500 mt-0.5 shrink-0">&#10003;</span>
+                    <span>小型犬・猫なら約2〜4週間分</span>
+                  </li>
+                </ul>
+                <Link
+                  href="/checkout?plan=trial"
+                  className="block w-full bg-white border-2 border-slate-700 text-amber-600 py-3 rounded-full font-bold text-sm hover:bg-slate-50 transition-colors"
+                >
+                  購入する
                 </Link>
               </div>
             </StaggerItem>
