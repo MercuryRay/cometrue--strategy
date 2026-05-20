@@ -10,9 +10,27 @@
  *   node scripts/check-live-sales.mjs [日数]   // 既定 7日
  */
 
-const KEY = process.env.KOKOPELLI_STRIPE_LIVE_KEY;
+import { execFileSync } from 'node:child_process';
+
+function readUserEnvFromRegistry(name) {
+  if (process.platform !== 'win32') return null;
+  try {
+    const out = execFileSync('reg.exe', ['query', 'HKCU\\Environment', '/v', name], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    // 出力末尾の "<name>    REG_SZ    <value>" を抽出
+    const m = out.match(/REG_SZ\s+(.+)\s*$/m);
+    return m ? m[1].trim() : null;
+  } catch {
+    return null;
+  }
+}
+
+let KEY = process.env.KOKOPELLI_STRIPE_LIVE_KEY;
+if (!KEY) KEY = readUserEnvFromRegistry('KOKOPELLI_STRIPE_LIVE_KEY');
 if (!KEY) {
-  console.error('❌ KOKOPELLI_STRIPE_LIVE_KEY が未設定です。');
+  console.error('❌ KOKOPELLI_STRIPE_LIVE_KEY が未設定です（User env / HKCU\\Environment 両方）。');
   console.error(
     '   先に: powershell -ExecutionPolicy Bypass -File scripts\\register-stripe-live-key.ps1'
   );
