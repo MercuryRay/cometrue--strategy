@@ -54,7 +54,6 @@ import {
   PER_BOTTLE_BUNDLE_6,
   PER_BOTTLE_SUBSCRIPTION,
   SHIPPING,
-  REGULAR_PRICES,
   formatYen,
 } from '@/lib/prices';
 
@@ -1112,7 +1111,8 @@ export default function Home() {
                   1本あたり {formatYen(PER_BOTTLE_SUBSCRIPTION)}
                 </p>
                 <p className="text-amber-100 text-xs font-bold mb-6">
-                  通常価格より{formatYen(REGULAR_PRICES.subscription - SUBSCRIPTION_PRICE)}おトク
+                  2本セット毎月買うより 年{formatYen((BUNDLE_2_PRICE - SUBSCRIPTION_PRICE) * 12)}
+                  おトク
                 </p>
                 <ul className="text-sm text-amber-50 text-left space-y-2 mb-6 flex-1">
                   <li className="flex items-start gap-2">
@@ -1127,12 +1127,16 @@ export default function Home() {
                     <span className="text-white mt-0.5 shrink-0">&#10003;</span>
                     <span>30日間返金保証付きで安心</span>
                   </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-white mt-0.5 shrink-0">&#10003;</span>
+                    <span>注文の手間ゼロ・買い忘れ防止</span>
+                  </li>
                 </ul>
                 <Link
                   href="/checkout?plan=subscription"
-                  className="block w-full bg-white text-amber-700 py-3 rounded-full font-bold text-sm shadow-lg hover:shadow-xl transition-all"
+                  className="block w-full bg-white text-amber-700 py-3.5 rounded-full font-black text-base shadow-lg hover:shadow-xl transition-all"
                 >
-                  定期便を申し込む
+                  今すぐ始める →
                 </Link>
               </div>
             </StaggerItem>
@@ -1173,12 +1177,16 @@ export default function Home() {
                     <span className="text-amber-300 mt-0.5 shrink-0">&#10003;</span>
                     <span>多頭飼いの方にもおすすめ</span>
                   </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-300 mt-0.5 shrink-0">&#10003;</span>
+                    <span>30日間返金保証付き</span>
+                  </li>
                 </ul>
                 <Link
                   href="/checkout?plan=bulk"
                   className="block w-full bg-white text-amber-700 py-3 rounded-full font-bold text-sm shadow-lg hover:shadow-xl transition-all"
                 >
-                  購入する
+                  まとめて購入する →
                 </Link>
               </div>
             </StaggerItem>
@@ -1217,12 +1225,16 @@ export default function Home() {
                     <span className="text-amber-500 mt-0.5 shrink-0">&#10003;</span>
                     <span>中〜大型犬に約1〜2ヶ月分</span>
                   </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-500 mt-0.5 shrink-0">&#10003;</span>
+                    <span>30日間返金保証付き</span>
+                  </li>
                 </ul>
                 <Link
                   href="/checkout?plan=set"
                   className="block w-full bg-white border-2 border-slate-700 text-amber-600 py-3 rounded-full font-bold text-sm hover:bg-slate-50 transition-colors"
                 >
-                  購入する
+                  2本セットを購入 →
                 </Link>
               </div>
             </StaggerItem>
@@ -1253,12 +1265,16 @@ export default function Home() {
                     <span className="text-amber-500 mt-0.5 shrink-0">&#10003;</span>
                     <span>小型犬・猫なら約2〜4週間分</span>
                   </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-500 mt-0.5 shrink-0">&#10003;</span>
+                    <span>30日間返金保証付き</span>
+                  </li>
                 </ul>
                 <Link
                   href="/checkout?plan=trial"
                   className="block w-full bg-white border-2 border-slate-700 text-amber-600 py-3 rounded-full font-bold text-sm hover:bg-slate-50 transition-colors"
                 >
-                  購入する
+                  1本だけ試す →
                 </Link>
               </div>
             </StaggerItem>
