@@ -16,15 +16,30 @@ const geistSans = Geist({
 });
 
 const SITE_URL = 'https://kokopelli.kamuturu.jp';
-const OG_IMAGE = `${SITE_URL}/images/image-4.webp`;
+// 動的OG画像 — `src/app/opengraph-image.tsx` (Edge runtime) で生成
+// 旧 /images/image-4.webp はフォールバック用に維持
+const OG_IMAGE = `${SITE_URL}/opengraph-image`;
+const OG_IMAGE_FALLBACK = `${SITE_URL}/images/image-4.webp`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  manifest: '/manifest.json',
   alternates: {
     canonical: '/',
   },
   verification: {
     google: 'QMk1KfWTwYT51g4sabkkjrc1Pjui3Dgkn4noX0Ktgv4',
+  },
+  appleWebApp: {
+    capable: true,
+    title: 'ココペリ',
+    statusBarStyle: 'default',
+  },
+  other: {
+    'apple-mobile-web-app-capable': 'yes',
+    'mobile-web-app-capable': 'yes',
+    'msapplication-TileColor': '#d97706',
+    'format-detection': 'telephone=no',
   },
   title: {
     default: 'ココペリ｜シニア犬・シニア猫のシリカ水｜獣医監修・水溶性ケイ素10,000mg/L 公式',
@@ -96,6 +111,13 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: 'ココペリ 水溶性ケイ素濃縮液（犬・猫用の動物用栄養補助食品）',
+        type: 'image/png',
+      },
+      {
+        url: OG_IMAGE_FALLBACK,
+        width: 1200,
+        height: 630,
+        alt: 'ココペリ 水溶性ケイ素濃縮液',
       },
     ],
   },
@@ -236,7 +258,7 @@ export default function RootLayout({
       url: 'https://kamuturu.jp/',
     },
     category: 'Pet Supplies > Nutritional Supplement',
-    image: [OG_IMAGE],
+    image: [OG_IMAGE_FALLBACK],
     url: SITE_URL,
     offers: {
       '@type': 'AggregateOffer',
@@ -320,6 +342,22 @@ export default function RootLayout({
     ],
   };
 
+  // Speakable — 音声検索/読み上げアシスタント向け（Google 推奨）
+  const speakableJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${SITE_URL}/#webpage`,
+    url: SITE_URL,
+    name: 'ココペリ｜シニア犬・シニア猫のための動物用栄養補助食品',
+    inLanguage: 'ja',
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    primaryImageOfPage: { '@type': 'ImageObject', url: OG_IMAGE },
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', '.speakable-summary'],
+    },
+  };
+
   return (
     <html lang="ja" className={`${geistSans.variable} h-full antialiased`}>
       <head>
@@ -392,6 +430,11 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        />
+        {/* 構造化データ — Speakable (音声検索) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableJsonLd) }}
         />
       </head>
       <body className="min-h-full flex flex-col bg-gray-50 text-gray-900">

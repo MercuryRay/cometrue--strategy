@@ -1,7 +1,7 @@
-import { notFound } from "next/navigation";
-import Link from "next/link";
-import type { Metadata } from "next";
-import { getArticleBySlug, getAllSlugs, articles } from "../articles";
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import type { Metadata } from 'next';
+import { getArticleBySlug, getAllSlugs, articles } from '../articles';
 
 /* ── 静的パス生成 ── */
 export function generateStaticParams() {
@@ -28,10 +28,10 @@ export async function generateMetadata({
     openGraph: {
       title: article.title,
       description: article.description,
-      type: "article",
+      type: 'article',
       publishedTime: article.publishedAt,
       modifiedTime: article.updatedAt,
-      locale: "ja_JP",
+      locale: 'ja_JP',
       images: [article.image],
     },
   };
@@ -41,103 +41,118 @@ export async function generateMetadata({
 function markdownToHtml(md: string): string {
   return md
     .trim()
-    .split("\n")
+    .split('\n')
     .map((line) => {
       // H3
-      if (line.startsWith("### "))
+      if (line.startsWith('### '))
         return `<h3 class="text-lg font-bold mt-8 mb-3 text-gray-800">${line.slice(4)}</h3>`;
       // H2
-      if (line.startsWith("## "))
+      if (line.startsWith('## '))
         return `<h2 class="text-xl font-bold mt-10 mb-4 text-gray-900 border-l-4 border-amber-500 pl-3">${line.slice(3)}</h2>`;
       // リスト（- **太字**: 説明）
-      if (line.startsWith("- **"))
+      if (line.startsWith('- **'))
         return `<li class="ml-4 mb-1">${line
           .slice(2)
-          .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")}</li>`;
+          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</li>`;
       // リスト
-      if (line.startsWith("- "))
+      if (line.startsWith('- '))
         return `<li class="ml-4 mb-1 list-disc list-inside">${line.slice(2)}</li>`;
       // 番号リスト
       if (/^\d+\.\s/.test(line))
         return `<li class="ml-4 mb-1 list-decimal list-inside">${line
-          .replace(/^\d+\.\s/, "")
-          .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")}</li>`;
+          .replace(/^\d+\.\s/, '')
+          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</li>`;
       // テーブル行（簡易）
-      if (line.startsWith("|") && !line.includes("---"))
-        return ""; // テーブルはスキップ（記事内で表を使う場合は別途対応）
-      if (line.startsWith("|")) return "";
+      if (line.startsWith('|') && !line.includes('---')) return ''; // テーブルはスキップ（記事内で表を使う場合は別途対応）
+      if (line.startsWith('|')) return '';
       // 内部リンク
       let processed = line.replace(
         /\[(.+?)\]\((.+?)\)/g,
         '<a href="$2" class="text-amber-600 underline hover:text-amber-700">$1</a>'
       );
       // 太字
-      processed = processed.replace(
-        /\*\*(.+?)\*\*/g,
-        "<strong>$1</strong>"
-      );
+      processed = processed.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
       // 空行
-      if (processed.trim() === "") return "<br />";
+      if (processed.trim() === '') return '<br />';
       // 通常段落
       return `<p class="mb-4 leading-relaxed text-gray-700">${processed}</p>`;
     })
-    .join("\n");
+    .join('\n');
 }
 
 /* ── ページ本体 ── */
-export default async function BlogArticlePage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function BlogArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const article = getArticleBySlug(slug);
   if (!article) notFound();
 
-  const baseUrl = "https://kokopelli.kamuturu.jp";
+  const baseUrl = 'https://kokopelli.kamuturu.jp';
+
+  // wordCount: 全角・半角を均等に1文字=1wordで近似（簡易・正確性より一貫性重視）
+  const wordCount = article.content.replace(/\s+/g, '').length;
 
   const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
+    '@context': 'https://schema.org',
+    '@type': 'Article',
     headline: article.title,
     description: article.description,
     datePublished: article.publishedAt,
     dateModified: article.updatedAt,
-    image: `${baseUrl}${article.image}`,
+    inLanguage: 'ja',
+    wordCount,
+    keywords: article.keywords,
+    articleSection: '犬・猫の健康情報',
+    image: {
+      '@type': 'ImageObject',
+      url: `${baseUrl}${article.image}`,
+      width: 1200,
+      height: 630,
+    },
     author: {
-      "@type": "Organization",
-      name: "ココペリ公式",
+      '@type': 'Organization',
+      name: 'ココペリ公式',
       url: baseUrl,
     },
     publisher: {
-      "@type": "Organization",
-      name: "ココペリ公式",
+      '@type': 'Organization',
+      name: 'ココペリ（カムトゥル）',
       url: baseUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/opengraph-image`,
+        width: 1200,
+        height: 630,
+      },
     },
     mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `${baseUrl}/blog/${article.slug}`,
+      '@type': 'WebPage',
+      '@id': `${baseUrl}/blog/${article.slug}`,
+    },
+    isPartOf: {
+      '@type': 'Blog',
+      name: 'ココペリ ブログ — 犬・猫の健康情報',
+      url: `${baseUrl}/blog`,
     },
   };
 
   const breadcrumbLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
     itemListElement: [
       {
-        "@type": "ListItem",
+        '@type': 'ListItem',
         position: 1,
-        name: "トップ",
+        name: 'トップ',
         item: baseUrl,
       },
       {
-        "@type": "ListItem",
+        '@type': 'ListItem',
         position: 2,
-        name: "ブログ",
+        name: 'ブログ',
         item: `${baseUrl}/blog`,
       },
       {
-        "@type": "ListItem",
+        '@type': 'ListItem',
         position: 3,
         name: article.title,
         item: `${baseUrl}/blog/${article.slug}`,
@@ -146,9 +161,7 @@ export default async function BlogArticlePage({
   };
 
   /* 関連記事（自分以外から最大3本） */
-  const relatedArticles = articles
-    .filter((a) => a.slug !== article.slug)
-    .slice(0, 3);
+  const relatedArticles = articles.filter((a) => a.slug !== article.slug).slice(0, 3);
 
   return (
     <>
@@ -167,10 +180,7 @@ export default async function BlogArticlePage({
           <Link href="/" className="text-lg font-bold text-amber-600">
             ココペリ
           </Link>
-          <Link
-            href="/blog"
-            className="text-sm text-gray-600 hover:text-amber-600"
-          >
+          <Link href="/blog" className="text-sm text-gray-600 hover:text-amber-600">
             ブログ一覧
           </Link>
         </div>
@@ -180,15 +190,10 @@ export default async function BlogArticlePage({
       <main className="max-w-3xl mx-auto px-4 py-10">
         <article>
           <div className="mb-8">
-            <time
-              dateTime={article.publishedAt}
-              className="text-sm text-gray-500"
-            >
+            <time dateTime={article.publishedAt} className="text-sm text-gray-500">
               {article.publishedAt}
             </time>
-            <h1 className="text-2xl md:text-3xl font-bold mt-2 text-gray-900">
-              {article.title}
-            </h1>
+            <h1 className="text-2xl md:text-3xl font-bold mt-2 text-gray-900">{article.title}</h1>
             <p className="mt-3 text-gray-600">{article.description}</p>
           </div>
 
@@ -199,9 +204,7 @@ export default async function BlogArticlePage({
 
           {/* CTA */}
           <div className="mt-12 p-6 bg-amber-50 rounded-xl text-center border border-amber-200">
-            <p className="text-lg font-bold text-gray-900 mb-2">
-              愛犬・愛猫の健康維持に
-            </p>
+            <p className="text-lg font-bold text-gray-900 mb-2">愛犬・愛猫の健康維持に</p>
             <p className="text-gray-600 mb-4">
               ココペリは水溶性ケイ素10,000mg/Lを含む動物用栄養補助食品です
             </p>
@@ -224,12 +227,8 @@ export default async function BlogArticlePage({
                     href={`/blog/${related.slug}`}
                     className="block p-4 bg-white rounded-xl border hover:border-amber-300 hover:shadow-md transition-all"
                   >
-                    <h3 className="font-bold text-gray-900 mb-1">
-                      {related.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 line-clamp-2">
-                      {related.description}
-                    </p>
+                    <h3 className="font-bold text-gray-900 mb-1">{related.title}</h3>
+                    <p className="text-sm text-gray-600 line-clamp-2">{related.description}</p>
                   </Link>
                 ))}
               </div>
