@@ -99,18 +99,27 @@ async function fetchAbandonedSessions(
     });
 
     for (const s of list.data) {
-      // 未完了のみ対象 (completed / paid は除外)
-      if (s.status !== 'open') continue;
+      // 購入完了は除外。回収対象は open(まだ生きている) と expired(失効済み)の未購入。
+      // checkout 側で 24h 失効 + after_expiration.recovery を有効化しているため、
+      // 24〜48h 前のセッションは基本 status='expired' になっている点に注意。
+      if (s.status === 'complete') continue;
       if (s.payment_status === 'paid') continue;
 
       const email = s.customer_details?.email || s.customer_email;
       if (!email) continue;
 
+      // s.url は作成から 24h で失効するため、失効済みセッションでは使えない。
+      // recovery 有効時に Stripe が払い出す recovery.url を最優先で使う。
+      // どちらも無ければ LP の購入ページに誘導(リンク切れより遥かにマシ)。
+      const recoveryUrl = s.after_expiration?.recovery?.url ?? null;
+      const liveUrl = s.status === 'open' ? (s.url ?? null) : null;
+      const checkoutUrl = recoveryUrl ?? liveUrl ?? 'https://kokopelli.kamuturu.jp/checkout';
+
       sessions.push({
         sessionId: s.id,
         customerEmail: email,
         customerName: s.customer_details?.name || undefined,
-        checkoutUrl: s.url || `https://kokopelli.kamuturu.jp/checkout?resume=${s.id}`,
+        checkoutUrl,
         planLabel: s.metadata?.plan_label || undefined,
         planPrice: s.amount_total ? Math.floor(s.amount_total) : undefined,
         createdAt: new Date(s.created * 1000),
