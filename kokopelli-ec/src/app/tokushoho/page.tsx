@@ -10,6 +10,17 @@ import {
 
 export const metadata = {
   title: '特定商取引法に基づく表記',
+  description:
+    '販売事業者（カムトゥル/Come true）、所在地、連絡先、販売価格、支払方法、お届け時期、30日間全額返金保証、定期便の解約方法など、特定商取引法に基づく必要事項を記載しています。',
+  alternates: { canonical: '/tokushoho' },
+  openGraph: {
+    title: '特定商取引法に基づく表記 | ココペリ',
+    description:
+      'ココペリの販売事業者情報・販売価格・送料・支払方法・30日間全額返金保証・定期便解約手続きなどを記載しています。',
+    url: 'https://kokopelli.kamuturu.jp/tokushoho',
+    type: 'website',
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function Tokushoho() {
