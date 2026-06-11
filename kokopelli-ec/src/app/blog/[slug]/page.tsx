@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { getArticleBySlug, getAllSlugs, articles } from '../articles';
+import { getArticleBySlug, getAllSlugs, articles, type Article } from '../articles';
+import { BUNDLE_2_PRICE, formatYen } from '@/lib/prices';
 
 /* ── 静的パス生成 ── */
 export function generateStaticParams() {
@@ -37,47 +38,148 @@ export async function generateMetadata({
   };
 }
 
+/* ── インライン書式（リンク・太字）── */
+function inlineFormat(text: string): string {
+  return text
+    .replace(
+      /\[(.+?)\]\((.+?)\)/g,
+      '<a href="$2" class="text-amber-600 underline hover:text-amber-700">$1</a>'
+    )
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+}
+
+/* ── Markdownテーブル → HTMLテーブル ──
+ * 旧実装は `|` 始まりの行をすべて破棄しており、記事内の比較表
+ * （全記事合計335行）が一切レンダリングされない不具合があった。
+ * 比較表は「比較・選び方」系の購買検討キーワード記事の中核コンテンツ
+ * のため、thead/tbody 付きのレスポンシブテーブルとして復元する。
+ */
+function renderTable(tableLines: string[]): string {
+  const isSeparator = (line: string) =>
+    line
+      .replace(/^\||\|$/g, '')
+      .split('|')
+      .every((cell) => /^\s*:?-{2,}:?\s*$/.test(cell));
+
+  const rows = tableLines
+    .filter((line) => !isSeparator(line))
+    .map((line) =>
+      line
+        .replace(/^\||\|$/g, '')
+        .split('|')
+        .map((cell) => inlineFormat(cell.trim()))
+    );
+
+  if (rows.length === 0) return '';
+  const [header, ...body] = rows;
+
+  const thead = `<thead><tr>${header
+    .map(
+      (cell) =>
+        `<th class="bg-amber-50 border border-amber-200 px-3 py-2 text-left font-bold text-gray-800 whitespace-nowrap">${cell}</th>`
+    )
+    .join('')}</tr></thead>`;
+
+  const tbody =
+    body.length > 0
+      ? `<tbody>${body
+          .map(
+            (cells) =>
+              `<tr>${cells
+                .map(
+                  (cell) =>
+                    `<td class="border border-gray-200 px-3 py-2 text-gray-700 align-top">${cell}</td>`
+                )
+                .join('')}</tr>`
+          )
+          .join('')}</tbody>`
+      : '';
+
+  return `<div class="overflow-x-auto my-6"><table class="w-full text-sm border-collapse bg-white rounded-lg">${thead}${tbody}</table></div>`;
+}
+
 /* ── マークダウン→HTML簡易変換 ── */
 function markdownToHtml(md: string): string {
-  return md
-    .trim()
-    .split('\n')
-    .map((line) => {
-      // H3
-      if (line.startsWith('### '))
-        return `<h3 class="text-lg font-bold mt-8 mb-3 text-gray-800">${line.slice(4)}</h3>`;
-      // H2
-      if (line.startsWith('## '))
-        return `<h2 class="text-xl font-bold mt-10 mb-4 text-gray-900 border-l-4 border-amber-500 pl-3">${line.slice(3)}</h2>`;
-      // リスト（- **太字**: 説明）
-      if (line.startsWith('- **'))
-        return `<li class="ml-4 mb-1">${line
-          .slice(2)
-          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</li>`;
-      // リスト
-      if (line.startsWith('- '))
-        return `<li class="ml-4 mb-1 list-disc list-inside">${line.slice(2)}</li>`;
-      // 番号リスト
-      if (/^\d+\.\s/.test(line))
-        return `<li class="ml-4 mb-1 list-decimal list-inside">${line
-          .replace(/^\d+\.\s/, '')
-          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</li>`;
-      // テーブル行（簡易）
-      if (line.startsWith('|') && !line.includes('---')) return ''; // テーブルはスキップ（記事内で表を使う場合は別途対応）
-      if (line.startsWith('|')) return '';
-      // 内部リンク
-      let processed = line.replace(
-        /\[(.+?)\]\((.+?)\)/g,
-        '<a href="$2" class="text-amber-600 underline hover:text-amber-700">$1</a>'
+  const lines = md.trim().split('\n');
+  const html: string[] = [];
+  let tableBuffer: string[] = [];
+
+  const flushTable = () => {
+    if (tableBuffer.length > 0) {
+      html.push(renderTable(tableBuffer));
+      tableBuffer = [];
+    }
+  };
+
+  for (const line of lines) {
+    // テーブル行は連続ブロックとしてバッファし、まとめてレンダリング
+    if (line.trimEnd().startsWith('|')) {
+      tableBuffer.push(line.trimEnd());
+      continue;
+    }
+    flushTable();
+
+    // H3
+    if (line.startsWith('### ')) {
+      html.push(`<h3 class="text-lg font-bold mt-8 mb-3 text-gray-800">${line.slice(4)}</h3>`);
+      continue;
+    }
+    // H2
+    if (line.startsWith('## ')) {
+      html.push(
+        `<h2 class="text-xl font-bold mt-10 mb-4 text-gray-900 border-l-4 border-amber-500 pl-3">${line.slice(3)}</h2>`
       );
-      // 太字
-      processed = processed.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-      // 空行
-      if (processed.trim() === '') return '<br />';
-      // 通常段落
-      return `<p class="mb-4 leading-relaxed text-gray-700">${processed}</p>`;
-    })
-    .join('\n');
+      continue;
+    }
+    // リスト（- **太字**: 説明）
+    if (line.startsWith('- **')) {
+      html.push(`<li class="ml-4 mb-1">${inlineFormat(line.slice(2))}</li>`);
+      continue;
+    }
+    // リスト
+    if (line.startsWith('- ')) {
+      html.push(`<li class="ml-4 mb-1 list-disc list-inside">${inlineFormat(line.slice(2))}</li>`);
+      continue;
+    }
+    // 番号リスト
+    if (/^\d+\.\s/.test(line)) {
+      html.push(
+        `<li class="ml-4 mb-1 list-decimal list-inside">${inlineFormat(line.replace(/^\d+\.\s/, ''))}</li>`
+      );
+      continue;
+    }
+    // 内部リンク・太字
+    const processed = inlineFormat(line);
+    // 空行
+    if (processed.trim() === '') {
+      html.push('<br />');
+      continue;
+    }
+    // 通常段落
+    html.push(`<p class="mb-4 leading-relaxed text-gray-700">${processed}</p>`);
+  }
+  flushTable();
+
+  return html.join('\n');
+}
+
+/* ── 関連記事スコアリング ──
+ * 旧実装は「配列先頭の3記事」固定で、全65記事から同じ3本に内部リンクが
+ * 集中していた。キーワード・slugトークンの重複数でテーマが近い記事を
+ * 選ぶことで、内部リンクの関連性（SEO）と回遊性を高める。
+ */
+function relatedScore(base: Article, other: Article): number {
+  const tokenize = (a: Article) =>
+    new Set([
+      ...a.keywords.flatMap((k) => k.split(/\s+/)),
+      ...a.slug.split('-').filter((t) => t.length >= 3),
+    ]);
+  const baseTokens = tokenize(base);
+  let score = 0;
+  for (const token of tokenize(other)) {
+    if (baseTokens.has(token)) score += 1;
+  }
+  return score;
 }
 
 /* ── ページ本体 ── */
@@ -160,8 +262,13 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
     ],
   };
 
-  /* 関連記事（自分以外から最大3本） */
-  const relatedArticles = articles.filter((a) => a.slug !== article.slug).slice(0, 3);
+  /* 関連記事（キーワード・slugトークンの重複が多い順に最大3本） */
+  const relatedArticles = articles
+    .filter((a) => a.slug !== article.slug)
+    .map((a) => ({ article: a, score: relatedScore(article, a) }))
+    .sort((x, y) => y.score - x.score)
+    .slice(0, 3)
+    .map((x) => x.article);
 
   return (
     <>
@@ -180,9 +287,14 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
           <Link href="/" className="text-lg font-bold text-amber-600">
             ココペリ
           </Link>
-          <Link href="/blog" className="text-sm text-gray-600 hover:text-amber-600">
-            ブログ一覧
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link href="/blog" className="text-sm text-gray-600 hover:text-amber-600">
+              ブログ一覧
+            </Link>
+            <Link href="/checkout" className="text-sm text-amber-600 font-medium hover:underline">
+              購入ページ
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -205,15 +317,38 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
           {/* CTA */}
           <div className="mt-12 p-6 bg-amber-50 rounded-xl text-center border border-amber-200">
             <p className="text-lg font-bold text-gray-900 mb-2">愛犬・愛猫の健康維持に</p>
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-600 mb-1">
               ココペリは水溶性ケイ素10,000mg/Lを含む動物用栄養補助食品です
             </p>
-            <Link
-              href="/checkout"
-              className="inline-block bg-gradient-to-r from-amber-600 to-amber-500 text-white px-8 py-3 rounded-full font-bold shadow hover:shadow-lg transition-all hover:-translate-y-0.5"
-            >
-              ココペリを詳しく見る
-            </Link>
+            <p className="text-sm text-gray-700 mb-4">
+              2本セット <strong className="text-amber-700">{formatYen(BUNDLE_2_PRICE)}</strong>
+              （税込・送料無料）
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link
+                href="/checkout?plan=set"
+                className="inline-block w-full sm:w-auto bg-gradient-to-r from-amber-600 to-amber-500 text-white px-8 py-3 rounded-full font-bold shadow hover:shadow-lg transition-all hover:-translate-y-0.5"
+              >
+                ココペリを購入する →
+              </Link>
+              <Link
+                href="/"
+                className="inline-block w-full sm:w-auto bg-white text-slate-800 border border-slate-300 hover:border-slate-400 px-8 py-3 rounded-full font-bold transition-all"
+              >
+                商品の詳細を見る
+              </Link>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 mt-4 text-xs text-gray-500">
+              <span className="flex items-center gap-1">
+                <span className="text-amber-500">&#10003;</span> 30日間全額返金保証
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="text-amber-500">&#10003;</span> 2本セット以上 送料無料
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="text-amber-500">&#10003;</span> 獣医師の臨床現場で10年使用
+              </span>
+            </div>
           </div>
 
           {/* 関連記事 */}
