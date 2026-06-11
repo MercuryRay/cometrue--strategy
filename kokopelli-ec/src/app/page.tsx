@@ -222,8 +222,8 @@ export default function Home() {
             className="object-cover"
             priority
           />
-          {/* モバイルは読みやすさ重視で白マスクを強めに */}
-          <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/85 to-white/70 md:bg-gradient-to-r md:from-white/92 md:via-white/65 md:to-transparent" />
+          {/* 写真を活かしつつ可読性を確保したマスク (白マスクを大幅に薄く) */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white/85 via-white/55 to-white/25 md:bg-gradient-to-r md:from-white/85 md:via-white/45 md:to-transparent" />
         </div>
 
         <div className="relative max-w-5xl mx-auto px-4 py-10 md:py-24 w-full">
@@ -324,25 +324,25 @@ export default function Home() {
               </p>
             </div>
 
-            {/* 商品写真（モバイルでは縮小して1画面に収める） */}
+            {/* 商品写真（主役: image-4 パッケージを大きく / 副: 愛用シーン） */}
             <Parallax speed={0.15}>
               <div className="flex gap-3 md:gap-4 items-end">
-                <div className="relative w-32 sm:w-40 md:w-56 rounded-2xl overflow-hidden shadow-2xl border border-gray-200">
+                <div className="relative w-44 sm:w-56 md:w-80 rounded-3xl overflow-hidden shadow-[0_25px_60px_-10px_rgba(15,23,42,0.45)] ring-1 ring-amber-200/50 bg-white">
                   <Image
                     src="/images/image-4.webp"
                     alt="ココペリ パッケージ正面 - 犬猫用動物用ケイ素濃縮液"
-                    width={400}
-                    height={700}
+                    width={600}
+                    height={1050}
                     className="w-full h-auto"
                     priority
                   />
                 </div>
-                <div className="relative w-24 sm:w-28 md:w-40 rounded-2xl overflow-hidden shadow-xl border border-gray-200">
+                <div className="relative w-28 sm:w-36 md:w-52 rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/50">
                   <Image
                     src="/images/image-6.webp"
                     alt="ココペリを愛用する猫"
-                    width={400}
-                    height={480}
+                    width={500}
+                    height={600}
                     className="w-full h-auto"
                   />
                 </div>
@@ -466,23 +466,23 @@ export default function Home() {
           <div className="flex flex-col md:flex-row gap-8 items-center mt-12">
             {/* 左: シニアペット写真 */}
             <FadeInOnScroll direction="left">
-              <div className="w-full md:w-64 shrink-0 space-y-4">
-                <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+              <div className="w-full md:w-80 shrink-0 space-y-4">
+                <div className="group rounded-3xl overflow-hidden shadow-xl ring-1 ring-amber-100">
                   <Image
                     src="/images/pet-dog-senior.jpg"
                     alt="シニア犬の様子"
-                    width={400}
-                    height={500}
-                    className="w-full h-auto"
+                    width={500}
+                    height={620}
+                    className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
                   />
                 </div>
-                <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+                <div className="group rounded-3xl overflow-hidden shadow-xl ring-1 ring-amber-100">
                   <Image
                     src="/images/pet-cat-senior.jpg"
                     alt="シニア猫の様子"
-                    width={400}
-                    height={500}
-                    className="w-full h-auto"
+                    width={500}
+                    height={620}
+                    className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
                   />
                 </div>
               </div>
@@ -1147,13 +1147,13 @@ export default function Home() {
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-white px-4 py-1 rounded-full text-xs font-black shadow">
                   まとめ買い最安
                 </div>
-                <div className="w-16 h-16 mx-auto mb-3 mt-2 rounded-full bg-white/20 flex items-center justify-center">
+                <div className="w-28 h-28 mx-auto mb-3 mt-2 rounded-2xl bg-white/20 backdrop-blur ring-1 ring-white/30 flex items-center justify-center overflow-hidden shadow-inner">
                   <Image
                     src="/images/image-4.webp"
                     alt="ココペリ6本"
-                    width={40}
-                    height={70}
-                    className="h-10 w-auto"
+                    width={160}
+                    height={280}
+                    className="h-24 w-auto drop-shadow-lg"
                   />
                 </div>
                 <p className="text-sm font-bold text-amber-100 mb-1">5+1セット</p>
@@ -1197,13 +1197,13 @@ export default function Home() {
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-100 text-amber-800 px-4 py-1 rounded-full text-xs font-black shadow-sm whitespace-nowrap border border-amber-300">
                   単品より送料無料
                 </div>
-                <div className="w-16 h-16 mx-auto mb-3 mt-2 rounded-full bg-amber-50 flex items-center justify-center border border-amber-200">
+                <div className="w-28 h-28 mx-auto mb-3 mt-2 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center border border-amber-200 overflow-hidden shadow-inner">
                   <Image
                     src="/images/image-4.webp"
                     alt="ココペリ2本セット"
-                    width={40}
-                    height={70}
-                    className="h-10 w-auto"
+                    width={160}
+                    height={280}
+                    className="h-24 w-auto drop-shadow-md"
                   />
                 </div>
                 <p className="text-sm font-bold text-amber-600 mb-1">2本セット</p>
@@ -1242,13 +1242,13 @@ export default function Home() {
             {/* 1本 — お試し */}
             <StaggerItem>
               <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 text-center h-full flex flex-col">
-                <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gray-50 flex items-center justify-center border border-gray-200">
+                <div className="w-28 h-28 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center border border-gray-200 overflow-hidden shadow-inner">
                   <Image
                     src="/images/image-4.webp"
                     alt="ココペリ1本"
-                    width={40}
-                    height={70}
-                    className="h-10 w-auto"
+                    width={160}
+                    height={280}
+                    className="h-24 w-auto drop-shadow-md"
                   />
                 </div>
                 <p className="text-sm font-bold text-gray-500 mb-1">お試し</p>
@@ -1319,18 +1319,19 @@ export default function Home() {
               },
             ].map((v) => (
               <FadeInOnScroll key={v.name}>
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden h-full">
-                  <div className="h-40 overflow-hidden">
+                <div className="group bg-white rounded-3xl border border-gray-100 shadow-md hover:shadow-2xl overflow-hidden h-full transition-shadow duration-300">
+                  <div className="relative h-64 overflow-hidden">
                     <Image
                       src={v.img}
                       alt={v.pet}
-                      width={400}
-                      height={250}
-                      className="w-full h-full object-cover"
+                      width={600}
+                      height={400}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
+                    <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white/95 to-transparent" />
                   </div>
                   <div className="p-6">
-                    <div className="text-yellow-400 text-sm mb-3">
+                    <div className="text-amber-400 text-base mb-3">
                       &#9733;&#9733;&#9733;&#9733;&#9733;
                     </div>
                     <p className="text-gray-700 mb-4 leading-relaxed text-sm">
