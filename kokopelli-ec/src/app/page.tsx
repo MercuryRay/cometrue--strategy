@@ -418,9 +418,10 @@ export default function Home() {
                         <span>&#10003;</span> 2本目から送料無料
                       </span>
                       <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-bold">
-                        <span>&#10003;</span> 定期便なら¥500OFF
+                        <span>&#10003;</span> 定期便は2本セットより
+                        {formatYen(BUNDLE_2_PRICE - SUBSCRIPTION_PRICE)}おトク
                       </span>
-                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-green-100 text-green-800 text-xs font-bold">
+                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold">
                         <span>&#10003;</span> 継続義務なし
                       </span>
                     </div>
@@ -1461,7 +1462,7 @@ export default function Home() {
               ],
               [
                 '定期便はいつでも解約できますか？',
-                'はい、いつでも解約可能です。マイページから即時で解約手続きが完了します。解約金や違約金は一切ありません。次回発送日の前日までに手続きしていただければ次回分の請求は発生しません。',
+                'はい、いつでも解約可能です。info@kamuturu.jp へメールでご連絡いただくだけで解約できます。解約金や違約金は一切なく、回数縛りもありません。次回引き落とし日の前日までにご連絡いただければ次回分の請求は発生しません。',
               ],
               [
                 '多頭飼いの場合、1日の量の目安は？',
@@ -2272,7 +2273,7 @@ export default function Home() {
                 name: '定期便はいつでも解約できますか？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'はい、いつでも解約可能です。マイページから即時で解約手続きが完了します。解約金や違約金は一切ありません。',
+                  text: 'はい、いつでも解約可能です。info@kamuturu.jp へメールでご連絡いただくだけで解約できます。解約金や違約金は一切なく、回数縛りもありません。次回引き落とし日の前日までにご連絡いただければ次回分の請求は発生しません。',
                 },
               },
               {

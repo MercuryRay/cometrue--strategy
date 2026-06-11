@@ -13,7 +13,6 @@ import {
   PER_BOTTLE_BUNDLE_2,
   PER_BOTTLE_BUNDLE_6,
   PER_BOTTLE_SUBSCRIPTION,
-  REGULAR_PRICES,
   REFERRAL_DISCOUNT,
   formatYen,
 } from '@/lib/prices';
@@ -31,6 +30,7 @@ function CheckoutContent() {
   const [selectedPlan, setSelectedPlan] = useState<Plan>('set');
   const [loading, setLoading] = useState(false);
   const [referralCode, setReferralCode] = useState('');
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   // URLパラメータから紹介コード自動入力（?ref=FRIEND500） & プラン指定（?plan=bulk）
   useEffect(() => {
@@ -52,7 +52,6 @@ function CheckoutContent() {
     {
       name: string;
       price: number;
-      regular: number;
       desc: string;
       bottles: number;
       badge: string;
@@ -64,7 +63,6 @@ function CheckoutContent() {
     trial: {
       name: 'お試し1本',
       price: SINGLE_PRICE,
-      regular: REGULAR_PRICES.single,
       desc: 'まずは1本から試したい方に',
       bottles: 1,
       badge: '初めての方に',
@@ -75,7 +73,6 @@ function CheckoutContent() {
     set: {
       name: '2本セット',
       price: BUNDLE_2_PRICE,
-      regular: REGULAR_PRICES.bundle2,
       desc: '一番人気！送料無料でおトク',
       bottles: 2,
       badge: '人気No.1',
@@ -86,7 +83,6 @@ function CheckoutContent() {
     bulk: {
       name: '5+1セット（6本）',
       price: BUNDLE_6_PRICE,
-      regular: REGULAR_PRICES.bundle6,
       desc: '5本買うと1本無料！1本あたり最安',
       bottles: 6,
       badge: '一番おトク',
@@ -97,7 +93,6 @@ function CheckoutContent() {
     subscription: {
       name: '定期便 2本/月',
       price: SUBSCRIPTION_PRICE,
-      regular: REGULAR_PRICES.subscription,
       desc: '毎月届く・いつでも解約OK・送料無料',
       bottles: 2,
       badge: '続けやすい',
@@ -118,6 +113,7 @@ function CheckoutContent() {
 
   const handleCheckout = async () => {
     setLoading(true);
+    setCheckoutError(null);
     const fbp = getCookie('_fbp');
     const fbc = getCookie('_fbc');
     const w = typeof window !== 'undefined' ? (window as WindowWithTrackers) : null;
@@ -135,35 +131,37 @@ function CheckoutContent() {
       content_name: plan.name,
     });
     try {
-      if (selectedPlan === 'subscription') {
-        const res = await fetch('/api/subscribe', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            referralCode: referralCode.trim() || undefined,
-            fbp,
-            fbc,
-          }),
-        });
-        const data = await res.json();
-        if (data.url) window.location.href = data.url;
-      } else {
-        const res = await fetch('/api/checkout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            plan: selectedPlan,
-            quantity: 1,
-            referralCode: referralCode.trim() || undefined,
-            fbp,
-            fbc,
-          }),
-        });
-        const data = await res.json();
-        if (data.url) window.location.href = data.url;
+      const isSubscription = selectedPlan === 'subscription';
+      const res = await fetch(isSubscription ? '/api/subscribe' : '/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(
+          isSubscription
+            ? {
+                referralCode: referralCode.trim() || undefined,
+                fbp,
+                fbc,
+              }
+            : {
+                plan: selectedPlan,
+                quantity: 1,
+                referralCode: referralCode.trim() || undefined,
+                fbp,
+                fbc,
+              }
+        ),
+      });
+      const data: { url?: string; error?: string } = await res.json();
+      if (!res.ok || !data.url) {
+        // サイレント失敗を防止: ユーザーに必ずフィードバックを返す
+        setCheckoutError(
+          data.error || '決済ページへの接続に失敗しました。時間をおいて再度お試しください。'
+        );
+        return;
       }
+      window.location.href = data.url;
     } catch {
-      alert('決済の開始に失敗しました。もう一度お試しください。');
+      setCheckoutError('決済ページへの接続に失敗しました。時間をおいて再度お試しください。');
     } finally {
       setLoading(false);
     }
@@ -275,11 +273,8 @@ function CheckoutContent() {
                       </div>
                     </div>
                     <div className="text-right shrink-0">
-                      {info.regular > info.price && (
-                        <p className="text-xs text-slate-400 line-through leading-tight">
-                          通常 {formatYen(info.regular)}
-                        </p>
-                      )}
+                      {/* 販売実績のない比較対照価格(アンカー価格)の併記は景表法の
+                          有利誤認リスクがあるため表示しない */}
                       <p className="text-xl font-black text-slate-800">{formatYen(info.price)}</p>
                       <p className="text-xs text-slate-500">
                         {p === 'subscription' ? '/月（2本）' : ''}
@@ -356,7 +351,9 @@ function CheckoutContent() {
                 />
               </div>
               <p className="text-xs text-amber-800 mt-2 font-bold">
-                {formatYen(REFERRAL_DISCOUNT)} OFF が適用されます
+                {selectedPlan === 'subscription'
+                  ? `※紹介割引（${formatYen(REFERRAL_DISCOUNT)} OFF）は通常購入（1本・2本・6本セット）のみ対象です`
+                  : `有効なコードの場合、${formatYen(REFERRAL_DISCOUNT)} OFF が適用されます`}
               </p>
             </div>
           ) : (
@@ -378,6 +375,28 @@ function CheckoutContent() {
                 </div>
               </div>
             </details>
+          )}
+
+          {/* 決済エラーバナー — サイレント失敗防止 */}
+          {checkoutError && (
+            <div
+              role="alert"
+              className="bg-red-50 border-2 border-red-200 rounded-2xl p-4 mb-4 flex items-start gap-3"
+            >
+              <span className="text-red-600 font-black shrink-0 mt-0.5" aria-hidden="true">
+                !
+              </span>
+              <div>
+                <p className="text-sm font-bold text-red-800">{checkoutError}</p>
+                <p className="text-xs text-red-700 mt-1">
+                  解決しない場合は{' '}
+                  <a href="mailto:info@kamuturu.jp" className="underline font-medium">
+                    info@kamuturu.jp
+                  </a>{' '}
+                  までお問い合わせください。
+                </p>
+              </div>
+            </div>
           )}
 
           {/* 購入ボタン — ブランドカラー amber-600 */}
@@ -480,8 +499,10 @@ function CheckoutContent() {
                 <li>・契約形態: 自動更新（期間の定めなし）</li>
                 <li>・毎月の請求額: {formatYen(SUBSCRIPTION_PRICE)}（税込・送料無料）</li>
                 <li>・解約方法: info@kamuturu.jp へメール連絡</li>
-                <li>・解約期限: 次回引き落とし日の7日前まで</li>
-                <li>・解約料: なし（いつでも無料で解約可能）</li>
+                <li>
+                  ・解約期限: 次回引き落とし日の前日まで（それまでのご連絡で次回分の請求なし）
+                </li>
+                <li>・解約料: なし（いつでも無料で解約可能・回数縛りなし）</li>
               </ul>
             </div>
           )}

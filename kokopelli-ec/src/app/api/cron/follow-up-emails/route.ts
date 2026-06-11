@@ -13,19 +13,19 @@
  * 送信済みフラグ: customer.metadata.emails_sent (カンマ区切り)
  */
 
-import { NextRequest, NextResponse } from "next/server";
-import Stripe from "stripe";
-import { sendEmail } from "@/lib/email";
+import { NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
+import { sendEmail } from '@/lib/email';
 import {
   usageReminder,
   effectCheck,
   reorderReminder,
   referralCampaign,
   type TemplateVars,
-} from "@/lib/email-templates";
+} from '@/lib/email-templates';
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
 interface FollowUpRule {
@@ -35,10 +35,10 @@ interface FollowUpRule {
 }
 
 const FOLLOW_UP_RULES: FollowUpRule[] = [
-  { daysAfterPurchase: 3, templateKey: "usage_reminder", templateFn: usageReminder },
-  { daysAfterPurchase: 14, templateKey: "effect_check", templateFn: effectCheck },
-  { daysAfterPurchase: 30, templateKey: "reorder_reminder", templateFn: reorderReminder },
-  { daysAfterPurchase: 35, templateKey: "referral_campaign", templateFn: referralCampaign },
+  { daysAfterPurchase: 3, templateKey: 'usage_reminder', templateFn: usageReminder },
+  { daysAfterPurchase: 14, templateKey: 'effect_check', templateFn: effectCheck },
+  { daysAfterPurchase: 30, templateKey: 'reorder_reminder', templateFn: reorderReminder },
+  { daysAfterPurchase: 35, templateKey: 'referral_campaign', templateFn: referralCampaign },
 ];
 
 function daysSince(dateStr: string): number {
@@ -48,17 +48,23 @@ function daysSince(dateStr: string): number {
 }
 
 export async function GET(req: NextRequest) {
-  // Vercel Cronからの呼び出しを認証
-  const authHeader = req.headers.get("authorization");
+  // Vercel Cronからの呼び出しを認証 — fail-closed
+  // secret 設定済み && 一致 → 許可 / secret 未設定 → 503 / 不一致 → 401
   const cronSecret = process.env.CRON_SECRET;
-
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!cronSecret) {
+    return NextResponse.json(
+      { error: 'CRON_SECRET が未設定のため実行できません' },
+      { status: 503 }
+    );
+  }
+  const authHeader = req.headers.get('authorization');
+  if (authHeader !== `Bearer ${cronSecret}`) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const secretKey = process.env.STRIPE_SECRET_KEY;
   if (!secretKey) {
-    return NextResponse.json({ error: "Stripe key missing" }, { status: 500 });
+    return NextResponse.json({ error: 'Stripe key missing' }, { status: 500 });
   }
 
   const stripe = new Stripe(secretKey, {
@@ -81,7 +87,7 @@ export async function GET(req: NextRequest) {
       if (!purchaseDate || !customer.email) continue;
 
       const days = daysSince(purchaseDate);
-      const sentEmails = (customer.metadata?.emails_sent || "").split(",").filter(Boolean);
+      const sentEmails = (customer.metadata?.emails_sent || '').split(',').filter(Boolean);
 
       for (const rule of FOLLOW_UP_RULES) {
         // 送信タイミング: 当日 or 1日遅れまで許容
@@ -90,7 +96,7 @@ export async function GET(req: NextRequest) {
 
         try {
           const vars: TemplateVars = {
-            customerName: customer.name || "お客様",
+            customerName: customer.name || 'お客様',
             email: customer.email,
             referralCode: customer.metadata?.referral_code,
           };
@@ -108,15 +114,15 @@ export async function GET(req: NextRequest) {
           await stripe.customers.update(customer.id, {
             metadata: {
               ...customer.metadata,
-              emails_sent: sentEmails.join(","),
+              emails_sent: sentEmails.join(','),
             },
           });
 
-          results.push({ email: customer.email, template: rule.templateKey, status: "sent" });
+          results.push({ email: customer.email, template: rule.templateKey, status: 'sent' });
           console.log(`フォローアップ送信: ${customer.email} / ${rule.templateKey}`);
         } catch (err) {
           console.error(`メール送信失敗: ${customer.email} / ${rule.templateKey}`, err);
-          results.push({ email: customer.email, template: rule.templateKey, status: "error" });
+          results.push({ email: customer.email, template: rule.templateKey, status: 'error' });
         }
       }
     }

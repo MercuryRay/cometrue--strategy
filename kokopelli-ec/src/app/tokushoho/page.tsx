@@ -113,7 +113,7 @@ export default function Tokushoho() {
             <tr>
               <td className="py-4 pr-4 font-medium text-gray-700 align-top">定期便の解約</td>
               <td className="py-4 text-gray-600">
-                次回引き落とし日の7日前までに info@kamuturu.jp
+                次回引き落とし日の前日までに info@kamuturu.jp
                 へご連絡ください。回数縛りはございません。解約料は一切かかりません。
                 <br />
                 詳細は
@@ -152,7 +152,9 @@ export default function Tokushoho() {
               </tr>
               <tr>
                 <td className="py-2 pr-4 font-medium text-amber-700">解約期限</td>
-                <td className="py-2 text-amber-900">次回引き落とし日の7日前まで</td>
+                <td className="py-2 text-amber-900">
+                  次回引き落とし日の前日まで（それまでのご連絡で次回分の請求は発生しません）
+                </td>
               </tr>
               <tr>
                 <td className="py-2 pr-4 font-medium text-amber-700">解約料</td>
