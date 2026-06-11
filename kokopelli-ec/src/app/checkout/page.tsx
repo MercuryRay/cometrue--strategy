@@ -238,7 +238,10 @@ function CheckoutContent() {
               return (
                 <button
                   key={p}
-                  onClick={() => setSelectedPlan(p)}
+                  onClick={() => {
+                    setSelectedPlan(p);
+                    setCheckoutError(null);
+                  }}
                   className={`w-full text-left rounded-2xl p-5 border-2 transition-all ${
                     isSelected
                       ? 'border-amber-600 bg-amber-50/60 shadow-md ring-2 ring-amber-100'

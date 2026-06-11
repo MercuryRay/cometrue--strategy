@@ -60,45 +60,47 @@ stripe listen --forward-to localhost:3000/api/webhook
 
 `.env.local` に設定。Vercel デプロイ時は Project Settings > Environment Variables に同名で登録（`NEXT_PUBLIC_*` のみクライアント露出）。
 
-| 変数名                      | 必須 | 用途                                                                      |
-| --------------------------- | ---- | ------------------------------------------------------------------------- |
-| `STRIPE_SECRET_KEY`         | ✅   | Stripe シークレットキー（`sk_live_...` / `sk_test_...`）                  |
-| `STRIPE_WEBHOOK_SECRET`     | ✅   | `/api/webhook` の署名検証用（`whsec_...`）                                |
-| `MAGIC_LINK_SECRET`         | ✅   | マジックリンク JWT 署名鍵                                                 |
-| `GMAIL_USER`                | ✅   | 送信元 Gmail アドレス（nodemailer SMTP）                                  |
-| `GMAIL_APP_PASSWORD`        | ✅   | Gmail アプリパスワード                                                    |
-| `OWNER_EMAIL`               | 任意 | 注文通知の管理者宛先（未設定時は `GMAIL_USER`）                           |
-| `SENDER_NAME`               | 任意 | メール差出人表示名（既定: `ココペリ シリカウォーター`）                   |
-| `NEXT_PUBLIC_SITE_URL`      | 任意 | サイト URL（既定: `https://kokopelli.kamuturu.jp`）                       |
-| `NEXT_PUBLIC_GA4_ID`        | 任意 | GA4 measurement ID（`G-XXXX`）。設定で gtag 自動注入                      |
-| `NEXT_PUBLIC_META_PIXEL_ID` | 任意 | Meta Pixel ID（クライアント側 fbq 用）                                    |
-| `META_PIXEL_ID`             | 任意 | Meta Pixel ID（サーバー CAPI 用。未設定時は `NEXT_PUBLIC_META_PIXEL_ID`） |
-| `META_CAPI_ACCESS_TOKEN`    | 任意 | Meta Conversions API アクセストークン                                     |
-| `META_CAPI_TEST_EVENT_CODE` | 任意 | CAPI テストイベントコード（検証時のみ）                                   |
-| `CRON_SECRET`               | 任意 | `/api/cron/*` 認証用ベアラトークン                                        |
-| `ADMIN_SECRET`              | 任意 | 管理 API 認証用ベアラトークン                                             |
+| 変数名                      | 必須 | 用途                                                                                                             |
+| --------------------------- | ---- | ---------------------------------------------------------------------------------------------------------------- |
+| `STRIPE_SECRET_KEY`         | ✅   | Stripe シークレットキー（`sk_live_...` / `sk_test_...`）                                                         |
+| `STRIPE_WEBHOOK_SECRET`     | ✅   | `/api/webhook` の署名検証用（`whsec_...`）                                                                       |
+| `MAGIC_LINK_SECRET`         | ✅   | マジックリンク JWT 署名鍵                                                                                        |
+| `GMAIL_USER`                | ✅   | 送信元 Gmail アドレス（nodemailer SMTP）                                                                         |
+| `GMAIL_APP_PASSWORD`        | ✅   | Gmail アプリパスワード                                                                                           |
+| `OWNER_EMAIL`               | 任意 | 注文通知の管理者宛先（未設定時は `GMAIL_USER`）                                                                  |
+| `SENDER_NAME`               | 任意 | メール差出人表示名（既定: `ココペリ シリカウォーター`）                                                          |
+| `NEXT_PUBLIC_SITE_URL`      | 任意 | サイト URL（既定: `https://kokopelli.kamuturu.jp`）                                                              |
+| `NEXT_PUBLIC_GA4_ID`        | 任意 | GA4 measurement ID（`G-XXXX`）。設定で gtag 自動注入                                                             |
+| `NEXT_PUBLIC_META_PIXEL_ID` | 任意 | Meta Pixel ID（クライアント側 fbq 用）                                                                           |
+| `META_PIXEL_ID`             | 任意 | Meta Pixel ID（サーバー CAPI 用。未設定時は `NEXT_PUBLIC_META_PIXEL_ID`）                                        |
+| `META_CAPI_ACCESS_TOKEN`    | 任意 | Meta Conversions API アクセストークン                                                                            |
+| `META_CAPI_TEST_EVENT_CODE` | 任意 | CAPI テストイベントコード（検証時のみ）                                                                          |
+| `CRON_SECRET`               | 必須 | `/api/cron/follow-up-emails` / `/api/abandoned-cart` (GET) 認証用ベアラトークン。未設定時は両 cron が 503 で停止 |
+| `ADMIN_SECRET`              | 任意 | `/api/admin/send-shipping-notification` 認証用ベアラトークン                                                     |
+| `ADMIN_API_TOKEN`           | 必須 | `/api/abandoned-cart` (POST) 認証用ベアラトークン。未設定時は 503                                                |
 
 ## 主要ページ・API ルート
 
-| ルート                                     | 役割                                                               |
-| ------------------------------------------ | ------------------------------------------------------------------ |
-| `/`                                        | LP（ペット診断 + 特長 + 価格比較 + FAQ + 会員登録 + モバイル CTA） |
-| `/checkout`                                | 単発購入用 Stripe Checkout 開始                                    |
-| `/success` / `/cancel`                     | 決済完了 / キャンセル後リダイレクト先                              |
-| `/account`                                 | 会員マイページ（サブスク確認・Stripe Customer Portal 起動）        |
-| `/login`                                   | マジックリンク送信フォーム                                         |
-| `/blog` / `/blog/[slug]`                   | 記事一覧 / 記事詳細（`src/app/blog/articles.ts` 管理）             |
-| `/tokushoho`                               | 特定商取引法に基づく表記                                           |
-| `/privacy`                                 | プライバシーポリシー                                               |
-| `/api/checkout`                            | 単発購入セッション生成（POST）                                     |
-| `/api/subscribe`                           | 定期便サブスクセッション生成（紹介コード対応）                     |
-| `/api/webhook`                             | Stripe Webhook 受信（注文記録 + メール送信）                       |
-| `/api/auth/send-link` / `/api/auth/verify` | マジックリンク発行 / 検証                                          |
-| `/api/account/portal`                      | Stripe Customer Portal セッション生成                              |
-| `/api/member/register`                     | 会員登録（Stripe Customer 作成）                                   |
-| `/api/referral-reward`                     | 紹介報酬処理                                                       |
-| `/api/cron/follow-up-emails`               | CRON 経由のフォローアップメール（要 `CRON_SECRET`）                |
-| `/api/admin/send-shipping-notification`    | 出荷通知一斉送信（要 `ADMIN_SECRET`）                              |
+| ルート                                     | 役割                                                                    |
+| ------------------------------------------ | ----------------------------------------------------------------------- |
+| `/`                                        | LP（ペット診断 + 特長 + 価格比較 + FAQ + 会員登録 + モバイル CTA）      |
+| `/checkout`                                | 単発購入用 Stripe Checkout 開始                                         |
+| `/success` / `/cancel`                     | 決済完了 / キャンセル後リダイレクト先                                   |
+| `/account`                                 | 会員マイページ（サブスク確認・Stripe Customer Portal 起動）             |
+| `/login`                                   | マジックリンク送信フォーム                                              |
+| `/blog` / `/blog/[slug]`                   | 記事一覧 / 記事詳細（`src/app/blog/articles.ts` 管理）                  |
+| `/tokushoho`                               | 特定商取引法に基づく表記                                                |
+| `/privacy`                                 | プライバシーポリシー                                                    |
+| `/api/checkout`                            | 単発購入セッション生成（POST）                                          |
+| `/api/subscribe`                           | 定期便サブスクセッション生成（紹介コード対応）                          |
+| `/api/webhook`                             | Stripe Webhook 受信（注文記録 + メール送信）                            |
+| `/api/auth/send-link` / `/api/auth/verify` | マジックリンク発行 / 検証                                               |
+| `/api/account/portal`                      | Stripe Customer Portal セッション生成                                   |
+| `/api/member/register`                     | 会員登録（Stripe Customer 作成）                                        |
+| `/api/referral-reward`                     | 紹介報酬処理                                                            |
+| `/api/cron/follow-up-emails`               | CRON 経由のフォローアップメール（要 `CRON_SECRET`）                     |
+| `/api/abandoned-cart`                      | かご落ち回収（GET: CRON 要 `CRON_SECRET` / POST: 要 `ADMIN_API_TOKEN`） |
+| `/api/admin/send-shipping-notification`    | 出荷通知一斉送信（要 `ADMIN_SECRET`）                                   |
 
 ## ディレクトリ構成（抜粋）
 
