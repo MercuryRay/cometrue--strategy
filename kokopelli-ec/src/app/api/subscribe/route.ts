@@ -100,9 +100,8 @@ export async function POST(req: NextRequest) {
         },
       },
 
-      // === 顧客情報の確実な収集 ===
-      customer_creation: 'if_required',
-      // subscription mode は customer 必須なので Stripe 側で自動生成される
+      // 顧客情報: customer_creation は payment/setup mode 専用パラメータのため指定しない。
+      // subscription mode では Stripe が customer を必ず自動生成する（指定すると 500 エラー）。
 
       // 3DS は必要時のみ起動。「常時3DS」で離脱率が悪化するのを避ける。
       payment_method_options: {

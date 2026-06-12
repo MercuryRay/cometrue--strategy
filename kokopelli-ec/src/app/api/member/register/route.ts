@@ -18,12 +18,11 @@ export async function POST(req: NextRequest) {
 
     const { email, name } = await req.json();
 
-    if (!email || !name) {
-      return NextResponse.json(
-        { error: 'お名前とメールアドレスを入力してください' },
-        { status: 400 }
-      );
+    // email のみ必須。name はフォーム(MemberRegistration)が送らないためオプショナル。
+    if (!email || typeof email !== 'string') {
+      return NextResponse.json({ error: 'メールアドレスを入力してください' }, { status: 400 });
     }
+    const customerName: string = typeof name === 'string' ? name.trim() : '';
 
     // Check if customer already exists
     const existing = await stripe.customers.list({
@@ -41,10 +40,10 @@ export async function POST(req: NextRequest) {
         isFirstTime = false;
       }
     } else {
-      // Create new customer
+      // Create new customer (name は任意 — 空の場合は送らない)
       customer = await stripe.customers.create({
         email,
-        name,
+        ...(customerName ? { name: customerName } : {}),
         metadata: {
           first_trial_used: 'false',
           member_since: new Date().toISOString(),

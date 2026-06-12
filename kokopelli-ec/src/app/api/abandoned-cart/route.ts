@@ -63,15 +63,24 @@ interface PostBody {
 }
 
 // ============================================================
-// 認証チェック (Cron 用)
+// 認証チェック (Cron 用) — fail-closed
+//   secret 設定済み && 一致 → 許可 (null を返す)
+//   secret 未設定          → 503 (無認証で誰でも叩ける状態を防ぐ)
+//   不一致                 → 401
 // ============================================================
-function verifyCronAuth(req: NextRequest): boolean {
-  const authHeader = req.headers.get('authorization');
+function verifyCronAuth(req: NextRequest): NextResponse | null {
   const cronSecret = process.env.CRON_SECRET;
-  // CRON_SECRET 未設定時は本番事故を避けるため「認証あり」扱いで通す
-  // (Vercel 本番では必ず設定すべき)
-  if (!cronSecret) return true;
-  return authHeader === `Bearer ${cronSecret}`;
+  if (!cronSecret) {
+    return NextResponse.json(
+      { error: 'CRON_SECRET が未設定のため実行できません' },
+      { status: 503 }
+    );
+  }
+  const authHeader = req.headers.get('authorization');
+  if (authHeader !== `Bearer ${cronSecret}`) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  return null;
 }
 
 // ============================================================
@@ -234,9 +243,8 @@ async function processAbandonedCarts(opts: {
 // GET — Vercel Cron 用
 // ============================================================
 export async function GET(req: NextRequest): Promise<NextResponse> {
-  if (!verifyCronAuth(req)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const authError = verifyCronAuth(req);
+  if (authError) return authError;
 
   try {
     const { processed, results } = await processAbandonedCarts({
@@ -263,10 +271,16 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 // POST — 手動トリガー用
 // ============================================================
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  // 管理トークン認証 (ADMIN_API_TOKEN を利用)
-  const authHeader = req.headers.get('authorization');
+  // 管理トークン認証 (ADMIN_API_TOKEN を利用) — fail-closed
   const adminToken = process.env.ADMIN_API_TOKEN;
-  if (adminToken && authHeader !== `Bearer ${adminToken}`) {
+  if (!adminToken) {
+    return NextResponse.json(
+      { error: 'ADMIN_API_TOKEN が未設定のため実行できません' },
+      { status: 503 }
+    );
+  }
+  const authHeader = req.headers.get('authorization');
+  if (authHeader !== `Bearer ${adminToken}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
