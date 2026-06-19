@@ -113,8 +113,8 @@ export default function Tokushoho() {
             <tr>
               <td className="py-4 pr-4 font-medium text-gray-700 align-top">定期便の解約</td>
               <td className="py-4 text-gray-600">
-                次回引き落とし日の前日までに info@kamuturu.jp
-                へご連絡ください。回数縛りはございません。解約料は一切かかりません。
+                マイページ（/account）の「支払い方法・プランを管理する」からいつでもご自身で解約できます。メール（info@kamuturu.jp）でも承ります。
+                次回引き落とし日の前日までに解約のお手続きをいただければ、原則、次回分の請求は発生しません。回数縛りはございません。解約料は一切かかりません。
                 <br />
                 詳細は
                 <a href="/cancel" className="text-blue-600 underline">
@@ -148,12 +148,14 @@ export default function Tokushoho() {
               </tr>
               <tr>
                 <td className="py-2 pr-4 font-medium text-amber-700">解約方法</td>
-                <td className="py-2 text-amber-900">info@kamuturu.jp へメール連絡</td>
+                <td className="py-2 text-amber-900">
+                  マイページからセルフ解約、または info@kamuturu.jp へメール連絡
+                </td>
               </tr>
               <tr>
                 <td className="py-2 pr-4 font-medium text-amber-700">解約期限</td>
                 <td className="py-2 text-amber-900">
-                  次回引き落とし日の前日まで（それまでのご連絡で次回分の請求は発生しません）
+                  次回引き落とし日の前日まで（それまでの解約手続きで、原則、次回分の請求は発生しません）
                 </td>
               </tr>
               <tr>

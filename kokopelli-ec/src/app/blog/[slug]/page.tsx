@@ -168,13 +168,14 @@ function markdownToHtml(md: string): string {
  * 集中していた。キーワード・slugトークンの重複数でテーマが近い記事を
  * 選ぶことで、内部リンクの関連性（SEO）と回遊性を高める。
  */
-function relatedScore(base: Article, other: Article): number {
-  const tokenize = (a: Article) =>
-    new Set([
-      ...a.keywords.flatMap((k) => k.split(/\s+/)),
-      ...a.slug.split('-').filter((t) => t.length >= 3),
-    ]);
-  const baseTokens = tokenize(base);
+function tokenize(a: Article): Set<string> {
+  return new Set([
+    ...a.keywords.flatMap((k) => k.split(/\s+/)),
+    ...a.slug.split('-').filter((t) => t.length >= 3),
+  ]);
+}
+
+function relatedScore(baseTokens: Set<string>, other: Article): number {
   let score = 0;
   for (const token of tokenize(other)) {
     if (baseTokens.has(token)) score += 1;
@@ -263,9 +264,10 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
   };
 
   /* 関連記事（キーワード・slugトークンの重複が多い順に最大3本） */
+  const baseTokens = tokenize(article);
   const relatedArticles = articles
     .filter((a) => a.slug !== article.slug)
-    .map((a) => ({ article: a, score: relatedScore(article, a) }))
+    .map((a) => ({ article: a, score: relatedScore(baseTokens, a) }))
     .sort((x, y) => y.score - x.score)
     .slice(0, 3)
     .map((x) => x.article);

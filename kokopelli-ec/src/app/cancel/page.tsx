@@ -39,9 +39,28 @@ export default function CancelPage() {
                   1
                 </div>
                 <div>
+                  <h3 className="font-bold text-blue-950">
+                    マイページから解約（おすすめ・即時反映）
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1">
+                    マイページの「支払い方法・プランを管理する」から、いつでもご自身で解約できます。お手続き完了時点で解約予約が確定するため、最も確実です。
+                  </p>
+                  <Link
+                    href="/account"
+                    className="inline-flex items-center mt-2 text-blue-600 text-sm font-bold hover:underline"
+                  >
+                    マイページを開く
+                  </Link>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold shrink-0">
+                  2
+                </div>
+                <div>
                   <h3 className="font-bold text-blue-950">メールで連絡</h3>
                   <p className="text-sm text-gray-600 mt-1">
-                    以下のメールアドレスに、お名前と「解約希望」の旨をお送りください。
+                    以下のメールアドレスに、お名前と「解約希望」の旨をお送りください。担当者が確認後、解約手続きを行います。
                   </p>
                   <a
                     href="mailto:info@kamuturu.jp?subject=ココペリ定期便解約希望"
@@ -61,9 +80,10 @@ export default function CancelPage() {
               <li className="flex items-start gap-2">
                 <span className="text-amber-500 shrink-0 mt-0.5">*</span>
                 <span>
-                  次回引き落とし日の<strong>前日まで</strong>にご連絡いただければ、
-                  次回分の請求は発生しません。引き落とし日当日以降のご連絡の場合、
-                  次回分の請求が発生する場合があります。
+                  次回引き落とし日の<strong>前日まで</strong>
+                  に解約のお手続き（マイページでの操作完了、またはメール送信）をいただければ、
+                  原則、次回分の請求は発生しません。メールでのご依頼は処理のタイミングにより前後する場合があるため、
+                  確実に止めたい場合はマイページからの解約をおすすめします。
                 </span>
               </li>
               <li className="flex items-start gap-2">
