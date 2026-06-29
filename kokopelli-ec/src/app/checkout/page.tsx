@@ -501,7 +501,10 @@ function CheckoutContent() {
               <ul className="text-xs text-amber-800 space-y-1">
                 <li>・契約形態: 自動更新（期間の定めなし）</li>
                 <li>・毎月の請求額: {formatYen(SUBSCRIPTION_PRICE)}（税込・送料無料）</li>
-                <li>・解約方法: info@kamuturu.jp へメール連絡</li>
+                <li>
+                  ・解約方法: マイページ（/account）からセルフ解約、または info@kamuturu.jp
+                  へメール連絡
+                </li>
                 <li>
                   ・解約期限: 次回引き落とし日の前日まで（それまでのご連絡で次回分の請求なし）
                 </li>
