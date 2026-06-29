@@ -1,110 +1,84 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { MEMBER_SINGLE_PRICE, MEMBER_DISCOUNT_RATE } from '@/lib/prices';
+import { sendEmail } from '@/lib/email';
+import { buildMemberWelcomeEmail } from '@/lib/emails/member-welcome-template';
+import { PRICES } from '@/lib/prices';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+// 会員登録特典の¥500OFFクーポン。ExitIntentPopup / カート放棄メールと共通の
+// Stripe プロモコード(既定 COMEBACK500)。env で上書き可。
+const WELCOME_COUPON_CODE = process.env.MEMBER_WELCOME_PROMO_CODE || 'COMEBACK500';
+
+/**
+ * 会員（メールマガジン）登録 — LP の MemberRegistration フォームから呼ばれる。
+ *
+ * 旧実装は checkout セッションを作って checkoutUrl を返すだけで、フォームが約束した
+ * 「¥500OFFクーポンをメールで送る」を一切実行していなかった（顧客苦情の根因）。
+ * 本実装で実際にクーポンメールを送付し、CRM 連携用に Stripe customer を upsert する。
+ */
 export async function POST(req: NextRequest) {
   try {
-    const secretKey = process.env.STRIPE_SECRET_KEY;
-    if (!secretKey) {
-      return NextResponse.json({ error: 'Stripe設定エラー' }, { status: 500 });
-    }
-
-    const stripe = new Stripe(secretKey, {
-      httpClient: Stripe.createFetchHttpClient(),
-    });
-
     const { email, name } = await req.json();
 
-    // email のみ必須。name はフォーム(MemberRegistration)が送らないためオプショナル。
-    if (!email || typeof email !== 'string') {
+    if (!email || typeof email !== 'string' || !email.includes('@')) {
       return NextResponse.json({ error: 'メールアドレスを入力してください' }, { status: 400 });
     }
     const customerName: string = typeof name === 'string' ? name.trim() : '';
 
-    // Check if customer already exists
-    const existing = await stripe.customers.list({
-      email,
-      limit: 1,
-    });
-
-    let customer: Stripe.Customer;
-    let isFirstTime = true;
-
-    if (existing.data.length > 0) {
-      customer = existing.data[0];
-      // Check if they've already used the first-time offer
-      if (customer.metadata?.first_trial_used === 'true') {
-        isFirstTime = false;
-      }
-    } else {
-      // Create new customer (name は任意 — 空の場合は送らない)
-      customer = await stripe.customers.create({
-        email,
-        ...(customerName ? { name: customerName } : {}),
-        metadata: {
-          first_trial_used: 'false',
-          member_since: new Date().toISOString(),
-          source: 'kokopelli-ec',
-        },
-      });
-    }
-
-    const siteUrl = 'https://kokopelli.kamuturu.jp';
-
-    // Create checkout session with member price (5% off) — 価格は prices.ts が唯一の真実
-    const unitAmount = MEMBER_SINGLE_PRICE; // ¥3,306 (= SINGLE_PRICE × 95%)
-    const offPercent = Math.round(MEMBER_DISCOUNT_RATE * 100); // 5
-    const productName = `【会員価格】ココペリ 1本（${offPercent}%OFF）`;
-    const productDesc = `犬・猫のための動物用栄養補助食品 水溶性ケイ素濃縮液 30ml（会員価格${offPercent}%OFF・税込）※30日間返金保証付き`;
-
-    const session = await stripe.checkout.sessions.create({
-      mode: 'payment',
-      customer: customer.id,
-      // konbini はStripe口座で未有効化のため指定するとセッション生成が400で落ちる。
-      // カード決済に統一（本流 /checkout・/subscribe と同じ挙動）。
-      payment_method_types: ['card'],
-      line_items: [
-        {
-          price_data: {
-            currency: 'jpy',
-            product_data: {
-              name: productName,
-              description: productDesc,
+    // ── Stripe customer を find-or-create して購読者として記録（CRM 連携用）──
+    // Stripe 側の失敗は致命としない。クーポンメールの配信を最優先する。
+    const secretKey = process.env.STRIPE_SECRET_KEY;
+    if (secretKey) {
+      try {
+        const stripe = new Stripe(secretKey, {
+          httpClient: Stripe.createFetchHttpClient(),
+        });
+        const existing = await stripe.customers.list({ email, limit: 1 });
+        if (existing.data.length === 0) {
+          await stripe.customers.create({
+            email,
+            ...(customerName ? { name: customerName } : {}),
+            metadata: {
+              member_since: new Date().toISOString(),
+              newsletter_opt_in: 'true',
+              source: 'kokopelli-ec',
             },
-            unit_amount: unitAmount,
-          },
-          quantity: 1,
-        },
-      ],
-      shipping_address_collection: {
-        allowed_countries: ['JP'],
-      },
-      metadata: {
-        member_email: email,
-        is_first_trial: isFirstTime ? 'true' : 'false',
-      },
-      success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}&member=true`,
-      cancel_url: `${siteUrl}/#member`,
-    });
-
-    // Mark first trial as used (will be confirmed on webhook)
-    if (isFirstTime) {
-      await stripe.customers.update(customer.id, {
-        metadata: {
-          ...customer.metadata,
-          first_trial_used: 'true',
-          first_trial_date: new Date().toISOString(),
-        },
-      });
+          });
+        } else {
+          // 既存顧客には購読フラグだけ補記。first_trial_used 等の購入関連は触らない。
+          const c = existing.data[0];
+          if (c.metadata?.newsletter_opt_in !== 'true') {
+            await stripe.customers.update(c.id, {
+              metadata: { ...c.metadata, newsletter_opt_in: 'true' },
+            });
+          }
+        }
+      } catch (e) {
+        console.error('[member/register] Stripe customer upsert 失敗:', e);
+      }
     }
 
+    // ── 約束どおり ¥500OFF クーポンをメールで送付 ──
+    let emailSent = false;
+    try {
+      const { subject, text, html } = buildMemberWelcomeEmail({
+        customerName,
+        couponCode: WELCOME_COUPON_CODE,
+        couponAmountOff: PRICES.referralDiscount,
+      });
+      await sendEmail({ to: email, subject, text, html });
+      emailSent = true;
+    } catch (e) {
+      console.error('[member/register] ウェルカムメール送信失敗:', e);
+    }
+
+    // クーポンコードは画面側でも即時表示する（メール不達でも特典を確実に渡す）。
     return NextResponse.json({
-      checkoutUrl: session.url,
-      isFirstTime,
-      memberId: customer.id,
+      ok: true,
+      couponCode: WELCOME_COUPON_CODE,
+      emailSent,
     });
   } catch (error: unknown) {
     console.error('Member registration error:', error);

@@ -4,10 +4,16 @@ import { useState } from 'react';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
+// API が couponCode を返せなかった場合のフォールバック（ExitIntentPopup と共通）。
+const FALLBACK_COUPON = 'COMEBACK500';
+
 export default function MemberRegistration() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [couponCode, setCouponCode] = useState(FALLBACK_COUPON);
+  const [emailSent, setEmailSent] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,11 +34,15 @@ export default function MemberRegistration() {
       });
 
       if (!res.ok) {
-        if (res.status === 404) {
-          setStatus('success');
-          return;
-        }
         throw new Error(`サーバーエラー (${res.status})`);
+      }
+
+      const data = await res.json().catch(() => ({}));
+      if (typeof data.couponCode === 'string' && data.couponCode) {
+        setCouponCode(data.couponCode);
+      }
+      if (typeof data.emailSent === 'boolean') {
+        setEmailSent(data.emailSent);
       }
       setStatus('success');
     } catch (err) {
@@ -41,13 +51,64 @@ export default function MemberRegistration() {
     }
   };
 
+  const copyCode = async () => {
+    try {
+      await navigator.clipboard.writeText(couponCode);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      const ta = document.createElement('textarea');
+      ta.value = couponCode;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch {
+        // noop
+      }
+      document.body.removeChild(ta);
+    }
+  };
+
   if (status === 'success') {
     return (
       <div className="bg-amber-50 border-2 border-amber-200 rounded-2xl p-8 text-center">
-        <p className="text-2xl mb-2">✉️</p>
-        <p className="font-bold text-slate-900 mb-2">登録ありがとうございます！</p>
-        <p className="text-sm text-slate-600">
-          ご登録のメールアドレス宛に、500円OFFクーポンをお送りします。
+        <p className="text-2xl mb-2">🎉</p>
+        <p className="font-bold text-slate-900 mb-3">ご登録ありがとうございます！</p>
+        <p className="text-sm text-slate-600 mb-4">
+          下記の500円OFFクーポンを、決済画面の
+          <span className="font-bold text-amber-700">「クーポン」欄</span>にご入力ください。
+        </p>
+
+        <div className="bg-white border-2 border-amber-300 rounded-xl p-4 mb-3">
+          <p className="text-xs text-amber-800 mb-1">クーポンコード</p>
+          <p className="font-mono font-black text-3xl text-amber-700 tracking-widest">
+            {couponCode}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={copyCode}
+          className="w-full rounded-full bg-amber-600 hover:bg-amber-500 active:bg-amber-700 py-3 font-bold text-white shadow mb-2"
+        >
+          {copied ? '✓ コピーしました' : 'コードをコピー'}
+        </button>
+        <a
+          href="/checkout"
+          className="block w-full text-center rounded-full bg-slate-800 hover:bg-slate-700 py-3 font-bold text-white shadow"
+        >
+          このまま購入ページへ進む
+        </a>
+
+        <p className="mt-3 text-xs text-slate-500 leading-relaxed">
+          {emailSent
+            ? '同じクーポンをご登録のメールアドレス宛にもお送りしました。届かない場合は迷惑メールフォルダもご確認ください。'
+            : 'このクーポンコードを忘れずにお控えください。'}
         </p>
       </div>
     );
