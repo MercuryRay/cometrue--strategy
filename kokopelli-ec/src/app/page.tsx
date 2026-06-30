@@ -54,6 +54,7 @@ import {
   PER_BOTTLE_BUNDLE_6,
   PER_BOTTLE_SUBSCRIPTION,
   SHIPPING,
+  REFERRAL_DISCOUNT,
   formatYen,
 } from '@/lib/prices';
 
@@ -1878,10 +1879,12 @@ export default function Home() {
                 会員限定特典
               </span>
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">
-                無料会員登録で<span className="text-amber-600">ずっと5%OFF</span>
+                無料会員登録で
+                <span className="text-amber-600">{formatYen(REFERRAL_DISCOUNT)}OFFクーポン</span>
               </h2>
               <p className="text-gray-600 max-w-lg mx-auto">
-                メールアドレスだけで登録完了。会員価格でお得にご購入いただけます。
+                メールアドレスだけで登録完了。今すぐ使える{formatYen(REFERRAL_DISCOUNT)}
+                OFFクーポンをお届けします。
               </p>
             </div>
           </FadeInOnScroll>
@@ -1897,10 +1900,11 @@ export default function Home() {
                       1
                     </span>
                     <div>
-                      <p className="font-bold text-gray-900">ずっと5%OFF</p>
+                      <p className="font-bold text-gray-900">
+                        {formatYen(REFERRAL_DISCOUNT)}OFFクーポン
+                      </p>
                       <p className="text-sm text-gray-500">
-                        1本 {formatYen(SINGLE_PRICE)} → {formatYen(Math.round(SINGLE_PRICE * 0.95))}
-                        （会員価格）
+                        ご登録後すぐに使えるクーポンをお届け。決済画面のクーポン欄でご利用いただけます
                       </p>
                     </div>
                   </div>

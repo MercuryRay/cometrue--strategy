@@ -23,12 +23,7 @@ export const SHIPPING = 520; // 1本購入時の送料（全国一律）
 export const SHIPPING_FREE_THRESHOLD = BUNDLE_2_PRICE; // 2本セット以上で送料無料
 
 // 紹介コード割引
-export const REFERRAL_DISCOUNT = 500; // 紹介者・被紹介者ともに ¥500 OFF
-
-// 会員価格（登録会員向け 5%OFF）
-export const MEMBER_DISCOUNT_RATE = 0.05; // 会員は 1本価格から 5%OFF
-/** 会員価格 1本（= SINGLE_PRICE × (1 − 5%)、税込）。ハードコード禁止のためここで算出。 */
-export const MEMBER_SINGLE_PRICE = Math.round(SINGLE_PRICE * (1 - MEMBER_DISCOUNT_RATE)); // ¥3,306
+export const REFERRAL_DISCOUNT = 500; // 紹介者・被紹介者ともに ¥500 OFF。会員登録ウェルカムクーポン(COMEBACK500)もこの額。
 
 // ============================================================
 // アンカー価格（表示専用）— CVR向上のための心理価格設計
