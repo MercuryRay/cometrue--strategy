@@ -163,18 +163,47 @@ function markdownToHtml(md: string): string {
   return html.join('\n');
 }
 
+/* ── 記事本文を中間地点で2分割 ──
+ * 長文記事は末尾CTAまでスクロールしない読者を取りこぼすため、
+ * H2見出し境界のうち文字数の中間に最も近い位置で本文を2つに割り、
+ * 間に軽量な記事中CTAを差し込む。H2が少ない短い記事では分割せず、
+ * 後半を空文字で返して記事中CTAを出さない（過剰露出を避ける）。
+ */
+function splitContentAtMidpoint(md: string): [string, string] {
+  const source = md.trim();
+  const blocks = source.split(/\n(?=## )/);
+  // H2ブロックが十分にない短い記事は分割しない
+  if (blocks.length < 4) return [source, ''];
+
+  const half = source.length / 2;
+  let acc = 0;
+  let splitIndex = 1;
+  for (let i = 0; i < blocks.length; i += 1) {
+    acc += blocks[i].length;
+    if (acc >= half) {
+      splitIndex = i + 1;
+      break;
+    }
+  }
+  // 前半・後半それぞれに最低1ブロックを残す
+  splitIndex = Math.max(1, Math.min(splitIndex, blocks.length - 1));
+
+  return [blocks.slice(0, splitIndex).join('\n'), blocks.slice(splitIndex).join('\n')];
+}
+
 /* ── 関連記事スコアリング ──
  * 旧実装は「配列先頭の3記事」固定で、全65記事から同じ3本に内部リンクが
  * 集中していた。キーワード・slugトークンの重複数でテーマが近い記事を
  * 選ぶことで、内部リンクの関連性（SEO）と回遊性を高める。
  */
-function relatedScore(base: Article, other: Article): number {
-  const tokenize = (a: Article) =>
-    new Set([
-      ...a.keywords.flatMap((k) => k.split(/\s+/)),
-      ...a.slug.split('-').filter((t) => t.length >= 3),
-    ]);
-  const baseTokens = tokenize(base);
+function tokenize(a: Article): Set<string> {
+  return new Set([
+    ...a.keywords.flatMap((k) => k.split(/\s+/)),
+    ...a.slug.split('-').filter((t) => t.length >= 3),
+  ]);
+}
+
+function relatedScore(baseTokens: Set<string>, other: Article): number {
   let score = 0;
   for (const token of tokenize(other)) {
     if (baseTokens.has(token)) score += 1;
@@ -192,6 +221,9 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
 
   // wordCount: 全角・半角を均等に1文字=1wordで近似（簡易・正確性より一貫性重視）
   const wordCount = article.content.replace(/\s+/g, '').length;
+
+  // 本文を中間で2分割（後半が空＝短い記事では記事中CTAを出さない）
+  const [articleFirstHalf, articleSecondHalf] = splitContentAtMidpoint(article.content);
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -263,9 +295,10 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
   };
 
   /* 関連記事（キーワード・slugトークンの重複が多い順に最大3本） */
+  const baseTokens = tokenize(article);
   const relatedArticles = articles
     .filter((a) => a.slug !== article.slug)
-    .map((a) => ({ article: a, score: relatedScore(article, a) }))
+    .map((a) => ({ article: a, score: relatedScore(baseTokens, a) }))
     .sort((x, y) => y.score - x.score)
     .slice(0, 3)
     .map((x) => x.article);
@@ -311,8 +344,33 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
 
           <div
             className="prose-custom"
-            dangerouslySetInnerHTML={{ __html: markdownToHtml(article.content) }}
+            dangerouslySetInnerHTML={{ __html: markdownToHtml(articleFirstHalf) }}
           />
+
+          {/* 記事中CTA（長文記事の中間で1回・末尾CTAより軽量） */}
+          {articleSecondHalf && (
+            <aside className="my-10 p-5 rounded-xl border border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 flex flex-col sm:flex-row sm:items-center gap-4">
+              <div className="flex-1 text-center sm:text-left">
+                <p className="font-bold text-gray-900">毎日のお水に、水溶性ケイ素をひとさじ</p>
+                <p className="text-sm text-gray-600 mt-0.5">
+                  国産・水溶性ケイ素10,000mg/L・30日間全額返金保証
+                </p>
+              </div>
+              <Link
+                href="/checkout?plan=set"
+                className="inline-block shrink-0 bg-gradient-to-r from-amber-600 to-amber-500 text-white px-6 py-2.5 rounded-full font-bold shadow hover:shadow-lg transition-all hover:-translate-y-0.5"
+              >
+                ココペリを見る →
+              </Link>
+            </aside>
+          )}
+
+          {articleSecondHalf && (
+            <div
+              className="prose-custom"
+              dangerouslySetInnerHTML={{ __html: markdownToHtml(articleSecondHalf) }}
+            />
+          )}
 
           {/* CTA */}
           <div className="mt-12 p-6 bg-amber-50 rounded-xl text-center border border-amber-200">
