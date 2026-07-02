@@ -204,10 +204,11 @@ export default function Home() {
       {/* ============================================================
           1. ファーストビュー — PASONA構成 / モバイル1画面最適化
           ============================================================ */}
-      {/* 期間限定バー（常時視認・CTR底上げ） */}
+      {/* 訴求バー（常時視認・CTR底上げ） */}
       <div className="bg-gradient-to-r from-amber-600 to-amber-500 text-white text-center py-2 px-4">
         <p className="text-xs md:text-sm font-bold tracking-wide">
-          今月限定 ── 2本セット以上で<span className="underline underline-offset-2">送料無料</span>
+          公式ストア限定 ── 2本セット以上で
+          <span className="underline underline-offset-2">送料無料</span>
           <span className="mx-2">+</span>30日間
           <span className="underline underline-offset-2">全額返金保証</span>
         </p>
@@ -282,7 +283,7 @@ export default function Home() {
                   </div>
                   <div className="flex-1">
                     <p className="text-[11px] text-amber-700 font-bold leading-none mb-1">
-                      初回お試し価格
+                      まずは1本からお試し
                     </p>
                     <p className="text-slate-900 font-black leading-tight">
                       <span className="text-amber-600 text-[32px] md:text-[36px] leading-none">
@@ -394,7 +395,7 @@ export default function Home() {
             <div className="bg-white rounded-3xl shadow-xl border-2 border-amber-300 overflow-hidden">
               <div className="bg-gradient-to-r from-amber-600 to-amber-500 text-white text-center py-2.5 px-4">
                 <p className="text-sm font-black tracking-wide">
-                  まずは1本から。初回お試し価格でリスクなくスタート
+                  まずは1本から。30日間全額返金保証つきでリスクなくスタート
                 </p>
               </div>
               <div className="p-6 md:p-8">
@@ -931,6 +932,123 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ============ 動物病院での取り扱い + 獣医師証言 ============ */}
+      <section className="py-16 md:py-24 bg-gradient-to-b from-white to-slate-50">
+        <div className="max-w-5xl mx-auto px-4">
+          <FadeInOnScroll>
+            <p className="text-center text-xs font-black text-amber-600 tracking-widest mb-3">
+              獣医師の声
+            </p>
+            <h2 className="text-2xl md:text-4xl font-black text-gray-900 mb-3 text-center">
+              獣医師が<span className="text-amber-600">10年</span>使ってきた
+              <br className="md:hidden" />
+              水溶性ケイ素濃縮液
+            </h2>
+            <p className="text-center text-gray-600 mb-8 text-sm md:text-base">
+              宮崎・都井岬の野生馬を診る獣医師が、臨床現場で取り入れてきたペット用シリカサプリ。
+            </p>
+          </FadeInOnScroll>
+
+          {/* シネマティック・バナー — 都井岬の野生馬と相良獣医師 */}
+          <FadeInOnScroll>
+            <figure className="mb-10 rounded-3xl overflow-hidden shadow-2xl border border-white">
+              <Image
+                src="/images/dr-sagara-toi-misaki-16x9.webp"
+                alt="さがら動物病院 相良獣医師 — 宮崎・都井岬の野生馬を診る現場"
+                width={1920}
+                height={1080}
+                className="w-full h-auto"
+                priority={false}
+              />
+              <figcaption className="bg-slate-900 text-white px-5 py-3 text-xs md:text-sm leading-relaxed">
+                <strong className="text-amber-300">宮崎・都井岬</strong> —
+                国の天然記念物に指定された野生馬「御崎馬」と、現地で診療にあたる相良獣医師。
+              </figcaption>
+            </figure>
+          </FadeInOnScroll>
+
+          <FadeInOnScroll>
+            <div className="max-w-3xl mx-auto">
+              {/* 証言カード */}
+              <div className="flex flex-col gap-5">
+                <blockquote className="relative bg-white rounded-3xl p-7 md:p-8 border border-amber-200 shadow-lg">
+                  <span className="absolute -top-3 left-7 bg-amber-500 text-white text-xs font-black px-3 py-1 rounded-full tracking-widest">
+                    獣医師コメント
+                  </span>
+                  <svg
+                    className="absolute top-5 right-6 w-10 h-10 text-amber-100"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M9.5 7c-3 0-5.5 2.5-5.5 5.5v4.5h5v-5h-2c0-1.5 1.5-3 2.5-3v-2zm9 0c-3 0-5.5 2.5-5.5 5.5v4.5h5v-5h-2c0-1.5 1.5-3 2.5-3v-2z" />
+                  </svg>
+                  <p className="text-gray-800 leading-relaxed text-[15px] md:text-base mb-3">
+                    都井岬で野生馬を診ていると、動物たちが水質を選んで飲む姿に、いつも気づかされます。
+                  </p>
+                  <p className="text-gray-800 leading-relaxed text-[15px] md:text-base mb-3">
+                    ココペリは<strong className="text-amber-700">水と水溶性ケイ素だけの液体</strong>
+                    で、10年にわたって私の臨床現場で取り入れてきたシリカサプリです。
+                  </p>
+                  <p className="text-gray-800 leading-relaxed text-[15px] md:text-base">
+                    シニア期のワンちゃん・猫ちゃんの<strong>毎日の食事サポート</strong>
+                    として、飼い主様におすすめしています。
+                  </p>
+                  <p className="mt-5 text-right text-sm text-gray-600">
+                    — さがら動物病院 <strong className="text-gray-900">相良獣医師</strong>
+                    <span className="block text-xs text-gray-500 mt-1">
+                      宮崎県・都井岬の野生馬を診療 / 水溶性ケイ素の臨床使用10年
+                    </span>
+                  </p>
+                </blockquote>
+
+                {/* 客観事実3点 */}
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-white rounded-2xl px-3 py-4 border border-slate-200 text-center shadow-sm">
+                    <p className="text-amber-600 text-xs font-bold tracking-wider mb-1">臨床実績</p>
+                    <p className="text-2xl font-black text-slate-900 leading-none">
+                      10<span className="text-base">年</span>
+                    </p>
+                    <p className="text-[11px] text-gray-500 mt-1 leading-tight">臨床使用の実績</p>
+                  </div>
+                  <div className="bg-white rounded-2xl px-3 py-4 border border-slate-200 text-center shadow-sm">
+                    <p className="text-amber-600 text-xs font-bold tracking-wider mb-1">学会報告</p>
+                    <p className="text-2xl font-black text-slate-900 leading-none">
+                      2<span className="text-base">回</span>
+                    </p>
+                    <p className="text-[11px] text-gray-500 mt-1 leading-tight">学会での症例報告</p>
+                  </div>
+                  <div className="bg-white rounded-2xl px-3 py-4 border border-slate-200 text-center shadow-sm">
+                    <p className="text-amber-600 text-xs font-bold tracking-wider mb-1">産地</p>
+                    <p className="text-2xl font-black text-slate-900 leading-none">宮崎</p>
+                    <p className="text-[11px] text-gray-500 mt-1 leading-tight">シリカラボが製造</p>
+                  </div>
+                </div>
+
+                {/* 補足ノート */}
+                <div className="bg-slate-900 text-white rounded-2xl p-5 text-sm leading-relaxed">
+                  <p className="mb-1">
+                    <strong className="text-amber-300">これまで動物病院経由のみ</strong>
+                    で流通していた製品です。
+                  </p>
+                  <p className="text-slate-300">
+                    オンラインでの一般販売は始まったばかり。製造元
+                    <strong className="text-white">株式会社シリカラボ</strong>
+                    （宮崎県都城市）から直送します。
+                  </p>
+                </div>
+
+                <p className="text-xs text-gray-500">
+                  ※
+                  本コメントは獣医師の臨床経験に基づく所見であり、製品の効能効果を保証するものではありません。
+                  本品は動物用栄養補助食品であり、医薬品ではありません。
+                </p>
+              </div>
+            </div>
+          </FadeInOnScroll>
+        </div>
+      </section>
+
       {/* ============================================================
           競合比較 — 水道水・市販ミネラル水・ペット用水との比較表
           ============================================================ */}
@@ -1349,6 +1467,9 @@ export default function Home() {
           <p className="text-center text-sm text-gray-500 mt-6">
             ※ 個人の感想であり、すべての犬猫に同様の結果を保証するものではありません。
           </p>
+          <div className="text-center mt-10">
+            <CTAButton size="md" />
+          </div>
         </div>
       </section>
 
@@ -1487,7 +1608,7 @@ export default function Home() {
               ],
               [
                 '一度に何頭分か購入したいのですが、おすすめは？',
-                '多頭飼いの方には6本セット（5+1・送料無料・¥15,000）が最もおトクです。1本あたり¥2,500となり、長期保存もできます。月々のコスト管理を重視される場合は、定期便2本/月（¥5,480・送料無料）が安定的に続けやすいプランです。',
+                `多頭飼いの方には6本セット（5+1・送料無料・${formatYen(BUNDLE_6_PRICE)}）が最もおトクです。1本あたり${formatYen(PER_BOTTLE_BUNDLE_6)}となり、長期保存もできます。月々のコスト管理を重視される場合は、定期便2本/月（${formatYen(SUBSCRIPTION_PRICE)}・送料無料）が安定的に続けやすいプランです。`,
               ],
               [
                 'ご満足いただけなかった場合、本当に返金されますか？',
@@ -1556,7 +1677,8 @@ export default function Home() {
                   <li className="flex items-start gap-2">
                     <span className="shrink-0">&#10003;</span>
                     <span>
-                      <strong>1日あたり約¥91</strong>（定期便・1日あたり換算）
+                      <strong>1日あたり約{formatYen(Math.round(SUBSCRIPTION_PRICE / 60))}</strong>
+                      （定期便2本を約2ヶ月で使用した場合の換算）
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
@@ -1583,7 +1705,7 @@ export default function Home() {
                   ⏱
                 </span>
                 <p className="text-lg md:text-xl font-black text-slate-900">
-                  本日ご注文で<span className="text-amber-600">3営業日以内</span>に発送
+                  ご注文確認後、<span className="text-amber-600">3〜5営業日以内</span>に発送
                 </p>
               </div>
               <p className="text-xs text-gray-500">
@@ -1651,123 +1773,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ============ 動物病院での取り扱い + 獣医師証言 ============ */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-white to-slate-50">
-        <div className="max-w-5xl mx-auto px-4">
-          <FadeInOnScroll>
-            <p className="text-center text-xs font-black text-amber-600 tracking-widest mb-3">
-              獣医師の声
-            </p>
-            <h2 className="text-2xl md:text-4xl font-black text-gray-900 mb-3 text-center">
-              獣医師が<span className="text-amber-600">10年</span>使ってきた
-              <br className="md:hidden" />
-              水溶性ケイ素濃縮液
-            </h2>
-            <p className="text-center text-gray-600 mb-8 text-sm md:text-base">
-              宮崎・都井岬の野生馬を診る獣医師が、臨床現場で取り入れてきたペット用シリカサプリ。
-            </p>
-          </FadeInOnScroll>
-
-          {/* シネマティック・バナー — 都井岬の野生馬と相良獣医師 */}
-          <FadeInOnScroll>
-            <figure className="mb-10 rounded-3xl overflow-hidden shadow-2xl border border-white">
-              <Image
-                src="/images/dr-sagara-toi-misaki-16x9.webp"
-                alt="さがら動物病院 相良獣医師 — 宮崎・都井岬の野生馬を診る現場"
-                width={1920}
-                height={1080}
-                className="w-full h-auto"
-                priority={false}
-              />
-              <figcaption className="bg-slate-900 text-white px-5 py-3 text-xs md:text-sm leading-relaxed">
-                <strong className="text-amber-300">宮崎・都井岬</strong> —
-                国の天然記念物に指定された野生馬「御崎馬」と、現地で診療にあたる相良獣医師。
-              </figcaption>
-            </figure>
-          </FadeInOnScroll>
-
-          <FadeInOnScroll>
-            <div className="max-w-3xl mx-auto">
-              {/* 証言カード */}
-              <div className="flex flex-col gap-5">
-                <blockquote className="relative bg-white rounded-3xl p-7 md:p-8 border border-amber-200 shadow-lg">
-                  <span className="absolute -top-3 left-7 bg-amber-500 text-white text-xs font-black px-3 py-1 rounded-full tracking-widest">
-                    獣医師コメント
-                  </span>
-                  <svg
-                    className="absolute top-5 right-6 w-10 h-10 text-amber-100"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path d="M9.5 7c-3 0-5.5 2.5-5.5 5.5v4.5h5v-5h-2c0-1.5 1.5-3 2.5-3v-2zm9 0c-3 0-5.5 2.5-5.5 5.5v4.5h5v-5h-2c0-1.5 1.5-3 2.5-3v-2z" />
-                  </svg>
-                  <p className="text-gray-800 leading-relaxed text-[15px] md:text-base mb-3">
-                    都井岬で野生馬を診ていると、動物たちが水質を選んで飲む姿に、いつも気づかされます。
-                  </p>
-                  <p className="text-gray-800 leading-relaxed text-[15px] md:text-base mb-3">
-                    ココペリは<strong className="text-amber-700">水と水溶性ケイ素だけの液体</strong>
-                    で、10年にわたって私の臨床現場で取り入れてきたシリカサプリです。
-                  </p>
-                  <p className="text-gray-800 leading-relaxed text-[15px] md:text-base">
-                    シニア期のワンちゃん・猫ちゃんの<strong>毎日の食事サポート</strong>
-                    として、飼い主様におすすめしています。
-                  </p>
-                  <p className="mt-5 text-right text-sm text-gray-600">
-                    — さがら動物病院 <strong className="text-gray-900">相良獣医師</strong>
-                    <span className="block text-xs text-gray-500 mt-1">
-                      宮崎県・都井岬の野生馬を診療 / 水溶性ケイ素の臨床使用10年
-                    </span>
-                  </p>
-                </blockquote>
-
-                {/* 客観事実3点 */}
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-white rounded-2xl px-3 py-4 border border-slate-200 text-center shadow-sm">
-                    <p className="text-amber-600 text-xs font-bold tracking-wider mb-1">臨床実績</p>
-                    <p className="text-2xl font-black text-slate-900 leading-none">
-                      10<span className="text-base">年</span>
-                    </p>
-                    <p className="text-[11px] text-gray-500 mt-1 leading-tight">臨床使用の実績</p>
-                  </div>
-                  <div className="bg-white rounded-2xl px-3 py-4 border border-slate-200 text-center shadow-sm">
-                    <p className="text-amber-600 text-xs font-bold tracking-wider mb-1">学会報告</p>
-                    <p className="text-2xl font-black text-slate-900 leading-none">
-                      2<span className="text-base">回</span>
-                    </p>
-                    <p className="text-[11px] text-gray-500 mt-1 leading-tight">学会での症例報告</p>
-                  </div>
-                  <div className="bg-white rounded-2xl px-3 py-4 border border-slate-200 text-center shadow-sm">
-                    <p className="text-amber-600 text-xs font-bold tracking-wider mb-1">産地</p>
-                    <p className="text-2xl font-black text-slate-900 leading-none">宮崎</p>
-                    <p className="text-[11px] text-gray-500 mt-1 leading-tight">シリカラボが製造</p>
-                  </div>
-                </div>
-
-                {/* 補足ノート */}
-                <div className="bg-slate-900 text-white rounded-2xl p-5 text-sm leading-relaxed">
-                  <p className="mb-1">
-                    <strong className="text-amber-300">これまで動物病院経由のみ</strong>
-                    で流通していた製品です。
-                  </p>
-                  <p className="text-slate-300">
-                    オンラインでの一般販売は始まったばかり。製造元
-                    <strong className="text-white">株式会社シリカラボ</strong>
-                    （宮崎県都城市）から直送します。
-                  </p>
-                </div>
-
-                <p className="text-xs text-gray-500">
-                  ※
-                  本コメントは獣医師の臨床経験に基づく所見であり、製品の効能効果を保証するものではありません。
-                  本品は動物用栄養補助食品であり、医薬品ではありません。
-                </p>
-              </div>
-            </div>
-          </FadeInOnScroll>
-        </div>
-      </section>
-
       {/* ============ 会社概要 ============ */}
       <section className="py-16 md:py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">
@@ -1832,16 +1837,10 @@ export default function Home() {
 
           <FadeInOnScroll>
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 md:p-12">
-              {/* 開発者写真（写真が届いたら差し替え） */}
-              <div className="flex flex-col md:flex-row gap-8 items-center md:items-start mb-8">
-                <div className="w-32 h-32 rounded-full bg-amber-100 flex items-center justify-center text-5xl flex-shrink-0">
-                  👤
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-gray-900 mb-1">開発者</p>
-                  <p className="text-sm text-gray-500 mb-4">ココペリ シリカウォーター 企画・開発</p>
-                  <div className="w-12 h-1 bg-amber-400 rounded-full"></div>
-                </div>
+              <div className="mb-8">
+                <p className="text-xl font-bold text-gray-900 mb-1">開発者より</p>
+                <p className="text-sm text-gray-500 mb-4">ココペリ シリカウォーター 企画・開発</p>
+                <div className="w-12 h-1 bg-amber-400 rounded-full"></div>
               </div>
 
               <div className="space-y-6 text-gray-700 leading-relaxed">
@@ -1861,10 +1860,6 @@ export default function Home() {
                   飼い主として当たり前のその願いに、ココペリで応えたいと思っています。
                 </p>
               </div>
-
-              <p className="text-xs text-gray-400 mt-8">
-                ※ 開発者の写真・詳細なストーリーは近日公開予定です。
-              </p>
             </div>
           </FadeInOnScroll>
         </div>
@@ -1933,8 +1928,12 @@ export default function Home() {
                       4
                     </span>
                     <div>
-                      <p className="font-bold text-gray-900">お友達紹介で500円OFF</p>
-                      <p className="text-sm text-gray-500">紹介した方もされた方も500円割引</p>
+                      <p className="font-bold text-gray-900">
+                        お友達紹介で{formatYen(REFERRAL_DISCOUNT)}OFF
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        紹介した方もされた方も{formatYen(REFERRAL_DISCOUNT)}割引
+                      </p>
                     </div>
                   </div>
                 </div>

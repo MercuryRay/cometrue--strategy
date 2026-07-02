@@ -154,7 +154,7 @@ export default function ExitIntentPopup() {
           このまま購入ページへ進む
         </a>
         <p className="mt-3 text-center text-[11px] text-slate-400">
-          ※ 24時間以内にご購入された方限定で適用されます
+          ※ 決済画面の「クーポン」欄にご入力ください
         </p>
       </div>
     </div>
