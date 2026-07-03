@@ -122,7 +122,7 @@ async function fetchAbandonedSessions(
       // どちらも無ければ LP の購入ページに誘導(リンク切れより遥かにマシ)。
       const recoveryUrl = s.after_expiration?.recovery?.url ?? null;
       const liveUrl = s.status === 'open' ? (s.url ?? null) : null;
-      const checkoutUrl = recoveryUrl ?? liveUrl ?? 'https://kokopelli.kamuturu.jp/checkout';
+      const checkoutUrl = recoveryUrl ?? liveUrl ?? 'https://kokopelli-ec.vercel.app/checkout';
 
       sessions.push({
         sessionId: s.id,
@@ -154,7 +154,7 @@ function getMockAbandonedSessions(): AbandonedSession[] {
       sessionId: 'cs_test_mock_001',
       customerEmail: 'test@example.com',
       customerName: 'テストユーザー',
-      checkoutUrl: 'https://kokopelli.kamuturu.jp/checkout?resume=cs_test_mock_001',
+      checkoutUrl: 'https://kokopelli-ec.vercel.app/checkout?resume=cs_test_mock_001',
       planLabel: '2本セット',
       planPrice: PRICES.bundle2,
       createdAt: new Date(Date.now() - 25 * 3600 * 1000),

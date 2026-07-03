@@ -17,7 +17,7 @@ export const metadata = {
     title: '特定商取引法に基づく表記 | ココペリ',
     description:
       'ココペリの販売事業者情報・販売価格・送料・支払方法・30日間全額返金保証・定期便解約手続きなどを記載しています。',
-    url: 'https://kokopelli.kamuturu.jp/tokushoho',
+    url: 'https://kokopelli-ec.vercel.app/tokushoho',
     type: 'website',
   },
   robots: { index: true, follow: true },
@@ -49,11 +49,11 @@ export default function Tokushoho() {
             </tr>
             <tr>
               <td className="py-4 pr-4 font-medium text-gray-700 align-top">メールアドレス</td>
-              <td className="py-4 text-gray-600">info@kamuturu.jp</td>
+              <td className="py-4 text-gray-600">timberfrost321@gmail.com</td>
             </tr>
             <tr>
               <td className="py-4 pr-4 font-medium text-gray-700 align-top">URL</td>
-              <td className="py-4 text-gray-600">https://kokopelli.kamuturu.jp</td>
+              <td className="py-4 text-gray-600">https://kokopelli-ec.vercel.app</td>
             </tr>
             <tr>
               <td className="py-4 pr-4 font-medium text-gray-700 align-top">商品の名称</td>
@@ -99,7 +99,7 @@ export default function Tokushoho() {
                 <strong className="text-gray-800">30日間全額返金保証</strong>
                 ：商品到着後30日以内であれば、開封済み・未開封を問わず、お客様都合（合わなかった等）でも全額返金いたします。
                 <br />
-                ・申請方法: info@kamuturu.jp 宛にご注文番号と「返金希望」の旨をご連絡ください。
+                ・申請方法: timberfrost321@gmail.com 宛にご注文番号と「返金希望」の旨をご連絡ください。
                 <br />
                 ・返金は決済時のクレジットカードへの返金処理にて承ります（着金まで通常5〜10営業日）。
                 <br />
@@ -113,7 +113,7 @@ export default function Tokushoho() {
             <tr>
               <td className="py-4 pr-4 font-medium text-gray-700 align-top">定期便の解約</td>
               <td className="py-4 text-gray-600">
-                マイページ（/account）の「支払い方法・プランを管理する」からいつでもご自身で解約できます。メール（info@kamuturu.jp）でも承ります。
+                マイページ（/account）の「支払い方法・プランを管理する」からいつでもご自身で解約できます。メール（timberfrost321@gmail.com）でも承ります。
                 次回引き落とし日の前日までに解約のお手続きをいただければ、原則、次回分の請求は発生しません。回数縛りはございません。解約料は一切かかりません。
                 <br />
                 詳細は
@@ -149,7 +149,7 @@ export default function Tokushoho() {
               <tr>
                 <td className="py-2 pr-4 font-medium text-amber-700">解約方法</td>
                 <td className="py-2 text-amber-900">
-                  マイページからセルフ解約、または info@kamuturu.jp へメール連絡
+                  マイページからセルフ解約、または timberfrost321@gmail.com へメール連絡
                 </td>
               </tr>
               <tr>

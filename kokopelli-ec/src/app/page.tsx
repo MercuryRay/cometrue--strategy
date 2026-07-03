@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     description: `獣医師監修・臨床使用10年。水溶性ケイ素10,000mg/Lの国産シンプル処方。定期便 月${formatYen(SUBSCRIPTION_PRICE)}・送料無料・縛りなし／30日間全額返金保証。`,
     locale: 'ja_JP',
     type: 'website',
-    url: 'https://kokopelli.kamuturu.jp/',
+    url: 'https://kokopelli-ec.vercel.app/',
     siteName: 'ココペリ',
   },
   twitter: {
@@ -78,7 +78,7 @@ export const metadata: Metadata = {
     description: `獣医師監修・臨床使用10年。定期便 月${formatYen(SUBSCRIPTION_PRICE)}・送料無料・縛りなし／30日間全額返金保証。`,
   },
   alternates: {
-    canonical: 'https://kokopelli.kamuturu.jp/',
+    canonical: 'https://kokopelli-ec.vercel.app/',
   },
 };
 
@@ -1584,7 +1584,7 @@ export default function Home() {
               ],
               [
                 '定期便はいつでも解約できますか？',
-                'はい、いつでも解約可能です。マイページの「支払い方法・プランを管理する」からご自身でいつでも解約手続きができ、メール（info@kamuturu.jp）でも承ります。解約金や違約金は一切なく、回数縛りもありません。次回引き落とし日の前日までに解約のお手続きをいただければ、原則、次回分の請求は発生しません。',
+                'はい、いつでも解約可能です。マイページの「支払い方法・プランを管理する」からご自身でいつでも解約手続きができ、メール（timberfrost321@gmail.com）でも承ります。解約金や違約金は一切なく、回数縛りもありません。次回引き落とし日の前日までに解約のお手続きをいただければ、原則、次回分の請求は発生しません。',
               ],
               [
                 '多頭飼いの場合、1日の量の目安は？',
@@ -1791,7 +1791,7 @@ export default function Home() {
                   ['研究機関', 'さがら動物病院（治験担当）'],
                   ['販売', 'カムトゥル（Come true）'],
                   ['製造元WEB', 'https://silica-lab.jp/'],
-                  ['販売者お問い合わせ', 'info@kamuturu.jp'],
+                  ['販売者お問い合わせ', 'timberfrost321@gmail.com'],
                 ].map(([label, value]) => (
                   <tr key={label} className="border-b border-gray-100 last:border-0">
                     <td className="px-6 py-4 font-bold text-gray-900 bg-gray-50 w-1/3">{label}</td>
@@ -1973,10 +1973,10 @@ export default function Home() {
               <p>
                 お問い合わせ:{' '}
                 <a
-                  href="mailto:info@kamuturu.jp?subject=ココペリのお問い合わせ"
+                  href="mailto:timberfrost321@gmail.com?subject=ココペリのお問い合わせ"
                   className="text-amber-400 hover:text-amber-300"
                 >
-                  info@kamuturu.jp
+                  timberfrost321@gmail.com
                 </a>
               </p>
               <p>
@@ -2035,7 +2035,7 @@ export default function Home() {
               name: 'ココペリ（Kokopelli）',
               description:
                 '犬・猫のための動物用栄養補助食品。高濃度の水溶性ケイ素10,000mg/Lを含むケイ素濃縮液。原材料は水とケイ素のみ。',
-              image: 'https://kokopelli.kamuturu.jp/images/image-4.webp',
+              image: 'https://kokopelli-ec.vercel.app/images/image-4.webp',
               brand: { '@type': 'Brand', name: 'kokopelli' },
               manufacturer: {
                 '@type': 'Organization',
@@ -2054,7 +2054,7 @@ export default function Home() {
                   price: String(SINGLE_PRICE),
                   priceCurrency: 'JPY',
                   availability: 'https://schema.org/InStock',
-                  url: 'https://kokopelli.kamuturu.jp/checkout',
+                  url: 'https://kokopelli-ec.vercel.app/checkout',
                   seller: { '@type': 'Organization', name: 'カムトゥル' },
                   shippingDetails: {
                     '@type': 'OfferShippingDetails',
@@ -2095,7 +2095,7 @@ export default function Home() {
                   price: String(BUNDLE_6_PRICE),
                   priceCurrency: 'JPY',
                   availability: 'https://schema.org/InStock',
-                  url: 'https://kokopelli.kamuturu.jp/checkout',
+                  url: 'https://kokopelli-ec.vercel.app/checkout',
                   seller: { '@type': 'Organization', name: 'カムトゥル' },
                   shippingDetails: {
                     '@type': 'OfferShippingDetails',
@@ -2154,21 +2154,21 @@ export default function Home() {
                 position: 1,
                 name: 'シリンジで数滴取る',
                 text: '付属のシリンジ（注射針なし）でココペリを体重1kgあたり0.1ccを目安に取ります。',
-                url: 'https://kokopelli.kamuturu.jp/#howto',
+                url: 'https://kokopelli-ec.vercel.app/#howto',
               },
               {
                 '@type': 'HowToStep',
                 position: 2,
                 name: 'フードに混ぜる or 直接与える',
                 text: 'フードにしみこませるか、口元に直接数滴たらします。味・匂いがほぼないので嫌がりません。',
-                url: 'https://kokopelli.kamuturu.jp/#howto',
+                url: 'https://kokopelli-ec.vercel.app/#howto',
               },
               {
                 '@type': 'HowToStep',
                 position: 3,
                 name: '毎日続ける',
                 text: '1日1回を目安に継続します。まずは1〜2ヶ月を目安にお試しください。',
-                url: 'https://kokopelli.kamuturu.jp/#howto',
+                url: 'https://kokopelli-ec.vercel.app/#howto',
               },
             ],
           }),
@@ -2276,7 +2276,7 @@ export default function Home() {
                 name: '定期便はいつでも解約できますか？',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'はい、いつでも解約可能です。マイページの「支払い方法・プランを管理する」からご自身でいつでも解約手続きができ、メール（info@kamuturu.jp）でも承ります。解約金や違約金は一切なく、回数縛りもありません。次回引き落とし日の前日までに解約のお手続きをいただければ、原則、次回分の請求は発生しません。',
+                  text: 'はい、いつでも解約可能です。マイページの「支払い方法・プランを管理する」からご自身でいつでも解約手続きができ、メール（timberfrost321@gmail.com）でも承ります。解約金や違約金は一切なく、回数縛りもありません。次回引き落とし日の前日までに解約のお手続きをいただければ、原則、次回分の請求は発生しません。',
                 },
               },
               {

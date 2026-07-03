@@ -217,7 +217,7 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
   const article = getArticleBySlug(slug);
   if (!article) notFound();
 
-  const baseUrl = 'https://kokopelli.kamuturu.jp';
+  const baseUrl = 'https://kokopelli-ec.vercel.app';
 
   // wordCount: 全角・半角を均等に1文字=1wordで近似（簡易・正確性より一貫性重視）
   const wordCount = article.content.replace(/\s+/g, '').length;

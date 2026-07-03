@@ -13,7 +13,7 @@ export async function POST() {
 
   try {
     const stripe = getStripe();
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://kokopelli.kamuturu.jp";
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://kokopelli-ec.vercel.app";
 
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: session.customerId,

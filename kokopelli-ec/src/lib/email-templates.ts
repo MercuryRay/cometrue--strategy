@@ -24,17 +24,17 @@ export interface TemplateVars {
   shopUrl?: string;
 }
 
-const SHOP_URL = 'https://kokopelli.kamuturu.jp';
+const SHOP_URL = 'https://kokopelli-ec.vercel.app';
 const LINE_URL = 'https://line.me/R/ti/p/@636yyubo';
 const FOOTER = `
 ━━━━━━━━━━━━━━━━━━━━
 ココペリ｜犬・猫のための動物用栄養補助食品
 公式サイト: ${SHOP_URL}
 LINE相談: ${LINE_URL}
-お問合せ: info@kamuturu.jp
+お問合せ: timberfrost321@gmail.com
 運営: カムトゥル (Come true)
 ━━━━━━━━━━━━━━━━━━━━
-※このメールに心当たりがない場合はお手数ですがinfo@kamuturu.jpまでご連絡ください。
+※このメールに心当たりがない場合はお手数ですがtimberfrost321@gmail.comまでご連絡ください。
 `.trim();
 
 // ───────────────────────────────────────────
@@ -70,7 +70,7 @@ ${referralBlock}
 
 ■ ご不明な点はお気軽に
 LINE: ${LINE_URL}
-メール: info@kamuturu.jp
+メール: timberfrost321@gmail.com
 
 大切なご家族（ペット）の健康のお役に立てますよう、
 心を込めてお届けいたします。

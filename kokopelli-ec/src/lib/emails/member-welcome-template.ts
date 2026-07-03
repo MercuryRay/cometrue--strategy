@@ -36,7 +36,7 @@ export interface MemberWelcomeEmail {
 const BRAND_AMBER = '#d97706'; // amber-600
 const BRAND_SLATE = '#1e293b'; // slate-800
 const BG_SOFT = '#fffbeb'; // amber-50
-const CHECKOUT_URL = 'https://kokopelli.kamuturu.jp/checkout';
+const CHECKOUT_URL = 'https://kokopelli-ec.vercel.app/checkout';
 
 /**
  * 会員登録ウェルカム（¥500OFFクーポン同封）メールを生成
@@ -73,7 +73,7 @@ export function buildMemberWelcomeEmail(vars: MemberWelcomeVars): MemberWelcomeE
     `担当者より折り返しご連絡いたします。`,
     ``,
     `ココペリ シリカウォーター`,
-    `https://kokopelli.kamuturu.jp`,
+    `https://kokopelli-ec.vercel.app`,
   ].join('\n');
 
   // ========== HTML ==========
@@ -131,7 +131,7 @@ export function buildMemberWelcomeEmail(vars: MemberWelcomeVars): MemberWelcomeE
           </tr>
           <tr>
             <td style="background:#f1f5f9;padding:16px 32px;text-align:center;font-size:12px;color:#64748b;">
-              ココペリ シリカウォーター / <a href="https://kokopelli.kamuturu.jp" style="color:${BRAND_AMBER};text-decoration:none;">kokopelli.kamuturu.jp</a>
+              ココペリ シリカウォーター / <a href="https://kokopelli-ec.vercel.app" style="color:${BRAND_AMBER};text-decoration:none;">kokopelli-ec.vercel.app</a>
             </td>
           </tr>
         </table>

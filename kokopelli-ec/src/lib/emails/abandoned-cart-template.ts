@@ -90,7 +90,7 @@ export function buildAbandonedCartEmail(vars: AbandonedCartVars): AbandonedCartE
     `ご不明点がございましたら、このメールへ返信ください。`,
     ``,
     `ココペリ シリカウォーター`,
-    `https://kokopelli.kamuturu.jp`,
+    `https://kokopelli-ec.vercel.app`,
   ]
     .filter(Boolean)
     .join('\n');
@@ -154,7 +154,7 @@ export function buildAbandonedCartEmail(vars: AbandonedCartVars): AbandonedCartE
           </tr>
           <tr>
             <td style="background:#f1f5f9;padding:16px 32px;text-align:center;font-size:12px;color:#64748b;">
-              ココペリ シリカウォーター / <a href="https://kokopelli.kamuturu.jp" style="color:${BRAND_AMBER};text-decoration:none;">kokopelli.kamuturu.jp</a>
+              ココペリ シリカウォーター / <a href="https://kokopelli-ec.vercel.app" style="color:${BRAND_AMBER};text-decoration:none;">kokopelli-ec.vercel.app</a>
             </td>
           </tr>
         </table>

@@ -140,7 +140,7 @@ export default async function OpengraphImage() {
           letterSpacing: 2,
         }}
       >
-        kokopelli.kamuturu.jp
+        kokopelli-ec.vercel.app
       </div>
     </div>,
     {

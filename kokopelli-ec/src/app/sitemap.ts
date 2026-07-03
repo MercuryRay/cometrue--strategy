@@ -8,7 +8,7 @@ import { articles } from './blog/articles';
  * - ブログ記事は articles 定義から自動生成
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://kokopelli.kamuturu.jp')
+  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://kokopelli-ec.vercel.app')
     .trim()
     .replace(/\/$/, '');
 
