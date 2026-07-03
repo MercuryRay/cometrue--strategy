@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-const BASE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://kokopelli.kamuturu.jp')
+const BASE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://kokopelli-ec.vercel.app')
   .trim()
   .replace(/\/$/, '');
 

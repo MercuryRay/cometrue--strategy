@@ -175,7 +175,7 @@ export async function POST(req: NextRequest) {
 
       await sendPurchaseEvent({
         eventId: session.id,
-        eventSourceUrl: 'https://kokopelli.kamuturu.jp/success',
+        eventSourceUrl: 'https://kokopelli-ec.vercel.app/success',
         email: customerEmail !== '不明' ? customerEmail : null,
         phone: session.customer_details?.phone || null,
         firstName: customerName !== '不明' ? customerName : null,
@@ -229,7 +229,7 @@ export async function POST(req: NextRequest) {
             await sendEmail({
               to: customerEmail,
               subject: '【ココペリ】定期便の決済が完了しました',
-              text: `${customerName}様\n\n定期便の月次決済（¥${amount.toLocaleString()}）が完了しました。\n商品は2〜3営業日以内に発送いたします。\n\nマイページ: https://kokopelli.kamuturu.jp/account\n\n${customerName}様のペットの健康を引き続きサポートいたします。\n\nココペリ｜カムトゥル`,
+              text: `${customerName}様\n\n定期便の月次決済（¥${amount.toLocaleString()}）が完了しました。\n商品は2〜3営業日以内に発送いたします。\n\nマイページ: https://kokopelli-ec.vercel.app/account\n\n${customerName}様のペットの健康を引き続きサポートいたします。\n\nココペリ｜カムトゥル`,
             });
           }
 
@@ -257,7 +257,7 @@ export async function POST(req: NextRequest) {
         await sendEmail({
           to: customer.email,
           subject: '【ココペリ】定期便の決済に失敗しました',
-          text: `${customer.name || 'お客様'}様\n\n定期便の月次決済が正常に処理できませんでした。\nカード情報をご確認の上、下記マイページから決済方法を更新してください。\n\nマイページ: https://kokopelli.kamuturu.jp/account\n\n※7日以内に更新がない場合、定期便が一時停止となります。\nご不明な点はinfo@kamuturu.jpまでお問い合わせください。\n\nココペリ｜カムトゥル`,
+          text: `${customer.name || 'お客様'}様\n\n定期便の月次決済が正常に処理できませんでした。\nカード情報をご確認の上、下記マイページから決済方法を更新してください。\n\nマイページ: https://kokopelli-ec.vercel.app/account\n\n※7日以内に更新がない場合、定期便が一時停止となります。\nご不明な点はtimberfrost321@gmail.comまでお問い合わせください。\n\nココペリ｜カムトゥル`,
         });
       }
 
@@ -327,7 +327,7 @@ export async function POST(req: NextRequest) {
         await sendEmail({
           to: customer.email,
           subject: '【ココペリ】定期便の解約が完了しました',
-          text: `${customer.name || 'お客様'}様\n\n定期便の解約手続きが完了しました。\nこれまでのご愛用、誠にありがとうございました。\n\nまたいつでも再開いただけます。\n再開はこちら: https://kokopelli.kamuturu.jp/checkout\n\nペットちゃんの健康をお祈りしております。\n\nココペリ｜カムトゥル`,
+          text: `${customer.name || 'お客様'}様\n\n定期便の解約手続きが完了しました。\nこれまでのご愛用、誠にありがとうございました。\n\nまたいつでも再開いただけます。\n再開はこちら: https://kokopelli-ec.vercel.app/checkout\n\nペットちゃんの健康をお祈りしております。\n\nココペリ｜カムトゥル`,
         });
       }
     } catch (err) {

@@ -63,10 +63,10 @@ export default function CancelPage() {
                     以下のメールアドレスに、お名前と「解約希望」の旨をお送りください。担当者が確認後、解約手続きを行います。
                   </p>
                   <a
-                    href="mailto:info@kamuturu.jp?subject=ココペリ定期便解約希望"
+                    href="mailto:timberfrost321@gmail.com?subject=ココペリ定期便解約希望"
                     className="inline-flex items-center mt-2 text-blue-600 text-sm font-bold hover:underline"
                   >
-                    info@kamuturu.jp
+                    timberfrost321@gmail.com
                   </a>
                 </div>
               </div>
@@ -143,19 +143,19 @@ export default function CancelPage() {
             <div className="space-y-2 text-sm">
               <p>
                 <span className="text-gray-500">Email: </span>
-                <a href="mailto:info@kamuturu.jp" className="text-blue-600 hover:underline">
-                  info@kamuturu.jp
+                <a href="mailto:timberfrost321@gmail.com" className="text-blue-600 hover:underline">
+                  timberfrost321@gmail.com
                 </a>
               </p>
               <p>
                 <span className="text-gray-500">Web: </span>
                 <a
-                  href="https://kamuturu.jp"
+                  href="https://kokopelli-ec.vercel.app"
                   className="text-blue-600 hover:underline"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  https://kamuturu.jp
+                  https://kokopelli-ec.vercel.app
                 </a>
               </p>
             </div>

@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       httpClient: Stripe.createFetchHttpClient(),
     });
 
-    const siteUrl = 'https://kokopelli.kamuturu.jp';
+    const siteUrl = 'https://kokopelli-ec.vercel.app';
 
     // 紹介コード処理 — search APIで顧客100件超えても破綻しない
     let referrerCustomerId: string | null = null;

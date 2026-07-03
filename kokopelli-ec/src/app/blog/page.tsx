@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-const SITE_URL = 'https://kokopelli.kamuturu.jp';
+const SITE_URL = 'https://kokopelli-ec.vercel.app';
 
 export default function BlogIndexPage() {
   const itemListJsonLd = {

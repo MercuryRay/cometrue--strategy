@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     title: 'プライバシーポリシー | ココペリ',
     description:
       'ココペリの個人情報取扱方針。取得項目・利用目的・第三者提供・お問い合わせ窓口を明記しています。',
-    url: 'https://kokopelli.kamuturu.jp/privacy',
+    url: 'https://kokopelli-ec.vercel.app/privacy',
     type: 'website',
   },
   robots: { index: true, follow: true },
@@ -105,13 +105,13 @@ export default function PrivacyPage() {
             カムトゥル（Come true）
             <br />
             Email:{' '}
-            <a href="mailto:info@kamuturu.jp" className="text-blue-600">
-              info@kamuturu.jp
+            <a href="mailto:timberfrost321@gmail.com" className="text-blue-600">
+              timberfrost321@gmail.com
             </a>
             <br />
             URL:{' '}
-            <a href="https://kamuturu.jp" className="text-blue-600">
-              https://kamuturu.jp
+            <a href="https://kokopelli-ec.vercel.app" className="text-blue-600">
+              https://kokopelli-ec.vercel.app
             </a>
           </p>
 

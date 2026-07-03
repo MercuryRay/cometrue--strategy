@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
 
     const customer = customers.data[0];
     const token = createMagicToken(customer.id, email.toLowerCase());
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://kokopelli.kamuturu.jp";
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://kokopelli-ec.vercel.app";
     const verifyUrl = `${siteUrl}/api/auth/verify?token=${token}`;
 
     const emailBody = `ココペリ マイページへのログインリンクです。
@@ -34,7 +34,7 @@ ${verifyUrl}
 このメールに心当たりがない場合は無視してください。
 
 ココペリ｜カムトゥル (Come true)
-info@kamuturu.jp`;
+timberfrost321@gmail.com`;
 
     await sendEmail({ to: email, subject: "【ココペリ】マイページログインリンク", text: emailBody });
 

@@ -97,7 +97,7 @@ export default function AccountPage() {
 
   const copyReferralCode = () => {
     if (!data?.customer.referralCode) return;
-    const url = `https://kokopelli.kamuturu.jp/checkout?ref=${data.customer.referralCode}`;
+    const url = `https://kokopelli-ec.vercel.app/checkout?ref=${data.customer.referralCode}`;
     navigator.clipboard.writeText(url);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -276,7 +276,7 @@ export default function AccountPage() {
           <div className="bg-gray-50 rounded-2xl border border-gray-200 p-6">
             <h2 className="text-sm font-bold text-gray-700 mb-2">お問い合わせ</h2>
             <p className="text-sm text-gray-500">
-              ご不明な点は <a href="mailto:info@kamuturu.jp" className="text-blue-600 hover:underline">info@kamuturu.jp</a> までご連絡ください。
+              ご不明な点は <a href="mailto:timberfrost321@gmail.com" className="text-blue-600 hover:underline">timberfrost321@gmail.com</a> までご連絡ください。
             </p>
           </div>
         </div>

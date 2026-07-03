@@ -11,7 +11,7 @@ type WindowWithTrackers = Window & {
   fbq?: (...args: unknown[]) => void;
 };
 
-const SHOP_URL = 'https://kokopelli.kamuturu.jp';
+const SHOP_URL = 'https://kokopelli-ec.vercel.app';
 
 function SuccessContent() {
   const searchParams = useSearchParams();
@@ -232,8 +232,8 @@ function SuccessContent() {
               <li>・まずは1〜2ヶ月ほど継続してお試しください。</li>
               <li>
                 ・ご不明点は{' '}
-                <a href="mailto:info@kamuturu.jp" className="text-amber-700 underline font-medium">
-                  info@kamuturu.jp
+                <a href="mailto:timberfrost321@gmail.com" className="text-amber-700 underline font-medium">
+                  timberfrost321@gmail.com
                 </a>{' '}
                 または{' '}
                 <a

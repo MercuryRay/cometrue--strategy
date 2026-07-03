@@ -393,8 +393,8 @@ function CheckoutContent() {
                 <p className="text-sm font-bold text-red-800">{checkoutError}</p>
                 <p className="text-xs text-red-700 mt-1">
                   解決しない場合は{' '}
-                  <a href="mailto:info@kamuturu.jp" className="underline font-medium">
-                    info@kamuturu.jp
+                  <a href="mailto:timberfrost321@gmail.com" className="underline font-medium">
+                    timberfrost321@gmail.com
                   </a>{' '}
                   までお問い合わせください。
                 </p>
@@ -502,7 +502,7 @@ function CheckoutContent() {
                 <li>・契約形態: 自動更新（期間の定めなし）</li>
                 <li>・毎月の請求額: {formatYen(SUBSCRIPTION_PRICE)}（税込・送料無料）</li>
                 <li>
-                  ・解約方法: マイページ（/account）からセルフ解約、または info@kamuturu.jp
+                  ・解約方法: マイページ（/account）からセルフ解約、または timberfrost321@gmail.com
                   へメール連絡
                 </li>
                 <li>
@@ -589,8 +589,8 @@ function CheckoutContent() {
               <li>・ご注文確定後、3〜5営業日以内に発送いたします。</li>
               <li>
                 ・ご不明点は{' '}
-                <a href="mailto:info@kamuturu.jp" className="text-amber-700 underline font-medium">
-                  info@kamuturu.jp
+                <a href="mailto:timberfrost321@gmail.com" className="text-amber-700 underline font-medium">
+                  timberfrost321@gmail.com
                 </a>{' '}
                 または{' '}
                 <a

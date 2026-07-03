@@ -15,7 +15,7 @@ const geistSans = Geist({
   subsets: ['latin'],
 });
 
-const SITE_URL = 'https://kokopelli.kamuturu.jp';
+const SITE_URL = 'https://kokopelli-ec.vercel.app';
 // 動的OG画像 — `src/app/opengraph-image.tsx` (Edge runtime) で生成
 // 旧 /images/image-4.webp はフォールバック用に維持
 const OG_IMAGE = `${SITE_URL}/opengraph-image`;
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
     '国産 ペットサプリ',
     '無添加 ペットサプリ',
   ],
-  authors: [{ name: 'カムトゥル', url: 'https://kamuturu.jp' }],
+  authors: [{ name: 'カムトゥル', url: 'https://kokopelli-ec.vercel.app' }],
   creator: 'カムトゥル（Come true）',
   publisher: 'カムトゥル（Come true）',
   applicationName: 'ココペリ',
@@ -161,7 +161,7 @@ export default function RootLayout({
     publisher: {
       '@type': 'Organization',
       name: 'カムトゥル（Come true）',
-      url: 'https://kamuturu.jp/',
+      url: 'https://kokopelli-ec.vercel.app/',
     },
     potentialAction: {
       '@type': 'SearchAction',
@@ -189,7 +189,6 @@ export default function RootLayout({
     description:
       '犬・猫のための動物用栄養補助食品「ココペリ」。水溶性ケイ素10,000mg/Lを含むシンプル処方のケイ素濃縮液。',
     sameAs: [
-      'https://kamuturu.jp',
       'https://line.me/R/ti/p/@636yyubo',
       'https://x.com/Mercury_CS',
       'https://www.youtube.com/@Mercury_CS',
@@ -255,7 +254,7 @@ export default function RootLayout({
     manufacturer: {
       '@type': 'Organization',
       name: 'カムトゥル（Come true）',
-      url: 'https://kamuturu.jp/',
+      url: 'https://kokopelli-ec.vercel.app/',
     },
     category: 'Pet Supplies > Nutritional Supplement',
     image: [OG_IMAGE_FALLBACK],
