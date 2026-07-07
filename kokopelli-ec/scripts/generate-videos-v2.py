@@ -458,7 +458,7 @@ VARIANTS = {
         "cta_label": "まずは1本",
         "cta_price": f"¥{SINGLE_PRICE:,}",
         "cta_text": "公式サイトで詳細を見る",
-        "cta_url": "kokopelli.kamuturu.jp",
+        "cta_url": "kokopelli-ec.vercel.app",
         "bgm": r"C:\Users\timbe\youtube-auto\assets\bgm\emotional_strings.wav",
     },
     "B": {
@@ -479,7 +479,7 @@ VARIANTS = {
         "cta_label": "お試し1本",
         "cta_price": f"¥{SINGLE_PRICE:,}",
         "cta_text": "公式サイトで詳細を見る",
-        "cta_url": "kokopelli.kamuturu.jp",
+        "cta_url": "kokopelli-ec.vercel.app",
         "bgm": r"C:\Users\timbe\youtube-auto\assets\bgm\cute_bgm.wav",
     },
 }

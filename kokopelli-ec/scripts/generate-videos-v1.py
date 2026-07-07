@@ -240,7 +240,7 @@ def build_video_a(size, out_path):
             cta_txt, font=f_main, fill=WHITE)
 
     # 小さい注記
-    note = "kokopelli.kamuturu.jp"
+    note = "kokopelli-ec.vercel.app"
     nb = cd.textbbox((0, 0), note, font=f_small)
     cd.text(((W - (nb[2] - nb[0])) // 2, y_cursor + cta_h + int(H * 0.04)),
             note, font=f_small, fill=TEXT_DARK)
@@ -372,7 +372,7 @@ def build_video_b(size, out_path):
     cd.text(((W - (cb[2] - cb[0])) // 2, y_cursor + (cta_h - (cb[3] - cb[1])) // 2 - 10),
             cta_txt, font=f_main, fill=WHITE)
 
-    note = "kokopelli.kamuturu.jp"
+    note = "kokopelli-ec.vercel.app"
     nb = cd.textbbox((0, 0), note, font=f_small)
     cd.text(((W - (nb[2] - nb[0])) // 2, y_cursor + cta_h + int(H * 0.04)),
             note, font=f_small, fill=TEXT_DARK)

@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>納品書フォーム - ココペリ</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Meiryo', 'Yu Gothic', sans-serif;
+        padding: 24px;
+        max-width: 1200px;
+        margin: 0 auto;
+        background: #f9fafb;
+      }
+      h1 {
+        color: #d97706;
+        margin-bottom: 16px;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 420px 1fr;
+        gap: 24px;
+      }
+      .form-card {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+      .preview-card {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        max-height: 90vh;
+        overflow: auto;
+      }
+      label {
+        display: block;
+        margin-bottom: 12px;
+        font-size: 13px;
+        color: #374151;
+      }
+      label strong {
+        display: block;
+        margin-bottom: 4px;
+        color: #111;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 4px;
+        font-size: 13px;
+        font-family: inherit;
+      }
+      .row2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .preset-bar {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+      }
+      .preset-bar button {
+        background: #fef3c7;
+        border: 1px solid #d97706;
+        color: #92400e;
+        padding: 6px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      .preset-bar button:hover {
+        background: #fde68a;
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 16px;
+      }
+      .actions button {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+      }
+      .btn-print {
+        background: #d97706;
+        color: #fff;
+      }
+      .btn-print:hover {
+        background: #b45309;
+      }
+      .btn-download {
+        background: #374151;
+        color: #fff;
+      }
+      .btn-download:hover {
+        background: #1f2937;
+      }
+      .item-row {
+        background: #f3f4f6;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 8px;
+      }
+      .item-row .row3 {
+        display: grid;
+        grid-template-columns: 2fr 60px 100px;
+        gap: 6px;
+      }
+      .item-row .full {
+        margin-top: 6px;
+      }
+      .item-actions {
+        display: flex;
+        gap: 6px;
+        margin-top: 8px;
+      }
+      .item-actions button {
+        flex: 1;
+        padding: 6px;
+        border: 1px solid #d1d5db;
+        background: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      @media print {
+        body {
+          background: #fff;
+          padding: 0;
+          max-width: 800px;
+        }
+        .form-card,
+        .preset-bar,
+        .actions,
+        h1.page-title {
+          display: none !important;
+        }
+        .layout {
+          grid-template-columns: 1fr;
+          gap: 0;
+        }
+        .preview-card {
+          box-shadow: none;
+          padding: 0;
+          max-height: none;
+          overflow: visible;
+        }
+      }
+      .doc {
+        font-family: 'Meiryo', 'Yu Gothic', sans-serif;
+        color: #333;
+      }
+      .doc .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 32px;
+        padding-bottom: 16px;
+        border-bottom: 3px solid #d97706;
+      }
+      .doc .header h1 {
+        font-size: 26px;
+        color: #d97706;
+        letter-spacing: 0.2em;
+        margin: 0;
+      }
+      .doc .doc-info {
+        text-align: right;
+        font-size: 12px;
+        color: #666;
+      }
+      .doc .section {
+        margin-bottom: 24px;
+      }
+      .doc .section h2 {
+        font-size: 13px;
+        color: #d97706;
+        margin-bottom: 8px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      .doc table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .doc .info-table td {
+        padding: 5px 0;
+        font-size: 13px;
+      }
+      .doc .info-table td:first-child {
+        width: 90px;
+        color: #666;
+        font-weight: bold;
+      }
+      .doc .item-table th {
+        background: #fef3c7;
+        padding: 8px;
+        text-align: left;
+        font-size: 12px;
+        border-bottom: 2px solid #d97706;
+      }
+      .doc .item-table td {
+        padding: 8px;
+        font-size: 13px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      .doc .item-table .right {
+        text-align: right;
+      }
+      .doc .total-row td {
+        font-weight: bold;
+        font-size: 15px;
+        border-top: 2px solid #333;
+        padding-top: 10px;
+      }
+      .doc .total-amount {
+        font-size: 22px;
+        color: #d97706;
+      }
+      .doc .footer {
+        margin-top: 30px;
+        padding-top: 16px;
+        border-top: 1px solid #e5e7eb;
+        font-size: 11px;
+        color: #999;
+        text-align: center;
+      }
+      .doc .stamp-area {
+        margin-top: 24px;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .doc .stamp-box {
+        width: 80px;
+        height: 80px;
+        border: 1px dashed #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ccc;
+        font-size: 11px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="page-title">納品書フォーム — ココペリ シリカウォーター</h1>
+    <div class="layout">
+      <div class="form-card">
+        <div class="preset-bar">
+          <button onclick="loadPreset('single')">1本¥3,480</button>
+          <button onclick="loadPreset('bundle2')">2本¥5,980</button>
+          <button onclick="loadPreset('bundle6')">6本¥15,000</button>
+          <button onclick="loadPreset('sub')">定期¥5,480</button>
+        </div>
+
+        <label><strong>納品書番号</strong><input id="docNo" /></label>
+        <div class="row2">
+          <label><strong>発行日</strong><input id="issueDate" type="date" /></label>
+          <label><strong>納品日</strong><input id="deliveryDate" type="date" /></label>
+        </div>
+
+        <h3
+          style="
+            font-size: 13px;
+            color: #d97706;
+            margin: 16px 0 8px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 4px;
+          "
+        >
+          お届け先
+        </h3>
+        <label><strong>お名前</strong><input id="custName" placeholder="山田 太郎" /></label>
+        <div class="row2">
+          <label><strong>郵便番号</strong><input id="custPostal" placeholder="100-0001" /></label>
+          <label><strong>電話</strong><input id="custPhone" placeholder="090-0000-0000" /></label>
+        </div>
+        <label
+          ><strong>ご住所</strong><input id="custAddress" placeholder="東京都千代田区..."
+        /></label>
+        <label
+          ><strong>メール</strong
+          ><input id="custEmail" type="email" placeholder="customer@example.com"
+        /></label>
+
+        <h3
+          style="
+            font-size: 13px;
+            color: #d97706;
+            margin: 16px 0 8px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 4px;
+          "
+        >
+          ご注文内容
+        </h3>
+        <div id="items"></div>
+        <div class="item-actions">
+          <button onclick="addItem()">＋ 商品追加</button>
+        </div>
+
+        <div class="row2" style="margin-top: 12px">
+          <label><strong>送料</strong><input id="shipping" type="number" value="520" /></label>
+          <label
+            ><strong>　</strong>
+            <select
+              id="shippingPreset"
+              onchange="
+                document.getElementById('shipping').value = this.value;
+                render();
+              "
+            >
+              <option value="520">¥520（1本）</option>
+              <option value="0">¥0（送料無料）</option>
+            </select>
+          </label>
+        </div>
+
+        <h3
+          style="
+            font-size: 13px;
+            color: #d97706;
+            margin: 16px 0 8px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 4px;
+          "
+        >
+          お支払い
+        </h3>
+        <label
+          ><strong>決済方法</strong>
+          <select id="payMethod">
+            <option>クレジットカード（Stripe決済）</option>
+            <option>銀行振込</option>
+            <option>代金引換</option>
+            <option>LINE Pay</option>
+          </select>
+        </label>
+        <div class="row2">
+          <label><strong>決済日</strong><input id="payDate" type="date" /></label>
+          <label
+            ><strong>ステータス</strong>
+            <select id="payStatus">
+              <option>お支払い済み</option>
+              <option>未払い</option>
+              <option>処理中</option>
+            </select>
+          </label>
+        </div>
+        <label
+          ><strong>取引ID（Stripe pi_xxx 等）</strong><input id="payId" placeholder="pi_3..."
+        /></label>
+
+        <div class="actions">
+          <button class="btn-print" onclick="window.print()">🖨️ 印刷 / PDF保存</button>
+          <button class="btn-download" onclick="downloadHTML()">💾 HTMLダウンロード</button>
+        </div>
+        <div class="actions">
+          <button class="btn-download" onclick="saveJSON()" style="background: #6b7280">
+            📋 JSON保存
+          </button>
+          <button class="btn-download" onclick="loadJSON()" style="background: #6b7280">
+            📂 JSON読込
+          </button>
+        </div>
+      </div>
+
+      <div class="preview-card">
+        <div id="preview" class="doc"></div>
+      </div>
+    </div>
+
+    <script>
+      const PRESETS = {
+        single: {
+          name: 'ココペリ シリカウォーター 1本',
+          note: '動物用栄養補助食品（水溶性ケイ素濃縮液）',
+          qty: 1,
+          unitPrice: 3480,
+          shipping: 520,
+        },
+        bundle2: {
+          name: 'ココペリ シリカウォーター 2本セット',
+          note: '動物用栄養補助食品（水溶性ケイ素濃縮液）',
+          qty: 1,
+          unitPrice: 5980,
+          shipping: 0,
+        },
+        bundle6: {
+          name: 'ココペリ シリカウォーター 6本セット（5+1）',
+          note: '動物用栄養補助食品（水溶性ケイ素濃縮液）',
+          qty: 1,
+          unitPrice: 15000,
+          shipping: 0,
+        },
+        sub: {
+          name: 'ココペリ シリカウォーター 定期便（2本/月）',
+          note: '動物用栄養補助食品（水溶性ケイ素濃縮液）',
+          qty: 1,
+          unitPrice: 5480,
+          shipping: 0,
+        },
+      };
+
+      let items = [];
+
+      function loadPreset(key) {
+        const p = PRESETS[key];
+        items = [{ name: p.name, note: p.note, qty: p.qty, unitPrice: p.unitPrice }];
+        document.getElementById('shipping').value = p.shipping;
+        document.getElementById('shippingPreset').value = p.shipping;
+        renderItems();
+        render();
+      }
+
+      function addItem() {
+        items.push({ name: '', note: '', qty: 1, unitPrice: 0 });
+        renderItems();
+        render();
+      }
+
+      function removeItem(i) {
+        items.splice(i, 1);
+        renderItems();
+        render();
+      }
+
+      function renderItems() {
+        const c = document.getElementById('items');
+        c.innerHTML = items
+          .map(
+            (it, i) => `
+          <div class="item-row">
+            <div class="row3">
+              <input placeholder="商品名" value="${escapeAttr(it.name)}" onchange="items[${i}].name=this.value;render()" />
+              <input type="number" placeholder="数量" value="${it.qty}" onchange="items[${i}].qty=Number(this.value);render()" />
+              <input type="number" placeholder="単価" value="${it.unitPrice}" onchange="items[${i}].unitPrice=Number(this.value);render()" />
+            </div>
+            <input class="full" placeholder="補足（任意）" value="${escapeAttr(it.note || '')}" onchange="items[${i}].note=this.value;render()" />
+            <div class="item-actions"><button onclick="removeItem(${i})">削除</button></div>
+          </div>
+        `
+          )
+          .join('');
+      }
+
+      function escapeHtml(s) {
+        return String(s || '').replace(
+          /[&<>"']/g,
+          (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]
+        );
+      }
+      function escapeAttr(s) {
+        return String(s || '').replace(/"/g, '&quot;');
+      }
+      function yen(n) {
+        return '¥' + Number(n).toLocaleString('ja-JP');
+      }
+
+      function render() {
+        const docNo = document.getElementById('docNo').value || 'KKP-XXXXXXXX-001';
+        const issueDate = document.getElementById('issueDate').value || '';
+        const deliveryDate = document.getElementById('deliveryDate').value || '';
+        const c = {
+          name: document.getElementById('custName').value,
+          postal: document.getElementById('custPostal').value,
+          address: document.getElementById('custAddress').value,
+          phone: document.getElementById('custPhone').value,
+          email: document.getElementById('custEmail').value,
+        };
+        const shipping = Number(document.getElementById('shipping').value || 0);
+        const pay = {
+          method: document.getElementById('payMethod').value,
+          date: document.getElementById('payDate').value,
+          status: document.getElementById('payStatus').value,
+          id: document.getElementById('payId').value,
+        };
+        const subtotal = items.reduce((s, it) => s + it.unitPrice * it.qty, 0);
+        const total = subtotal + shipping;
+
+        document.getElementById('preview').innerHTML = `
+          <div class="header">
+            <div>
+              <h1>納 品 書</h1>
+              <p style="margin-top:6px;font-size:13px;color:#666;">下記の通り納品いたします。</p>
+            </div>
+            <div class="doc-info">
+              <p>納品書番号: ${escapeHtml(docNo)}</p>
+              ${issueDate ? `<p>発行日: ${escapeHtml(issueDate)}</p>` : ''}
+              ${deliveryDate ? `<p>納品日: ${escapeHtml(deliveryDate)}</p>` : ''}
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>お届け先</h2>
+            <table class="info-table">
+              ${c.name ? `<tr><td>お名前</td><td>${escapeHtml(c.name)} 様</td></tr>` : ''}
+              ${c.address ? `<tr><td>ご住所</td><td>${c.postal ? '〒' + escapeHtml(c.postal) + ' ' : ''}${escapeHtml(c.address)}</td></tr>` : ''}
+              ${c.phone ? `<tr><td>お電話</td><td>${escapeHtml(c.phone)}</td></tr>` : ''}
+              ${c.email ? `<tr><td>メール</td><td>${escapeHtml(c.email)}</td></tr>` : ''}
+            </table>
+          </div>
+
+          <div class="section">
+            <h2>ご注文内容</h2>
+            <table class="item-table">
+              <thead>
+                <tr><th>商品名</th><th>数量</th><th class="right">単価（税込）</th><th class="right">金額（税込）</th></tr>
+              </thead>
+              <tbody>
+                ${items
+                  .map(
+                    (it) => `
+                  <tr>
+                    <td>${escapeHtml(it.name)}${it.note ? `<br /><span style="font-size:11px;color:#888;">${escapeHtml(it.note)}</span>` : ''}</td>
+                    <td>${it.qty}</td>
+                    <td class="right">${yen(it.unitPrice)}</td>
+                    <td class="right">${yen(it.unitPrice * it.qty)}</td>
+                  </tr>
+                `
+                  )
+                  .join('')}
+                <tr><td colspan="3" class="right" style="color:#666;">小計</td><td class="right">${yen(subtotal)}</td></tr>
+                <tr><td colspan="3" class="right" style="color:#666;">送料</td><td class="right">${shipping === 0 ? '¥0（送料無料）' : yen(shipping)}</td></tr>
+                <tr class="total-row"><td colspan="3" class="right">合計（税込）</td><td class="right"><span class="total-amount">${yen(total)}</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="section">
+            <h2>お支払い情報</h2>
+            <table class="info-table">
+              <tr><td>決済方法</td><td>${escapeHtml(pay.method)}</td></tr>
+              ${pay.date ? `<tr><td>決済日</td><td>${escapeHtml(pay.date)}</td></tr>` : ''}
+              <tr><td>ステータス</td><td>${escapeHtml(pay.status)}</td></tr>
+              ${pay.id ? `<tr><td>取引ID</td><td style="font-family:monospace;font-size:11px;">${escapeHtml(pay.id)}</td></tr>` : ''}
+            </table>
+          </div>
+
+          <div class="section">
+            <h2>販売者情報</h2>
+            <table class="info-table">
+              <tr><td>屋号</td><td>カムトゥル（Come true）</td></tr>
+              <tr><td>ブランド</td><td>ココペリ シリカウォーター</td></tr>
+              <tr><td>サイト</td><td>https://kokopelli-ec.vercel.app</td></tr>
+              <tr><td>LINE</td><td>https://line.me/R/ti/p/@636yyubo</td></tr>
+            </table>
+          </div>
+
+          <div class="stamp-area"><div class="stamp-box">印</div></div>
+
+          <div class="footer">
+            <p>この納品書はココペリ シリカウォーターの正式な納品書です。</p>
+            <p>ご不明な点がございましたら、LINEまたはメールでお問い合わせください。</p>
+            <p style="margin-top:6px;">ココペリ シリカウォーター | https://kokopelli-ec.vercel.app</p>
+          </div>
+        `;
+      }
+
+      function downloadHTML() {
+        const docNo = document.getElementById('docNo').value || 'nouhinsho';
+        const html = `<!doctype html><html lang="ja"><head><meta charset="utf-8"/><title>納品書 ${docNo}</title><style>
+          body{font-family:'Meiryo','Yu Gothic',sans-serif;color:#333;padding:40px;max-width:800px;margin:0 auto;}
+          .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:16px;border-bottom:3px solid #d97706;}
+          .header h1{font-size:26px;color:#d97706;letter-spacing:0.2em;margin:0;}
+          .doc-info{text-align:right;font-size:12px;color:#666;}
+          .section{margin-bottom:24px;}
+          .section h2{font-size:13px;color:#d97706;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid #e5e7eb;}
+          table{width:100%;border-collapse:collapse;}
+          .info-table td{padding:5px 0;font-size:13px;}
+          .info-table td:first-child{width:90px;color:#666;font-weight:bold;}
+          .item-table th{background:#fef3c7;padding:8px;text-align:left;font-size:12px;border-bottom:2px solid #d97706;}
+          .item-table td{padding:8px;font-size:13px;border-bottom:1px solid #e5e7eb;}
+          .item-table .right{text-align:right;}
+          .total-row td{font-weight:bold;font-size:15px;border-top:2px solid #333;padding-top:10px;}
+          .total-amount{font-size:22px;color:#d97706;}
+          .footer{margin-top:30px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:11px;color:#999;text-align:center;}
+          .stamp-area{margin-top:24px;display:flex;justify-content:flex-end;}
+          .stamp-box{width:80px;height:80px;border:1px dashed #ccc;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:11px;}
+          @media print{body{padding:20px;}}
+        </style></head><body>${document.getElementById('preview').innerHTML}</body></html>`;
+        const blob = new Blob([html], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${docNo}.html`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function saveJSON() {
+        const data = {
+          docNo: document.getElementById('docNo').value,
+          issueDate: document.getElementById('issueDate').value,
+          deliveryDate: document.getElementById('deliveryDate').value,
+          customer: {
+            name: document.getElementById('custName').value,
+            postal: document.getElementById('custPostal').value,
+            address: document.getElementById('custAddress').value,
+            phone: document.getElementById('custPhone').value,
+            email: document.getElementById('custEmail').value,
+          },
+          items,
+          shipping: Number(document.getElementById('shipping').value || 0),
+          payment: {
+            method: document.getElementById('payMethod').value,
+            date: document.getElementById('payDate').value,
+            status: document.getElementById('payStatus').value,
+            id: document.getElementById('payId').value,
+          },
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${data.docNo || 'order'}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function loadJSON() {
+        const inp = document.createElement('input');
+        inp.type = 'file';
+        inp.accept = 'application/json';
+        inp.onchange = (e) => {
+          const f = e.target.files[0];
+          if (!f) return;
+          const r = new FileReader();
+          r.onload = () => {
+            const d = JSON.parse(r.result);
+            document.getElementById('docNo').value = d.docNo || '';
+            document.getElementById('issueDate').value = d.issueDate || '';
+            document.getElementById('deliveryDate').value = d.deliveryDate || '';
+            document.getElementById('custName').value = d.customer?.name || '';
+            document.getElementById('custPostal').value = d.customer?.postal || '';
+            document.getElementById('custAddress').value = d.customer?.address || '';
+            document.getElementById('custPhone').value = d.customer?.phone || '';
+            document.getElementById('custEmail').value = d.customer?.email || '';
+            items = d.items || [];
+            document.getElementById('shipping').value = d.shipping || 0;
+            document.getElementById('payMethod').value =
+              d.payment?.method || 'クレジットカード（Stripe決済）';
+            document.getElementById('payDate').value = d.payment?.date || '';
+            document.getElementById('payStatus').value = d.payment?.status || 'お支払い済み';
+            document.getElementById('payId').value = d.payment?.id || '';
+            renderItems();
+            render();
+          };
+          r.readAsText(f);
+        };
+        inp.click();
+      }
+
+      // 初期化
+      const today = new Date().toISOString().slice(0, 10);
+      const yyyymmdd = today.replaceAll('-', '');
+      document.getElementById('docNo').value = `KKP-${yyyymmdd}-001`;
+      document.getElementById('issueDate').value = today;
+      document.getElementById('payDate').value = today;
+      [
+        'docNo',
+        'issueDate',
+        'deliveryDate',
+        'custName',
+        'custPostal',
+        'custAddress',
+        'custPhone',
+        'custEmail',
+        'shipping',
+        'payMethod',
+        'payDate',
+        'payStatus',
+        'payId',
+      ].forEach((id) => document.getElementById(id).addEventListener('input', render));
+      loadPreset('single');
+    </script>
+  </body>
+</html>
