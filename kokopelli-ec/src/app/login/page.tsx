@@ -1,41 +1,47 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { useState } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
 function LoginContent() {
   const searchParams = useSearchParams();
-  const error = searchParams.get("error");
-  const [email, setEmail] = useState("");
+  const error = searchParams.get('error');
+  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [notFound, setNotFound] = useState(false);
   const [errorMsg, setErrorMsg] = useState(
-    error === "expired" ? "リンクの有効期限が切れています。再度送信してください。" :
-    error === "invalid" ? "無効なリンクです。再度送信してください。" : ""
+    error === 'expired'
+      ? 'リンクの有効期限が切れています。再度送信してください。'
+      : error === 'invalid'
+        ? '無効なリンクです。再度送信してください。'
+        : ''
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setErrorMsg("");
+    setErrorMsg('');
+    setNotFound(false);
 
     try {
-      const res = await fetch("/api/auth/send-link", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/auth/send-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim() }),
       });
       const data = await res.json();
 
       if (!res.ok) {
-        setErrorMsg(data.error || "送信に失敗しました");
+        setErrorMsg(data.error || '送信に失敗しました');
+        setNotFound(res.status === 404);
       } else {
         setSent(true);
       }
     } catch {
-      setErrorMsg("通信エラーが発生しました");
+      setErrorMsg('通信エラーが発生しました');
     } finally {
       setLoading(false);
     }
@@ -48,18 +54,27 @@ function LoginContent() {
         <main className="flex-1 flex items-center justify-center py-20">
           <div className="max-w-md mx-auto px-4 text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              <svg
+                className="w-8 h-8 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
               </svg>
             </div>
-            <h1 className="text-2xl font-black text-blue-950 mb-3">
-              メールを送信しました
-            </h1>
+            <h1 className="text-2xl font-black text-blue-950 mb-3">メールを送信しました</h1>
             <p className="text-gray-600 mb-2">
               <strong>{email}</strong> にログインリンクを送信しました。
             </p>
             <p className="text-sm text-gray-500 mb-8">
-              メールに記載のリンクをタップしてログインしてください。<br />
+              メールに記載のリンクをタップしてログインしてください。
+              <br />
               リンクは15分間有効です。
             </p>
             <button
@@ -81,29 +96,42 @@ function LoginContent() {
         <div className="max-w-md mx-auto px-4">
           <div className="text-center mb-8">
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              <svg
+                className="w-8 h-8 text-blue-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
               </svg>
             </div>
-            <h1 className="text-2xl font-black text-blue-950 mb-2">
-              マイページにログイン
-            </h1>
-            <p className="text-sm text-gray-500">
-              ご購入時のメールアドレスを入力してください
-            </p>
+            <h1 className="text-2xl font-black text-blue-950 mb-2">マイページにログイン</h1>
+            <p className="text-sm text-gray-500">ご購入時のメールアドレスを入力してください</p>
           </div>
 
           {errorMsg && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-4 text-sm">
               {errorMsg}
+              {notFound && (
+                <p className="mt-2">
+                  ご購入時と異なるメールアドレスの可能性があります。まだ会員登録がお済みでない方は、
+                  <Link href="/#member" className="font-bold underline">
+                    無料会員登録（¥500OFFクーポン付き）
+                  </Link>
+                  からご登録ください。
+                </p>
+              )}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-1">
-                メールアドレス
-              </label>
+              <label className="block text-sm font-bold text-gray-700 mb-1">メールアドレス</label>
               <input
                 type="email"
                 value={email}
@@ -118,12 +146,20 @@ function LoginContent() {
               disabled={loading || !email}
               className="w-full bg-gradient-to-r from-blue-900 to-blue-600 text-white py-3.5 rounded-full font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
             >
-              {loading ? "送信中..." : "ログインリンクを送信"}
+              {loading ? '送信中...' : 'ログインリンクを送信'}
             </button>
           </form>
 
           <p className="text-xs text-gray-400 text-center mt-6">
             パスワード不要。メールに届くリンクをタップするだけでログインできます。
+          </p>
+
+          <p className="text-sm text-gray-600 text-center mt-6">
+            はじめての方は
+            <Link href="/#member" className="text-blue-600 font-bold hover:underline">
+              無料会員登録（¥500OFFクーポン付き）
+            </Link>
+            へ
           </p>
 
           <div className="text-center mt-8">
@@ -145,9 +181,7 @@ function Header() {
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-900 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
             K
           </div>
-          <span className="font-black text-blue-900 tracking-wide">
-            kokopelli
-          </span>
+          <span className="font-black text-blue-900 tracking-wide">kokopelli</span>
         </Link>
       </div>
     </header>
