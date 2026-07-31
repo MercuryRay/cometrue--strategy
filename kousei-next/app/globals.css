@@ -1,0 +1,86 @@
+@import 'tailwindcss';
+
+:root {
+  --background: #ffffff;
+  --foreground: #1d1d1f;
+  --accent: #f5a623;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-noto);
+}
+
+/* デザイントークン — bg-brand / hover:bg-brand-hover / text-brand-text / bg-line 等を生成 */
+@theme {
+  --color-brand: #f5a623;
+  --color-brand-hover: #e09500;
+  --color-brand-text: #b45309;
+  --color-line: #06c755;
+  --color-line-hover: #05b34c;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family:
+    var(--font-noto),
+    'Noto Sans JP',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* #f5a623 on white text は 2.03:1 で AA 不合格 → #b45309 (白文字 5.02:1) に変更 */
+::selection {
+  background: #b45309;
+  color: white;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+input,
+textarea,
+select {
+  background: white;
+}
+
+/* WCAG 2.4.7 — 全インタラクティブ要素にフォーカスリングを強制 (白地 5.02:1) */
+:focus-visible {
+  outline: 2px solid #b45309;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* WCAG 2.4.1 — Skip-link (キーボード/スクリーンリーダー用) */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: #1d1d1f;
+  color: #ffffff;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+.skip-link:focus {
+  left: 8px;
+}
+
+/* prefers-reduced-motion — 過剰アニメ抑止 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
