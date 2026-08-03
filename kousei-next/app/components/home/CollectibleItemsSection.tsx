@@ -150,11 +150,14 @@ export default function CollectibleItemsSection() {
           title="無料回収できるPC・周辺機器"
           lead={`ノートPC・デスクトップPCからオーディオ機器まで、全${collectibleItems.length}カテゴリのパソコン関連機器を幅広く無料回収。記載のないものも、まずはお気軽にお問い合わせください。`}
         />
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div
+          className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+          data-reveal-stagger
+        >
           {collectibleItems.map((item) => (
             <div
               key={item.name}
-              className="group bg-white border border-neutral-100 rounded-2xl p-6 hover:border-amber-200 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+              className="group card-lift bg-white border border-neutral-100 rounded-2xl p-6 hover:border-amber-200"
             >
               <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-amber-100 to-amber-50 ring-1 ring-amber-200/60">
                 <svg

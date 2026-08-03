@@ -8,7 +8,7 @@ export default function Windows10Band() {
   return (
     <Link
       href="/windows10-shobun"
-      className="block bg-brand hover:bg-brand-hover transition-colors"
+      className="group btn-sheen block bg-brand hover:bg-brand-hover transition-colors"
       title="Windows 10サポート終了PCの無料回収・処分"
     >
       <div className="max-w-[980px] mx-auto px-6 py-4 flex flex-col md:flex-row md:items-center gap-2 md:gap-5 text-neutral-900">
@@ -37,7 +37,7 @@ export default function Windows10Band() {
         <span className="shrink-0 inline-flex items-center gap-1 text-sm font-black underline underline-offset-4">
           詳しく見る
           <svg
-            className="w-4 h-4"
+            className="w-4 h-4 group-hover:translate-x-1 transition-transform"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

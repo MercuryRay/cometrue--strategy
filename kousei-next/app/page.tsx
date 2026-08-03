@@ -179,7 +179,10 @@ export default function Home() {
       <Windows10Band />
 
       <section className="bg-white border-y border-neutral-100" aria-label="サービスの主要数値">
-        <div className="max-w-[980px] mx-auto px-6 py-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div
+          className="max-w-[980px] mx-auto px-6 py-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
+          data-reveal-stagger
+        >
           {[
             { num: '0', unit: '円', label: '回収費用' },
             { num: '0', unit: '円', label: 'データ消去' },
@@ -212,7 +215,7 @@ export default function Home() {
                 違法投棄や不法な海外輸出は一切ありません。
               </p>
             </div>
-            <div className="md:col-span-7 grid sm:grid-cols-2 gap-4">
+            <div className="md:col-span-7 grid sm:grid-cols-2 gap-4" data-reveal-stagger>
               {[
                 {
                   title: '許可業者と連携した適正処理',
@@ -233,7 +236,7 @@ export default function Home() {
               ].map((c) => (
                 <div
                   key={c.title}
-                  className="bg-white border border-neutral-100 rounded-2xl p-6 hover:shadow-lg transition"
+                  className="card-lift bg-white border border-neutral-100 rounded-2xl p-6"
                 >
                   <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-50 ring-1 ring-emerald-200/60">
                     <svg
@@ -269,7 +272,7 @@ export default function Home() {
             title="出張回収・データ消去・法人対応。"
             lead="面倒な手続きは一切不要。連絡いただければ、あとはすべて対応します。"
           />
-          <div className="mt-12 grid md:grid-cols-3 gap-6">
+          <div className="mt-12 grid md:grid-cols-3 gap-6" data-reveal-stagger>
             {[
               {
                 title: '出張回収（無料）',
@@ -345,7 +348,7 @@ export default function Home() {
             ].map((s) => (
               <div
                 key={s.title}
-                className="group bg-white rounded-2xl p-8 border border-neutral-100 hover:border-neutral-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                className="group card-lift bg-white rounded-2xl p-8 border border-neutral-100 hover:border-neutral-200"
               >
                 <div
                   className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br ${s.accent} ring-1 ${s.ring}`}
@@ -372,11 +375,11 @@ export default function Home() {
             title="ご利用3ステップ"
             lead="連絡から回収完了まで、最短翌日。"
           />
-          <div className="mt-12 grid md:grid-cols-3 gap-6">
+          <div className="mt-12 grid md:grid-cols-3 gap-6" data-reveal-stagger>
             {flowSteps.map((step) => (
               <div
                 key={step.step}
-                className="relative bg-gradient-to-br from-neutral-50 to-white border border-neutral-100 rounded-2xl p-7 hover:shadow-lg transition"
+                className="relative card-lift bg-gradient-to-br from-neutral-50 to-white border border-neutral-100 rounded-2xl p-7"
               >
                 <span className="text-brand-text font-black text-3xl tracking-tight">
                   {step.step}
@@ -415,7 +418,7 @@ export default function Home() {
                 データ消去・証明書の詳細
               </TextArrowLink>
             </div>
-            <ul className="md:col-span-7 space-y-3">
+            <ul className="md:col-span-7 space-y-3" data-reveal-stagger>
               {[
                 'DoD 5220.22-M（米国国防総省）準拠の3回上書き消去',
                 'SSDは上書き消去に加え物理破壊の併用にも対応',
@@ -461,11 +464,11 @@ export default function Home() {
             title="こんな時にご利用ください"
             lead="個人のお客様から法人のお客様まで、PC回収便がお役に立てる代表的なご利用シーンをご紹介します。"
           />
-          <div className="mt-12 grid md:grid-cols-2 gap-6">
+          <div className="mt-12 grid md:grid-cols-2 gap-6" data-reveal-stagger>
             {usageScenes.map((scene) => (
               <article
                 key={scene.title}
-                className="bg-white border border-neutral-100 rounded-2xl p-7 hover:shadow-lg transition"
+                className="card-lift bg-white border border-neutral-100 rounded-2xl p-7"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <span
@@ -498,7 +501,7 @@ export default function Home() {
                 資源を埋め立てず、循環型社会の構築に貢献しています。
               </p>
             </div>
-            <div className="md:col-span-7 grid sm:grid-cols-3 gap-4">
+            <div className="md:col-span-7 grid sm:grid-cols-3 gap-4" data-reveal-stagger>
               {[
                 {
                   label: '再資源化',
@@ -515,7 +518,7 @@ export default function Home() {
               ].map((s) => (
                 <div
                   key={s.label}
-                  className="bg-white border border-neutral-100 rounded-2xl p-6 text-center"
+                  className="card-lift bg-white border border-neutral-100 rounded-2xl p-6 text-center"
                 >
                   <p className="text-base font-black text-emerald-600">{s.label}</p>
                   <p className="mt-2 text-xs text-neutral-500 leading-relaxed">{s.desc}</p>
@@ -543,7 +546,7 @@ export default function Home() {
                 無料回収の仕組みを詳しく
               </TextArrowLink>
             </div>
-            <ul className="space-y-3">
+            <ul className="space-y-3" data-reveal-stagger>
               {[
                 {
                   href: '/data-erasure',

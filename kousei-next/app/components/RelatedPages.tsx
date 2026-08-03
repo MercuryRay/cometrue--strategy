@@ -119,12 +119,12 @@ export default function RelatedPages({
     <section className="bg-white border-t border-neutral-100">
       <div className="max-w-[980px] mx-auto px-6 py-16">
         <h2 className="text-xl md:text-2xl font-black tracking-tight mb-8">関連ページ</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-reveal-stagger>
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className="group block bg-neutral-50 hover:bg-amber-50 border border-neutral-100 hover:border-amber-200 rounded-2xl p-5 transition"
+              className="group card-lift block bg-neutral-50 hover:bg-amber-50 border border-neutral-100 hover:border-amber-200 rounded-2xl p-5"
             >
               <p className="font-bold text-neutral-900 group-hover:text-brand-text transition">
                 {l.title}

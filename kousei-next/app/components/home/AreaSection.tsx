@@ -14,7 +14,7 @@ export default function AreaSection() {
           title={`横浜${YOKOHAMA_WARDS.length}区・神奈川全域に出張回収。`}
           lead="横浜市内は最短翌日訪問。神奈川県内も2〜3日以内に出張回収可能です。県外の方は宅配回収（着払い）もご利用いただけます。"
         />
-        <div className="mt-12 grid md:grid-cols-2 gap-8">
+        <div className="mt-12 grid md:grid-cols-2 gap-8" data-reveal-stagger>
           <div className="bg-gradient-to-br from-amber-50 to-white border border-amber-100 rounded-2xl p-8">
             <h3 className="font-bold text-neutral-900 text-lg mb-4">
               横浜市{YOKOHAMA_WARDS.length}区

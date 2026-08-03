@@ -7,6 +7,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import MobileStickyCta from './components/MobileStickyCta';
 import ChatWidgetLoader from './components/ChatWidgetLoader';
+import MotionProvider from './components/MotionProvider';
 import JsonLd from './components/JsonLd';
 import { SITE_URL, BUSINESS, OPENING_HOURS_JSON_LD } from './lib/business-info';
 import { AREA_SERVED_JSON_LD } from './lib/area-served';
@@ -260,6 +261,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <MobileStickyCta />
+        <MotionProvider />
         <ChatWidgetLoader />
         <Analytics />
         <SpeedInsights />

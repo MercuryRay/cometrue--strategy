@@ -23,9 +23,19 @@ export default function SectionHeading({
   const isCenter = align === 'center';
 
   return (
-    <div className={isCenter ? 'text-center' : 'text-left'}>
+    <div className={isCenter ? 'text-center' : 'text-left'} data-reveal>
       {eyebrow && (
-        <p className="text-brand-text text-[13px] font-bold tracking-widest mb-2">{eyebrow}</p>
+        <p
+          className={`flex items-center gap-2.5 text-brand-text text-[13px] font-bold tracking-widest mb-3 ${
+            isCenter ? 'justify-center' : ''
+          }`}
+        >
+          <span
+            aria-hidden="true"
+            className="inline-block w-6 h-[2px] rounded-full bg-gradient-to-r from-brand to-[#ffb84d]"
+          />
+          {eyebrow}
+        </p>
       )}
       <h2 className="text-3xl md:text-4xl font-black tracking-tight">{title}</h2>
       {lead && (

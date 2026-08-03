@@ -42,6 +42,10 @@ const footerColumns: { heading: string; links: { href: string; label: string }[]
 export default function Footer() {
   return (
     <footer className="bg-neutral-950 text-neutral-300 pb-24 md:pb-0">
+      <div
+        aria-hidden="true"
+        className="h-[3px] w-full bg-gradient-to-r from-brand via-[#ffb84d] to-brand"
+      />
       <div className="max-w-[980px] mx-auto px-6 py-12">
         <nav aria-label="フッターナビゲーション">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-8">
@@ -53,7 +57,7 @@ export default function Footer() {
                     <li key={link.href}>
                       <Link
                         href={link.href}
-                        className="inline-flex items-center min-h-[40px] text-[13px] text-neutral-400 hover:text-white transition"
+                        className="inline-flex items-center min-h-[40px] text-[13px] text-neutral-400 hover:text-white hover:translate-x-0.5 transition-all"
                       >
                         {link.label}
                       </Link>

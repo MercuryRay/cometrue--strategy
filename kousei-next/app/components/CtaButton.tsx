@@ -16,15 +16,17 @@ type CtaButtonProps = {
 };
 
 const BASE_CLASS =
-  'inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 min-h-[44px] text-base transition';
+  'btn-sheen inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 min-h-[44px] text-base transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0';
 
 const VARIANT_CLASS: Record<CtaButtonProps['variant'], string> = {
-  brand: 'bg-brand text-neutral-900 font-bold hover:bg-brand-hover',
-  line: 'bg-line text-white font-bold hover:bg-line-hover',
-  tel: 'bg-neutral-900 text-white font-bold hover:bg-neutral-700',
-  'ghost-dark': 'border-2 border-neutral-600 text-white font-semibold hover:border-neutral-400',
+  brand:
+    'bg-brand text-neutral-900 font-bold hover:bg-brand-hover hover:shadow-[0_14px_28px_-10px_rgba(245,166,35,0.55)]',
+  line: 'bg-line text-white font-bold hover:bg-line-hover hover:shadow-[0_14px_28px_-10px_rgba(6,199,85,0.5)]',
+  tel: 'bg-neutral-900 text-white font-bold hover:bg-neutral-700 hover:shadow-[0_14px_28px_-10px_rgba(23,23,23,0.45)]',
+  'ghost-dark':
+    'border-2 border-neutral-600 text-white font-semibold hover:border-neutral-400 hover:bg-white/5',
   'ghost-light':
-    'border-2 border-neutral-300 text-neutral-900 font-semibold hover:border-neutral-500',
+    'border-2 border-neutral-300 text-neutral-900 font-semibold hover:border-neutral-500 hover:bg-neutral-50',
 };
 
 function LineIcon() {

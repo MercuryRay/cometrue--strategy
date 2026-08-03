@@ -18,7 +18,7 @@ export default function HomeFaqSection() {
           title="PC無料回収に関するよくあるご質問"
           lead="お問い合わせの多いご質問をまとめました。記載のないご不明点はLINE・お電話でお気軽にどうぞ。"
         />
-        <div className="mt-12 space-y-4">
+        <div className="mt-12 space-y-4" data-reveal-stagger>
           {HOME_FAQS.map((f) => (
             <details
               key={f.q}
