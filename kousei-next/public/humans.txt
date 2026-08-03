@@ -1,0 +1,11 @@
+/* TEAM */
+Operator: 株式会社煌盛商事
+Service: PC回収便
+Location: 神奈川県横浜市港北区
+Site: https://kouseishoji.vercel.app/
+
+/* SITE */
+Last update: 2026/07/31
+Standards: HTML5, CSS3, ES2022
+Components: Next.js 16 (App Router), React 19, Tailwind CSS
+Language: 日本語 (Japanese)

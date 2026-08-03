@@ -6,22 +6,25 @@ import './globals.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import MobileStickyCta from './components/MobileStickyCta';
-import ChatWidget from './components/ChatWidget';
+import ChatWidgetLoader from './components/ChatWidgetLoader';
+import MotionProvider from './components/MotionProvider';
+import JsonLd from './components/JsonLd';
+import { SITE_URL, BUSINESS, OPENING_HOURS_JSON_LD } from './lib/business-info';
+import { AREA_SERVED_JSON_LD } from './lib/area-served';
 
 const noto = Noto_Sans_JP({
   subsets: ['latin'],
   weight: ['400', '700', '900'],
   variable: '--font-noto',
+  display: 'swap',
+  preload: true,
 });
-
-const SITE_URL = 'https://pc.kamuturu.jp';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default:
-      'PC回収【横浜・神奈川全域】パソコン無料回収・データ消去0円 | PC回収便(株式会社煌盛商事)',
-    template: '%s | PC回収便',
+    default: 'PC回収【横浜・神奈川全域】パソコン無料回収・データ消去0円 | PC回収便',
+    template: '%s | PC回収便【横浜・神奈川】',
   },
   description:
     'PC回収なら横浜・神奈川全域対応の「PC回収便」。パソコン・周辺機器を完全無料回収。回収費用・データ消去・出張費すべて0円。米国国防総省準拠のデータ消去＋証明書発行、法人一括回収・NDA締結・ISMS監査対応。最短翌日訪問。',
@@ -49,7 +52,6 @@ export const metadata: Metadata = {
     'サーバー回収',
     '横浜港北区',
     '川崎市 PC回収',
-    'PC回収便',
   ],
   openGraph: {
     type: 'website',
@@ -85,7 +87,13 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  alternates: { canonical: SITE_URL },
+  alternates: {
+    canonical: SITE_URL,
+    languages: {
+      'ja-JP': SITE_URL,
+      'x-default': SITE_URL,
+    },
+  },
   category: 'business',
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
@@ -93,79 +101,61 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0f172a',
+  themeColor: '#ffffff',
   width: 'device-width',
   initialScale: 1,
 };
 
-const localBusinessJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
+const localBusinessNode = {
+  '@type': ['Organization', 'LocalBusiness'],
   '@id': `${SITE_URL}/#business`,
-  name: '株式会社煌盛商事',
-  alternateName: 'PC回収便',
-  legalName: '株式会社煌盛商事',
+  name: BUSINESS.legalName,
+  alternateName: BUSINESS.brandName,
+  legalName: BUSINESS.legalName,
+  slogan: '横浜・神奈川のパソコン無料回収、データ消去まで0円',
   description:
-    '横浜市・神奈川県全域でパソコン・周辺機器を完全無料で回収。データ消去・証明書発行・法人一括対応すべて0円。最短翌日訪問。',
+    '横浜市・神奈川県全域でパソコン・周辺機器を完全無料で回収。データ消去・証明書発行・法人一括対応すべて0円。最短翌日訪問。電話受付は平日10:00-17:00、土日祝は事前予約制（要問い合わせ）。',
   url: SITE_URL,
-  telephone: '+81-45-550-5765',
-  image: `${SITE_URL}/photos/hero.jpg`,
+  telephone: BUSINESS.telE164,
+  image: [`${SITE_URL}/photos/hero.jpg`, `${SITE_URL}/photos/og-image.jpg`],
+  logo: `${SITE_URL}/brand/logo-square-v3-1080.png`,
+  knowsAbout: [
+    'パソコン無料回収',
+    'データ消去',
+    'PCリサイクル',
+    '法人PC一括処分',
+    'NDA・機密保持',
+    'ISMS監査対応',
+    '小型家電リサイクル法',
+  ],
+  knowsLanguage: ['ja'],
+  paymentAccepted: ['Cash', 'Bank Transfer'],
+  currenciesAccepted: 'JPY',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: '港北区',
-    addressLocality: '横浜市',
-    addressRegion: '神奈川県',
+    streetAddress: BUSINESS.streetAddress,
+    addressLocality: BUSINESS.addressLocality,
+    addressRegion: BUSINESS.addressRegion,
     addressCountry: 'JP',
   },
-  areaServed: [
-    { '@type': 'AdministrativeArea', name: '神奈川県' },
-    { '@type': 'City', name: '横浜市' },
-    { '@type': 'City', name: '横浜市鶴見区' },
-    { '@type': 'City', name: '横浜市神奈川区' },
-    { '@type': 'City', name: '横浜市西区' },
-    { '@type': 'City', name: '横浜市中区' },
-    { '@type': 'City', name: '横浜市南区' },
-    { '@type': 'City', name: '横浜市港南区' },
-    { '@type': 'City', name: '横浜市保土ケ谷区' },
-    { '@type': 'City', name: '横浜市旭区' },
-    { '@type': 'City', name: '横浜市磯子区' },
-    { '@type': 'City', name: '横浜市金沢区' },
-    { '@type': 'City', name: '横浜市港北区' },
-    { '@type': 'City', name: '横浜市緑区' },
-    { '@type': 'City', name: '横浜市青葉区' },
-    { '@type': 'City', name: '横浜市都筑区' },
-    { '@type': 'City', name: '横浜市戸塚区' },
-    { '@type': 'City', name: '横浜市栄区' },
-    { '@type': 'City', name: '横浜市泉区' },
-    { '@type': 'City', name: '横浜市瀬谷区' },
-    { '@type': 'City', name: '川崎市' },
-    { '@type': 'City', name: '相模原市' },
-    { '@type': 'City', name: '横須賀市' },
-    { '@type': 'City', name: '平塚市' },
-    { '@type': 'City', name: '鎌倉市' },
-    { '@type': 'City', name: '藤沢市' },
-    { '@type': 'City', name: '小田原市' },
-    { '@type': 'City', name: '茅ヶ崎市' },
-    { '@type': 'City', name: '逗子市' },
-    { '@type': 'City', name: '三浦市' },
-    { '@type': 'City', name: '秦野市' },
-    { '@type': 'City', name: '厚木市' },
-    { '@type': 'City', name: '大和市' },
-    { '@type': 'City', name: '伊勢原市' },
-    { '@type': 'City', name: '海老名市' },
-    { '@type': 'City', name: '座間市' },
-    { '@type': 'City', name: '南足柄市' },
-    { '@type': 'City', name: '綾瀬市' },
-  ],
-  priceRange: '¥0',
-  openingHoursSpecification: [
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      opens: '10:00',
-      closes: '17:00',
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: BUSINESS.geoLatitude,
+    longitude: BUSINESS.geoLongitude,
+  },
+  hasMap: `https://www.google.com/maps?q=${BUSINESS.geoLatitude},${BUSINESS.geoLongitude}`,
+  serviceArea: {
+    '@type': 'GeoCircle',
+    geoMidpoint: {
+      '@type': 'GeoCoordinates',
+      latitude: BUSINESS.geoLatitude,
+      longitude: BUSINESS.geoLongitude,
     },
-  ],
+    geoRadius: '50000',
+  },
+  areaServed: AREA_SERVED_JSON_LD,
+  priceRange: '¥0',
+  openingHoursSpecification: OPENING_HOURS_JSON_LD,
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: '無料回収サービス',
@@ -175,55 +165,83 @@ const localBusinessJsonLd = {
         itemOffered: { '@type': 'Service', name: 'パソコン無料回収' },
         price: '0',
         priceCurrency: 'JPY',
+        availability: 'https://schema.org/InStock',
       },
       {
         '@type': 'Offer',
         itemOffered: { '@type': 'Service', name: 'データ消去・証明書発行' },
         price: '0',
         priceCurrency: 'JPY',
+        availability: 'https://schema.org/InStock',
       },
       {
         '@type': 'Offer',
         itemOffered: { '@type': 'Service', name: '法人向け一括回収' },
         price: '0',
         priceCurrency: 'JPY',
+        availability: 'https://schema.org/InStock',
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: '宅配回収（全国・着払い）' },
+        price: '0',
+        priceCurrency: 'JPY',
+        availability: 'https://schema.org/InStock',
       },
     ],
   },
-  sameAs: ['https://lin.ee/BvvSYYH1'],
-};
-
-const organizationJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  '@id': `${SITE_URL}/#organization`,
-  name: '株式会社煌盛商事',
-  alternateName: 'PC回収便',
-  url: SITE_URL,
-  logo: `${SITE_URL}/photos/hero.jpg`,
+  makesOffer: [
+    {
+      '@type': 'Offer',
+      name: 'パソコン無料回収（出張・宅配・持込）',
+      price: '0',
+      priceCurrency: 'JPY',
+      areaServed: { '@type': 'AdministrativeArea', name: '神奈川県' },
+      availability: 'https://schema.org/InStock',
+    },
+    {
+      '@type': 'Offer',
+      name: '米国国防総省準拠データ消去＋証明書発行',
+      price: '0',
+      priceCurrency: 'JPY',
+      availability: 'https://schema.org/InStock',
+    },
+  ],
+  potentialAction: {
+    '@type': 'ReserveAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${SITE_URL}/contact`,
+      inLanguage: 'ja-JP',
+      actionPlatform: [
+        'https://schema.org/DesktopWebPlatform',
+        'https://schema.org/MobileWebPlatform',
+      ],
+    },
+    result: { '@type': 'Reservation', name: 'パソコン回収予約' },
+  },
   contactPoint: {
     '@type': 'ContactPoint',
-    telephone: '+81-45-550-5765',
+    telephone: BUSINESS.telE164,
     contactType: 'customer service',
     areaServed: 'JP',
     availableLanguage: ['ja'],
   },
-  sameAs: ['https://lin.ee/BvvSYYH1'],
+  sameAs: [BUSINESS.lineUrl],
 };
 
-const websiteJsonLd = {
-  '@context': 'https://schema.org',
+const websiteNode = {
   '@type': 'WebSite',
   '@id': `${SITE_URL}/#website`,
   url: SITE_URL,
-  name: 'PC回収便',
-  publisher: { '@id': `${SITE_URL}/#organization` },
+  name: BUSINESS.brandName,
+  publisher: { '@id': `${SITE_URL}/#business` },
   inLanguage: 'ja-JP',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: `${SITE_URL}/?s={search_term_string}`,
-    'query-input': 'required name=search_term_string',
-  },
+};
+
+const graphJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [localBusinessNode, websiteNode],
 };
 
 export default function RootLayout({
@@ -234,25 +252,20 @@ export default function RootLayout({
   return (
     <html lang="ja" className={`${noto.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-white text-neutral-900">
+        <a href="#main" className="skip-link">
+          本文へスキップ
+        </a>
         <Header />
-        <main className="flex-1 pb-16 md:pb-0">{children}</main>
+        <main id="main" className="flex-1 pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
+          {children}
+        </main>
         <Footer />
         <MobileStickyCta />
-        <ChatWidget />
+        <MotionProvider />
+        <ChatWidgetLoader />
         <Analytics />
         <SpeedInsights />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-        />
+        <JsonLd data={graphJsonLd} />
       </body>
     </html>
   );
